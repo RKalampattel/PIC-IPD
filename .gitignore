@@ -259,3 +259,11 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+/PIC-IPD/cMesh.plt
+/PIC-IPD/cSolution_G.plt
+/PIC-IPD/cSolution_N.plt
+/PIC-IPD/cSolution_P.plt
+/PIC-IPD/logFile.txt
+/PIC-IPD/PICMesh.op2
+/PIC-IPD/FDTDMesh.op2

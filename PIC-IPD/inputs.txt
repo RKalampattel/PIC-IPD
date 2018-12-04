@@ -1,0 +1,94 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------------------------------------
+% This is a sample input file. Lines that begin with the percentage symbol will 
+% not be parsed; empty lines will also not be parsed. The remaining lines contain
+% the names of variables, followed by a colon, then the input value. Variable
+% names or their order should not be edited. If no input is present, or the input
+% is out of range or of the wrong type, the default value will be used.
+%------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%------------------------------------------------------------------------------
+% Global simulation parameters 
+%------------------------------------------------------------------------------
+timeStep: 0.00004
+maximumNumberOfIterations: 10 
+numberOfPatches: 1
+particlesPerCell: 4
+numCellsWithParticles: 3
+simulationType: electron
+axisymmetric: 0
+twoStream: 1
+
+
+%------------------------------------------------------------------------------
+% Particle and collision parameters
+%------------------------------------------------------------------------------
+particleDistribution: uniform
+initialTemperature: 1000.0
+initialPosition: 0.5,0.5
+initialVelocity: 1.0,0.0
+propellant: xenon
+MCCFrequency: 101
+
+
+%------------------------------------------------------------------------------
+% Field and FDTD parameters
+%------------------------------------------------------------------------------
+Efield: 0.0,0.0,0.0
+Bfield: 0.0,0.0,0.0
+FDTDiterations: 1000000
+FDTDfrequency: 101
+
+
+%------------------------------------------------------------------------------
+% Mesh and domain parameters
+%------------------------------------------------------------------------------
+userMesh: 1
+domainLength: 0.1
+domainHeight: 0.06
+PICspacing: 0.02
+FDTDspacing: 0.005
+meshFilePath: coarseMesh.su2
+meshScalingParameter: 1.0
+
+
+%------------------------------------------------------------------------------
+% Solver and boundary condition parameters
+%------------------------------------------------------------------------------
+solverType: GS
+maxSolverIterations: 50
+residualTolerance: 1e-20
+SORparameter: 1.1
+leftBCType: dirichlet
+leftBCValue: 0.0
+rightBCType: dirichlet
+rightBCValue: 0.0
+topBCType: dirichlet
+topBCValue: 0.0
+bottomBCType: dirichlet
+bottomBCValue: 0.0
+
+
+%------------------------------------------------------------------------------
+% Parallelisation parameters
+%------------------------------------------------------------------------------
+numThreads: 1
+
+
+%------------------------------------------------------------------------------
+% Output parameters
+%------------------------------------------------------------------------------
+plotFrequency: 5
+tecplotMesh: cMesh
+tecplotParticleSolution: cSolution_P
+tecplotNodeSolution: cSolution_N
+tecplotGlobalSolution: cSolution_G
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%------------------------------------------------------------------------------
+% End of input file
+%------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
