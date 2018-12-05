@@ -28,26 +28,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 17.0</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 17.0</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 18.0</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 18.0</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -115,6 +115,157 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cells.h" />
+    <ClInclude Include="CHEM\._Blottner.hpp" />
+    <ClInclude Include="CHEM\._chemConstants.hpp" />
+    <ClInclude Include="CHEM\._electronicState.hpp" />
+    <ClInclude Include="CHEM\._kev.hpp" />
+    <ClInclude Include="CHEM\._LeRc.hpp" />
+    <ClInclude Include="CHEM\._species.hpp" />
+    <ClInclude Include="CHEM\._speciesDatabase.hpp" />
+    <ClInclude Include="CHEM\._Sutherland.hpp" />
+    <ClInclude Include="CHEM\._viscosity_kinetic_theory.hpp" />
+    <ClInclude Include="CHEM\Blottner.hpp" />
+    <ClInclude Include="CHEM\chemConstants.hpp" />
+    <ClInclude Include="CHEM\electronicState.hpp" />
+    <ClInclude Include="CHEM\kev.hpp" />
+    <ClInclude Include="CHEM\LeRc.hpp" />
+    <ClInclude Include="CHEM\species.hpp" />
+    <ClInclude Include="CHEM\speciesDatabase.hpp" />
+    <ClInclude Include="CHEM\Sutherland.hpp" />
+    <ClInclude Include="CHEM\viscosity_kinetic_theory.hpp" />
+    <ClInclude Include="COMM\assert_mk.hpp" />
+    <ClInclude Include="COMM\codelocation.hpp" />
+    <ClInclude Include="COMM\common.hpp" />
+    <ClInclude Include="COMM\commonAPI.hpp" />
+    <ClInclude Include="COMM\error_check.hpp" />
+    <ClInclude Include="COMM\error_codes.hpp" />
+    <ClInclude Include="COMM\error_exception.hpp" />
+    <ClInclude Include="COMM\exportAPI.hpp" />
+    <ClInclude Include="COMM\fileHandle.hpp" />
+    <ClInclude Include="COMM\map1D.hpp" />
+    <ClInclude Include="COMM\MultiVector.hpp" />
+    <ClInclude Include="COMM\noncopyable.hpp" />
+    <ClInclude Include="COMM\noninstantiable.hpp" />
+    <ClInclude Include="COMM\processorinfo.hpp" />
+    <ClInclude Include="COMM\readdatafromstring.hpp" />
+    <ClInclude Include="COMM\StringOps.hpp" />
+    <ClInclude Include="COMM\sys\time.h" />
+    <ClInclude Include="COMM\sys\times.h" />
+    <ClInclude Include="COMM\timer.hpp" />
+    <ClInclude Include="COMM\utilities.hpp" />
+    <ClInclude Include="COMM\VectorCompare.hpp" />
+    <ClInclude Include="COMM\version.hpp" />
+    <ClInclude Include="Faces.h" />
+    <ClInclude Include="fftw-3.3.5-dll64\fftw3.h" />
+    <ClInclude Include="GRID\cell.hpp" />
+    <ClInclude Include="GRID\connection.hpp" />
+    <ClInclude Include="GRID\element.hpp" />
+    <ClInclude Include="GRID\face.hpp" />
+    <ClInclude Include="GRID\geometry.hpp" />
+    <ClInclude Include="GRID\grid.hpp" />
+    <ClInclude Include="GRID\grid_def.hpp" />
+    <ClInclude Include="GRID\index.hpp" />
+    <ClInclude Include="GRID\node.hpp" />
+    <ClInclude Include="GRID\stencilinfo.hpp" />
+    <ClInclude Include="MATH_MK\cal_area.hpp" />
+    <ClInclude Include="MATH_MK\linear_algebra.hpp" />
+    <ClInclude Include="MATH_MK\math_basic.hpp" />
+    <ClInclude Include="MATH_MK\matrix.hpp" />
+    <ClInclude Include="MATH_MK\random_number_fns.hpp" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Nodes.h" />
+    <ClInclude Include="Parameters.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Patch.h" />
+    <ClInclude Include="VectorCell.h" />
+    <ClInclude Include="VectorFace.h" />
+    <ClInclude Include="VectorNode.h" />
+    <ClInclude Include="VectorParticle.h" />
+    <ClInclude Include="VectorPatch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Cells.cpp" />
+    <ClCompile Include="CHEM\._Blottner.cpp" />
+    <ClCompile Include="CHEM\._electronicState.cpp" />
+    <ClCompile Include="CHEM\._kev.cpp" />
+    <ClCompile Include="CHEM\._LeRc.cpp" />
+    <ClCompile Include="CHEM\._species.cpp" />
+    <ClCompile Include="CHEM\._speciesDatabase.cpp" />
+    <ClCompile Include="CHEM\._Sutherland.cpp" />
+    <ClCompile Include="CHEM\._viscosity_kinetic_theory.cpp" />
+    <ClCompile Include="CHEM\Blottner.cpp" />
+    <ClCompile Include="CHEM\electronicState.cpp" />
+    <ClCompile Include="CHEM\kev.cpp" />
+    <ClCompile Include="CHEM\LeRc.cpp" />
+    <ClCompile Include="CHEM\species.cpp" />
+    <ClCompile Include="CHEM\speciesDatabase.cpp" />
+    <ClCompile Include="CHEM\Sutherland.cpp" />
+    <ClCompile Include="CHEM\viscosity_kinetic_theory.cpp" />
+    <ClCompile Include="COMM\assert_mk.cpp" />
+    <ClCompile Include="COMM\codelocation.cpp" />
+    <ClCompile Include="COMM\error_check.cpp" />
+    <ClCompile Include="COMM\error_codes.cpp" />
+    <ClCompile Include="COMM\error_exception.cpp" />
+    <ClCompile Include="COMM\fileHandle.cpp" />
+    <ClCompile Include="COMM\MultiVector.cpp" />
+    <ClCompile Include="COMM\processorinfo.cpp" />
+    <ClCompile Include="COMM\readdatafromstring.cpp" />
+    <ClCompile Include="COMM\StringOps.cpp" />
+    <ClCompile Include="COMM\sys\times.cpp" />
+    <ClCompile Include="COMM\timer.cpp" />
+    <ClCompile Include="COMM\utilities.cpp" />
+    <ClCompile Include="COMM\VectorCompare.cpp" />
+    <ClCompile Include="COMM\version.cpp" />
+    <ClCompile Include="Faces.cpp" />
+    <ClCompile Include="FDTD.cpp" />
+    <ClCompile Include="GRID\cell.cpp" />
+    <ClCompile Include="GRID\connection.cpp" />
+    <ClCompile Include="GRID\face.cpp" />
+    <ClCompile Include="GRID\geometry.cpp" />
+    <ClCompile Include="GRID\grid.cpp" />
+    <ClCompile Include="GRID\gridUtil.cpp" />
+    <ClCompile Include="GRID\index.cpp" />
+    <ClCompile Include="GRID\node.cpp" />
+    <ClCompile Include="GRID\preprocessingGrid.cpp" />
+    <ClCompile Include="GRID\preprocessingGridFluent.cpp" />
+    <ClCompile Include="GRID\preprocessingGridSU2.cpp" />
+    <ClCompile Include="Interpolator.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MATH_MK\cal_area.cpp" />
+    <ClCompile Include="MATH_MK\linear_algebra.cpp" />
+    <ClCompile Include="MATH_MK\math_basic.cpp" />
+    <ClCompile Include="MATH_MK\matrix.cpp" />
+    <ClCompile Include="MATH_MK\random_number_fns.cpp" />
+    <ClCompile Include="MCC.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Nodes.cpp" />
+    <ClCompile Include="Parameters.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Patch.cpp" />
+    <ClCompile Include="Projector.cpp" />
+    <ClCompile Include="Pusher.cpp" />
+    <ClCompile Include="Solver.cpp" />
+    <ClCompile Include="VectorCell.cpp" />
+    <ClCompile Include="VectorFace.cpp" />
+    <ClCompile Include="VectorNode.cpp" />
+    <ClCompile Include="VectorParticle.cpp" />
+    <ClCompile Include="VectorPatch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="coarseMesh.su2" />
+    <None Include="FDTDMesh.op2" />
+    <None Include="fftw-3.3.5-dll64\libfftw3-3.exp" />
+    <None Include="fineMesh.su2" />
+    <None Include="mediumMesh.su2" />
+    <None Include="PICMesh.op2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="inputs.txt" />
+    <Text Include="logFile.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="fftw-3.3.5-dll64\libfftw3-3.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
