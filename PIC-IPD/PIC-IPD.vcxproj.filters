@@ -9,9 +9,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Header Files\OP2A">
+      <UniqueIdentifier>{77b1e3d0-4b49-434d-a95d-9c3352a444b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OP2A">
+      <UniqueIdentifier>{0af337a0-a14e-439e-98b0-c9566f49674d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -52,172 +54,145 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MATH_MK\cal_area.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="MATH_MK\linear_algebra.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="MATH_MK\math_basic.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="MATH_MK\matrix.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="MATH_MK\random_number_fns.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\cell.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\connection.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\element.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\face.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\geometry.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\grid.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\grid_def.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\index.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\node.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="GRID\stencilinfo.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="fftw-3.3.5-dll64\fftw3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="COMM\sys\time.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\sys\times.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\assert_mk.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\codelocation.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\common.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\commonAPI.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\error_check.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\error_codes.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\error_exception.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\exportAPI.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\fileHandle.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\map1D.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\MultiVector.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\noncopyable.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\noninstantiable.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\processorinfo.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\readdatafromstring.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\StringOps.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\timer.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\utilities.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\VectorCompare.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="COMM\version.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._Blottner.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._chemConstants.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._electronicState.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._kev.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._LeRc.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._species.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._speciesDatabase.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._Sutherland.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CHEM\._viscosity_kinetic_theory.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\Blottner.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\chemConstants.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\electronicState.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\kev.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\LeRc.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\species.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\speciesDatabase.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\Sutherland.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
     <ClInclude Include="CHEM\viscosity_kinetic_theory.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\OP2A</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -279,145 +254,121 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MATH_MK\cal_area.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="MATH_MK\linear_algebra.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="MATH_MK\math_basic.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="MATH_MK\matrix.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="MATH_MK\random_number_fns.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\cell.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\connection.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\face.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\geometry.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\grid.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\gridUtil.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\index.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\node.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\preprocessingGrid.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\preprocessingGridFluent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="GRID\preprocessingGridSU2.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\sys\times.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\assert_mk.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\codelocation.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\error_check.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\error_codes.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\error_exception.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\fileHandle.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\MultiVector.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\processorinfo.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\readdatafromstring.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\StringOps.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\timer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\utilities.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\VectorCompare.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="COMM\version.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHEM\._Blottner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHEM\._electronicState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHEM\._kev.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHEM\._LeRc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHEM\._species.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHEM\._speciesDatabase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHEM\._Sutherland.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CHEM\._viscosity_kinetic_theory.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="CHEM\Blottner.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="CHEM\electronicState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="CHEM\kev.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="CHEM\LeRc.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="CHEM\species.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="CHEM\speciesDatabase.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="CHEM\Sutherland.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
     <ClCompile Include="CHEM\viscosity_kinetic_theory.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\OP2A</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
