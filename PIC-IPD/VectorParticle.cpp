@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of VectorParticle class 
 //! \author Rahul Kalampattel
-//! \date Last updated April 2018
+//! \date Last updated February 2019
 
 #include "VectorParticle.h"
 
