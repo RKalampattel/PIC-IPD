@@ -43,7 +43,7 @@ VectorParticle::VectorParticle(Parameters *parametersList, Mesh *mesh, int patch
 			numParticles++;
 
 			Particle particle(parametersList, mesh, patchID, i + 1, numParticles, j);
-			particleVector.push_back(particle);
+			particleVector.push_back(particle);	// TODO: Replace with linked list equivalent
 
 			addToPlotVector(&particle);
 
@@ -132,7 +132,7 @@ void VectorParticle::addParticleToSim(Parameters *parametersList, Mesh *mesh, in
 	maxParticleID++;
 
 	Particle particle(parametersList, mesh, patchID, cellID, maxParticleID, type);
-	particleVector.push_back(particle);
+	particleVector.push_back(particle);	// TODO: Replace with linked list equivalent
 	addToPlotVector(&particle);
 
 	mesh->addParticlesToCell(particle.cellID, particle.particleID);
@@ -146,7 +146,7 @@ void VectorParticle::removeParticleFromSim(int particleID)
 	{
 		if (particleVector[i].particleID == particleID)
 		{
-			particleVector.erase(particleVector.begin() + i);
+			particleVector.erase(particleVector.begin() + i);	// TODO: Replace with linked list equivalent
 			break;
 		}
 	}

@@ -26,6 +26,7 @@ twoStream: 1
 % Particle and collision parameters
 %------------------------------------------------------------------------------
 particleDistribution: uniform
+specificWeight: 1.0
 initialTemperature: 1000.0
 initialPosition: 0.5,0.5
 initialVelocity: 1.0,0.0

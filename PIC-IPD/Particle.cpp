@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Particle class 
 //! \author Rahul Kalampattel
-//! \date Last updated April 2018
+//! \date Last updated February 2019
 
 #include "Particle.h"
 
@@ -19,15 +19,15 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 
 	if (parametersList->simulationType == "electron")
 	{
-		this->basic.q = ELECTRON_CHARGE;
-		this->basic.m = ELECTRON_MASS_kg;
+		this->basic.q = ELECTRON_CHARGE * parametersList->specificWeight;
+		this->basic.m = ELECTRON_MASS_kg * parametersList->specificWeight;
 	}
 	else
 	{
 		if (parametersList->propellant == "xenon")
 		{
 			this->basic.q = 0.0;
-			this->basic.m = XENON_MASS_kg;
+			this->basic.m = XENON_MASS_kg * parametersList->specificWeight;
 		}
 	}
 
@@ -104,16 +104,16 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 
 	if (type == "electron" && (parametersList->simulationType == "full" || parametersList->simulationType == "electron"))
 	{
-		this->basic.q = ELECTRON_CHARGE;
-		this->basic.m = ELECTRON_MASS_kg;
+		this->basic.q = ELECTRON_CHARGE * parametersList->specificWeight;
+		this->basic.m = ELECTRON_MASS_kg * parametersList->specificWeight;
 		this->basic.type = -1;
 	}
 	else if (type == "ion" && (parametersList->simulationType == "full" || parametersList->simulationType == "partial"))
 	{
 		if (parametersList->propellant == "xenon")
 		{
-			this->basic.q = -ELECTRON_CHARGE;
-			this->basic.m = XENON_MASS_kg - ELECTRON_MASS_kg;
+			this->basic.q = -ELECTRON_CHARGE * parametersList->specificWeight;
+			this->basic.m = (XENON_MASS_kg - ELECTRON_MASS_kg) * parametersList->specificWeight;
 		}
 		this->basic.type = 1;
 	}
@@ -122,7 +122,7 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 		if (parametersList->propellant == "xenon")
 		{
 			this->basic.q = 0.0;
-			this->basic.m = XENON_MASS_kg;
+			this->basic.m = XENON_MASS_kg * parametersList->specificWeight;
 		}
 		this->basic.type = 0;
 	}

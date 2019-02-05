@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Parameters class 
 //! \author Rahul Kalampattel
-//! \date Last updated October 2018
+//! \date Last updated February 2019
 
 #pragma once
 
@@ -57,6 +57,7 @@ public:
 
 	// Particle and collision parameters
 	std::string particleDistribution;		//!< Particle distribution (random, uniform, precise)
+	double specificWeight;					//!< Ratio of superparticle to real particle mass 
 	double initialTemperature;				//!< Initial temperature of gas/plasma
 	std::vector<double> initialPosition;	//!< Initial particle position (if precise==true)
 	std::vector<double> initialVelocity;	//!< Initial particle velocity (if precise==true)
