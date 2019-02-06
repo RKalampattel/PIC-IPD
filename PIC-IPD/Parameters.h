@@ -10,6 +10,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <list>
 #include <random>
 #include <sstream>
 #include <string>

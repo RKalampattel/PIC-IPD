@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of MCC method 
 //! \author Rahul Kalampattel
-//! \date Last updated May 2018
+//! \date Last updated February 2019
 
 #include "Patch.h"
 
@@ -11,7 +11,7 @@ void Patch::MCC()
 	// TODO: Check that it is appropriate to use MCC (compare particle densities,
 	// collision frequencies, etc.)
 
-	for (int i = 0; i < particlesVector.numParticles; i++)
+	for (Particle& particle : listOfParticles.listOfParticles)
 	{	
 		double sigma, targetDensity;
 		
@@ -21,7 +21,7 @@ void Patch::MCC()
 			// TODO: Needs to be calculated with relative velocity, can only
 			// use magnitude it velocity difference is sufficiently high
 			sigma = 15.1262 - 0.8821 * 
-				log(particlesVector.particleVector[i].velocityMagnitude());
+				log(particle.velocityMagnitude());
 		}
 		
 		// Check simulation type
@@ -32,19 +32,19 @@ void Patch::MCC()
 		else if (parametersList.simulationType == "partial")
 		{
 			// Neutral
-			if (particlesVector.particleVector[i].basic.type == 0)
+			if (particle.basic.type == 0)
 			{
 				// Target (ion) density
 				// TODO: Target density should be for TARGET species only (i.e.
 				// only count particles of a specific kind, rather than all particles
 				// in the cell. Otherwise, use some sort of distribution to calculate
 				// the correct density.
-				targetDensity = static_cast<double>(mesh.cellsVector.cells[particlesVector.particleVector[i].cellID - 1].listOfParticles.size()) /
+				targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].listOfParticles.size()) /
 					(mesh.h * mesh.h);
 			}
 			
 			// Ion
-			else if (particlesVector.particleVector[i].basic.type == 0)
+			else if (particle.basic.type == 0)
 			{
 				// Target (neutral) density
 			}
@@ -52,14 +52,14 @@ void Patch::MCC()
 		else if (parametersList.simulationType == "electron")
 		{
 			// TODO: Collisions for electrons
-			targetDensity = static_cast<double>(mesh.cellsVector.cells[particlesVector.particleVector[i].cellID - 1].listOfParticles.size()) /
+			targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].listOfParticles.size()) /
 				(mesh.h * mesh.h);
 		}
 
 		// TODO: Again, in general need to use the relative velocity
 		// TODO: Separate time step for collisions?
 		double collisionProbability = 1 - exp(-targetDensity * sigma * parametersList.timeStep *
-			particlesVector.particleVector[i].velocityMagnitude());
+			particle.velocityMagnitude());
 
 		// Initialise random number generator, distribution in range [0, 1000000]
 		std::mt19937 rng;
@@ -88,8 +88,8 @@ void Patch::MCC()
 			// Additionally, particle production occurs as a result of inductive or
 			// electron heating (RF thruster)
 
-			// particlesVector.addParticleToSim(parametersList, mesh, 1, "electron");
-			// particlesVector.removeParticleFromSim(particlesVector.particleVector[i].particleID);
+			// particleList.addParticleToSim(parametersList, mesh, 1, "electron");
+			// particleList.removeParticleFromSim(particle.particleID);
 
 		}
 

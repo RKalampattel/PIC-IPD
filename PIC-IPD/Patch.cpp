@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Patch class 
 //! \author Rahul Kalampattel
-//! \date Last updated May 2018
+//! \date Last updated February 2019
 
 #include "Patch.h"
 
@@ -21,12 +21,12 @@ Patch::Patch(Parameters *parametersList, int patchID)
 	this->parametersList = *parametersList;
 
 	mesh = Mesh(parametersList, "PIC");
-	particlesVector = VectorParticle(parametersList, &mesh, patchID);
+	listOfParticles = ParticleList(parametersList, &mesh, patchID);
 
 	parametersList->logBrief("Initialising Tecplot output files", 1);
 	writeMeshTecplot(parametersList->tecplotMesh, mesh);
 
-	generateParticleOutput(particlesVector.plotVector, particlesVector.numParticles, time);
+	generateParticleOutput(listOfParticles.plotVector, listOfParticles.numParticles, time);
 	generateNodeOutput(time);
 	generateGlobalOutput(0.0, 0.0, time);
 }
@@ -115,10 +115,10 @@ void Patch::startPIC()
 			// Generate plots at specified intervals
 			if ((static_cast<int>(time / parametersList.timeStep) + 1) % parametersList.plotFrequency == 0)
 			{
-				double EK = particlesVector.calculateEK();
+				double EK = listOfParticles.calculateEK();
 				double EP = mesh.nodesVector.calculateEP();
 
-				generateParticleOutput(particlesVector.plotVector, particlesVector.numParticles, time);
+				generateParticleOutput(listOfParticles.plotVector, listOfParticles.numParticles, time);
 				generateNodeOutput(time);
 				generateGlobalOutput(EK, EP, time);
 				parametersList.logBrief("Tecplot output generated", 1);

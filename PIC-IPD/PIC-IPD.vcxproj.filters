@@ -50,9 +50,6 @@
     <ClInclude Include="VectorNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VectorParticle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MATH_MK\cal_area.hpp">
       <Filter>Header Files\OP2A</Filter>
     </ClInclude>
@@ -194,6 +191,9 @@
     <ClInclude Include="CHEM\viscosity_kinetic_theory.hpp">
       <Filter>Header Files\OP2A</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cells.cpp">
@@ -245,9 +245,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VectorNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VectorParticle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VectorPatch.cpp">
@@ -369,6 +366,9 @@
     </ClCompile>
     <ClCompile Include="CHEM\viscosity_kinetic_theory.cpp">
       <Filter>Source Files\OP2A</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleList.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 //! \file
-//! \brief Definition of VectorParticle class 
+//! \brief Definition of ParticleList class 
 //! \author Rahul Kalampattel
 //! \date Last updated February 2019
 
@@ -7,9 +7,9 @@
 
 #include "Particle.h"
 
-//! \class VectorParticle
-//! \brief Create and manage a vector of Particle objects
-class VectorParticle
+//! \class ParticleList
+//! \brief Create and manage a list of Particle objects
+class ParticleList
 {
 private:
 	// Data members
@@ -21,25 +21,25 @@ private:
 	void removeFromPlotVector(int particleID);		//!< Remove particle from plotVector
 
 public:
-	// TODO: Change particleVector type from vector to linked list
+	// TODO: Change type from vector to list
 
 	// Data members
-	std::vector<Particle> particleVector;			//!< Vector of Particle objects
-	int numParticles = 0;							//!< Size of particleVector								
+	std::list<Particle> listOfParticles;			//!< List of Particle objects
+	int numParticles = 0;							//!< Size of listOfParticles								
 	int patchID;									//!< Patch ID
 	vector2D plotVector;							//!< Store particle position, velocity, cell ID and particle ID for plotting
 
 
 	// Constructor/destructor
-	VectorParticle();								//!< Default constructor
-	VectorParticle(Parameters *parametersList,
+	ParticleList();									//!< Default constructor
+	ParticleList(Parameters *parametersList,
 		Mesh *mesh, int patchID);					//!< Constructor
-	~VectorParticle();								//!< Destructor
+	~ParticleList();								//!< Destructor
 
 
 	// Methods
 	void updatePlotVector(Particle *particle);		//!< Update state of plotVector
-	void clearFields();								//!< Clear fields and lorentz members of particleVector
+	void clearFields();								//!< Clear fields and lorentz members of listOfParticles
 	void addParticleToSim(Parameters * parametersList, 
 		Mesh * mesh, int cellID, std::string type); //!< Add particle to simulation
 	void removeParticleFromSim(int particleID);		//!< Remove particle from simulation
