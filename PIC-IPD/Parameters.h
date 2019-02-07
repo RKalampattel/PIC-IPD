@@ -50,7 +50,7 @@ public:
 	double timeStep;						//!< Time step
 	int maximumNumberOfIterations;			//!< Maximum number of iterations
 	int numberOfPatches;					//!< Number of patches
-	int particlesPerCell;					//!< Particles per cell
+	int initialParticlesPerCell;			//!< Initial particles per cell
 	int numCellsWithParticles;				//!< Number of cells in which particles are seeded	
 	std::string simulationType;				//!< Simulation type (full, partial or electron)
 	bool axisymmetric;						//!< True if axisymmetric simulation is required

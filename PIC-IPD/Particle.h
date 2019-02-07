@@ -14,8 +14,6 @@
 // of the Particle class is a lot 'lighter' computationally, and doesn't contain
 // unneeded information...
 
-// TODO: Add attributes to identify previous/next particle in linked list
-
 //! \class Particle
 //! \brief Contains all particle data, derived from species class
 class Particle : public species

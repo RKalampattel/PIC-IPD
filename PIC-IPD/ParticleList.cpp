@@ -30,15 +30,15 @@ ParticleList::ParticleList(Parameters *parametersList, Mesh *mesh, int patchID)
 	{
 		if (parametersList->particleDistribution == "uniform")
 		{
-			// Check if particlesPerCell is a square number
-			if (sqrt(parametersList->particlesPerCell) != round(sqrt(parametersList->particlesPerCell)))
+			// Check if initialParticlesPerCell is a square number
+			if (sqrt(parametersList->initialParticlesPerCell) != round(sqrt(parametersList->initialParticlesPerCell)))
 			{
-				parametersList->logBrief("Value of particlesPerCell has been changed to 1", 2);
-				parametersList->particlesPerCell = 1;
+				parametersList->logBrief("Value of initialParticlesPerCell has been changed to 1", 2);
+				parametersList->initialParticlesPerCell = 1;
 			}
 		}
 		
-		for (int j = 0; j < parametersList->particlesPerCell; j++)
+		for (int j = 0; j < parametersList->initialParticlesPerCell; j++)
 		{
 			numParticles++;
 

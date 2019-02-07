@@ -21,8 +21,6 @@ private:
 	void removeFromPlotVector(int particleID);		//!< Remove particle from plotVector
 
 public:
-	// TODO: Change type from vector to list
-
 	// Data members
 	std::list<Particle> listOfParticles;			//!< List of Particle objects
 	int numParticles = 0;							//!< Size of listOfParticles								

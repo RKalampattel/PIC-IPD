@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Cells class 
 //! \author Rahul Kalampattel
-//! \date Last updated March 2018
+//! \date Last updated February 2019
 
 #pragma once
 
@@ -25,7 +25,7 @@ public:
 	int	periodicX2CellID = -1;			//!< ID of periodic cell, y/r direction (not valid for internal cells and axisymmetric cases)
 	std::string boundaryType;			//!< Position on boundary (internal if FALSE)
 	std::string firstNodePosition;		//!< Position of first node
-	std::vector<int> listOfParticles;	//!< List of particles in the cell
+	std::vector<int> particlesInCell;	//!< List of particles in the cell
 
 
 	// Constructor/destructor

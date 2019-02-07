@@ -39,7 +39,7 @@ void Patch::MCC()
 				// only count particles of a specific kind, rather than all particles
 				// in the cell. Otherwise, use some sort of distribution to calculate
 				// the correct density.
-				targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].listOfParticles.size()) /
+				targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].particlesInCell.size()) /
 					(mesh.h * mesh.h);
 			}
 			
@@ -52,7 +52,7 @@ void Patch::MCC()
 		else if (parametersList.simulationType == "electron")
 		{
 			// TODO: Collisions for electrons
-			targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].listOfParticles.size()) /
+			targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].particlesInCell.size()) /
 				(mesh.h * mesh.h);
 		}
 

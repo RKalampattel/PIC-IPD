@@ -60,10 +60,10 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 	{
 		// Distribute particles uniformly in cell
 		double xratio = (0.5 + static_cast<double>(index % 
-			static_cast<int>(sqrt(parametersList->particlesPerCell)))) / 
-			sqrt(parametersList->particlesPerCell);
+			static_cast<int>(sqrt(parametersList->initialParticlesPerCell)))) /
+			sqrt(parametersList->initialParticlesPerCell);
 		double yratio = (0.5 + static_cast<double>(floor(index /
-			sqrt(parametersList->particlesPerCell)))) / sqrt(parametersList->particlesPerCell);
+			sqrt(parametersList->initialParticlesPerCell)))) / sqrt(parametersList->initialParticlesPerCell);
 
 		position.push_back(mesh->cellsVector.cells[cellID - 1].left * (1 - xratio) +
 			mesh->cellsVector.cells[cellID - 1].right * xratio);			// Cartesian x/cylindrical z

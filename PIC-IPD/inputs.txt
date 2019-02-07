@@ -15,7 +15,7 @@
 timeStep: 0.00004
 maximumNumberOfIterations: 10 
 numberOfPatches: 1
-particlesPerCell: 4
+initialParticlesPerCell: 4
 numCellsWithParticles: 3
 simulationType: electron
 axisymmetric: 0

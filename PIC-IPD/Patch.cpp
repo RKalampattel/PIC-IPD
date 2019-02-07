@@ -95,10 +95,14 @@ void Patch::startPIC()
 				MCC();
 			}
 
-			// TODO: At certain intervals, calculate the Debye length, plasma frequency, 
-			// etc. in order to check that initial assumptions and methods used
-			// are still valid, e.g. is spatial grid still fine enough to resolve
-			// Debye length? Stability of leapfrog method and field solver??
+			// TODO: At certain intervals, calculate the Debye length, plasma  
+			// frequency, plasma density, etc. in order to check that initial 
+			// assumptions and methods used are still valid, e.g. is spatial grid 
+			// still fine enough to resolve Debye length? Stability of leapfrog 
+			// method and field solver?? Where necessary, make changes to fix 
+			// issues, e.g. if the plasma density in a cell is too low, artificially
+			// move some particles there from a high density region, thereby
+			// smoothing the field.
 
 			// TODO: Add checks to see if variables exceed an allowable range 
 			// during operation, e.g. speeds greater than the speed of light, 
