@@ -51,6 +51,7 @@ public:
 	int maximumNumberOfIterations;			//!< Maximum number of iterations
 	int numberOfPatches;					//!< Number of patches
 	int initialParticlesPerCell;			//!< Initial particles per cell
+	int minimumParticlesPerCell;			//!< Minimum particles per cell throughout simulation
 	int numCellsWithParticles;				//!< Number of cells in which particles are seeded	
 	std::string simulationType;				//!< Simulation type (full, partial or electron)
 	bool axisymmetric;						//!< True if axisymmetric simulation is required

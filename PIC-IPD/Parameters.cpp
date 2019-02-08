@@ -253,6 +253,43 @@ void Parameters::assignInputs()
 			{
 				throw 0.0;
 			}
+			minimumParticlesPerCell = stoi(valuesVector[index]);
+			if (minimumParticlesPerCell < 0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for minimum particles per cell, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid argument detected for minimum particles per cell, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Minimum particles per cell should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "4";
+			minimumParticlesPerCell = stoi(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Minimum particles per cell: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
 			numCellsWithParticles = stoi(valuesVector[index]);
 			if (numCellsWithParticles < 0)
 			{
