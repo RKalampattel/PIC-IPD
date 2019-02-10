@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Patch class 
 //! \author Rahul Kalampattel
-//! \date Last updated May 2018
+//! \date Last updated February 2019
 
 #include "Patch.h"
 
@@ -21,12 +21,12 @@ Patch::Patch(Parameters *parametersList, int patchID)
 	this->parametersList = *parametersList;
 
 	mesh = Mesh(parametersList, "PIC");
-	particlesVector = VectorParticle(parametersList, &mesh, patchID);
+	listOfParticles = ParticleList(parametersList, &mesh, patchID);
 
 	parametersList->logBrief("Initialising Tecplot output files", 1);
 	writeMeshTecplot(parametersList->tecplotMesh, mesh);
 
-	generateParticleOutput(particlesVector.plotVector, particlesVector.numParticles, time);
+	generateParticleOutput(listOfParticles.plotVector, listOfParticles.numParticles, time);
 	generateNodeOutput(time);
 	generateGlobalOutput(0.0, 0.0, time);
 }
@@ -95,14 +95,28 @@ void Patch::startPIC()
 				MCC();
 			}
 
-			// TODO: At certain intervals, calculate the Debye length, plasma frequency, 
-			// etc. in order to check that initial assumptions and methods used
-			// are still valid, e.g. is spatial grid still fine enough to resolve
-			// Debye length? Stability of leapfrog method and field solver??
+			// TODO: At certain intervals, calculate the Debye length, plasma  
+			// frequency, etc. in order to check that initial assumptions and 
+			// methods used are still valid, e.g. is spatial grid still fine enough 
+			// to resolve Debye length? Stability of leapfrog method and field 
+			// solver?? Where necessary, make changes to fix issues
+
+			// TODO: Pseudocode for checking and fixing plasma density
+			// 1. Add function to Mesh class that checks the number of particles 
+			// in each cell, and returns the lowest number 
+			// 2. The difference between this and parametersList.minimumParticlePerCell
+			// is the number of new particles that needs to be created per cell
+			// 3. Use the addParticleToSim function in ParticleList to add this
+			// this many particles to each cell (may need to overload this function)
+			// 4. Need to make sure that we don't add excessive number of particles
+			// each loop, otherwise we will cause a memory leak, i.e. need to set
+			// a limit for max number of particle are well
+			// 5. Can alternatively remove particles from cells with too many, 
+			// in which case would need to overload removeParticleFromSim to work 
+			// based on cellID, i.e. removing particles with ID in particlesInCell
 
 			// TODO: Add checks to see if variables exceed an allowable range 
-			// during operation, e.g. speeds greater than the speed of light, 
-			// particles per cell at least 10(?), etc.
+			// during operation, e.g. speeds greater than the speed of light, etc.
 
 			numErrors = parametersList.numErrors;
 			if (numErrors != 0)
@@ -115,10 +129,10 @@ void Patch::startPIC()
 			// Generate plots at specified intervals
 			if ((static_cast<int>(time / parametersList.timeStep) + 1) % parametersList.plotFrequency == 0)
 			{
-				double EK = particlesVector.calculateEK();
+				double EK = listOfParticles.calculateEK();
 				double EP = mesh.nodesVector.calculateEP();
 
-				generateParticleOutput(particlesVector.plotVector, particlesVector.numParticles, time);
+				generateParticleOutput(listOfParticles.plotVector, listOfParticles.numParticles, time);
 				generateNodeOutput(time);
 				generateGlobalOutput(EK, EP, time);
 				parametersList.logBrief("Tecplot output generated", 1);

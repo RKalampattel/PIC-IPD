@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Patch class 
 //! \author Rahul Kalampattel
-//! \date Last updated June 2018
+//! \date Last updated February 2019
 
 #pragma once
 
@@ -9,7 +9,7 @@
 
 #include "Mesh.h"
 #include "Parameters.h"
-#include "VectorParticle.h"
+#include "ParticleList.h"
 
 //! \class Patch
 //! \brief Handles all aspects of an instance of the simulation
@@ -21,7 +21,7 @@ private:
 	Parameters parametersList;							//!< Copy of parameters list
 	Mesh mesh;											//!< Details of mesh
 	Mesh FDTDmesh;										//!< Details of FDTD mesh
-	VectorParticle particlesVector;						//!< Vector of resident particles
+	ParticleList listOfParticles;						//!< List of resident particles
 	bool FDTDgenerated = false;							//!< Set to true once FDTD mesh is generated
 
 

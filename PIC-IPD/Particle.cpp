@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Particle class 
 //! \author Rahul Kalampattel
-//! \date Last updated April 2018
+//! \date Last updated February 2019
 
 #include "Particle.h"
 
@@ -19,15 +19,15 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 
 	if (parametersList->simulationType == "electron")
 	{
-		this->basic.q = ELECTRON_CHARGE;
-		this->basic.m = ELECTRON_MASS_kg;
+		this->basic.q = ELECTRON_CHARGE * parametersList->specificWeight;
+		this->basic.m = ELECTRON_MASS_kg * parametersList->specificWeight;
 	}
 	else
 	{
 		if (parametersList->propellant == "xenon")
 		{
 			this->basic.q = 0.0;
-			this->basic.m = XENON_MASS_kg;
+			this->basic.m = XENON_MASS_kg * parametersList->specificWeight;
 		}
 	}
 
@@ -60,10 +60,10 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 	{
 		// Distribute particles uniformly in cell
 		double xratio = (0.5 + static_cast<double>(index % 
-			static_cast<int>(sqrt(parametersList->particlesPerCell)))) / 
-			sqrt(parametersList->particlesPerCell);
+			static_cast<int>(sqrt(parametersList->initialParticlesPerCell)))) /
+			sqrt(parametersList->initialParticlesPerCell);
 		double yratio = (0.5 + static_cast<double>(floor(index /
-			sqrt(parametersList->particlesPerCell)))) / sqrt(parametersList->particlesPerCell);
+			sqrt(parametersList->initialParticlesPerCell)))) / sqrt(parametersList->initialParticlesPerCell);
 
 		position.push_back(mesh->cellsVector.cells[cellID - 1].left * (1 - xratio) +
 			mesh->cellsVector.cells[cellID - 1].right * xratio);			// Cartesian x/cylindrical z
@@ -104,16 +104,16 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 
 	if (type == "electron" && (parametersList->simulationType == "full" || parametersList->simulationType == "electron"))
 	{
-		this->basic.q = ELECTRON_CHARGE;
-		this->basic.m = ELECTRON_MASS_kg;
+		this->basic.q = ELECTRON_CHARGE * parametersList->specificWeight;
+		this->basic.m = ELECTRON_MASS_kg * parametersList->specificWeight;
 		this->basic.type = -1;
 	}
 	else if (type == "ion" && (parametersList->simulationType == "full" || parametersList->simulationType == "partial"))
 	{
 		if (parametersList->propellant == "xenon")
 		{
-			this->basic.q = -ELECTRON_CHARGE;
-			this->basic.m = XENON_MASS_kg - ELECTRON_MASS_kg;
+			this->basic.q = -ELECTRON_CHARGE * parametersList->specificWeight;
+			this->basic.m = (XENON_MASS_kg - ELECTRON_MASS_kg) * parametersList->specificWeight;
 		}
 		this->basic.type = 1;
 	}
@@ -122,7 +122,7 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 		if (parametersList->propellant == "xenon")
 		{
 			this->basic.q = 0.0;
-			this->basic.m = XENON_MASS_kg;
+			this->basic.m = XENON_MASS_kg * parametersList->specificWeight;
 		}
 		this->basic.type = 0;
 	}

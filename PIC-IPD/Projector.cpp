@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Projector method 
 //! \author Rahul Kalampattel
-//! \date Last updated June 2018
+//! \date Last updated February 2019
 
 #include "Patch.h"
 
@@ -14,12 +14,12 @@ void Patch::Projector()
 	double hSquared = mesh.h * mesh.h;
 
 	// Project charge to nodes
-	for (int i = 0; i < particlesVector.numParticles; i++)
+	for (Particle& particle : listOfParticles.listOfParticles)
 	{
 		// TODO: Can change all of the below to references to avoid copying large 
 		// amounts of data for each calculation
 
-		int cellID = particlesVector.particleVector[i].cellID - 1;
+		int cellID = particle.cellID - 1;
 		int nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
 		int nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
 		int nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
@@ -30,11 +30,11 @@ void Patch::Projector()
 		double top = mesh.cellsVector.cells[cellID].top;
 		double bottom = mesh.cellsVector.cells[cellID].bottom;
 		
-		double x1 = particlesVector.particleVector[i].position[0];
-		double x2 = particlesVector.particleVector[i].position[1];
+		double x1 = particle.position[0];
+		double x2 = particle.position[1];
 
 		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
-		double charge = particlesVector.particleVector[i].basic.q;
+		double charge = particle.basic.q;
 
 		if (firstNodePosition == "TL")
 		{
@@ -76,7 +76,7 @@ void Patch::Projector()
 			// electrons are modelled. In order to maintain a quasi-neutral plasma,
 			// we assume fixed ions at the nodes, providing a neutralising background 
 			// charge density.
-			mesh.nodesVector.nodes[i].charge -= (particlesVector.numParticles * 
+			mesh.nodesVector.nodes[i].charge -= (listOfParticles.numParticles * 
 				ELECTRON_CHARGE / mesh.numNodes);
 		}
 
@@ -158,16 +158,16 @@ void Patch::Projector()
 	// TODO: Current calculation involves velocity, which at present in calculated 
 	// at half time-steps, i.e. current is also calculated at half time-steps. 
 	// Need to make sure this is ok for use with FDTD. If not, can average between
-	// velocity and oldVelocity, like in EK calculation (VectorParticle).
+	// velocity and oldVelocity, like in EK calculation (ParticleList).
 
 	// Project current to nodes
-	for (int i = 0; i < particlesVector.numParticles; i++)
+	for (Particle& particle : listOfParticles.listOfParticles)
 	{
 		// TODO: Can change all of the below to references to avoid copying large 
 		// amounts of data for each calculation, or make a template to use same
 		// variables as in charge projection?
 
-		int cellID = particlesVector.particleVector[i].cellID - 1;
+		int cellID = particle.cellID - 1;
 		int nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
 		int nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
 		int nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
@@ -178,14 +178,14 @@ void Patch::Projector()
 		double top = mesh.cellsVector.cells[cellID].top;
 		double bottom = mesh.cellsVector.cells[cellID].bottom;
 
-		double x1 = particlesVector.particleVector[i].position[0];
-		double x2 = particlesVector.particleVector[i].position[1];
+		double x1 = particle.position[0];
+		double x2 = particle.position[1];
 
-		double v1 = particlesVector.particleVector[i].velocity[0];
-		double v2 = particlesVector.particleVector[i].velocity[1];
+		double v1 = particle.velocity[0];
+		double v2 = particle.velocity[1];
 
 		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
-		double charge = particlesVector.particleVector[i].basic.q;
+		double charge = particle.basic.q;
 
 		if (firstNodePosition == "BL")
 		{

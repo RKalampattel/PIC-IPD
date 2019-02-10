@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Mesh class 
 //! \author Rahul Kalampattel
-//! \date Last updated May 2018
+//! \date Last updated February 2019
 
 #include "Parameters.h"
 #include "Mesh.h"
@@ -554,18 +554,18 @@ Mesh::~Mesh()
 // Assign particle IDs to a cell
 void Mesh::addParticlesToCell(int cellID, int particleID)
 {
-	cellsVector.cells[cellID - 1].listOfParticles.push_back(particleID);
+	cellsVector.cells[cellID - 1].particlesInCell.push_back(particleID);
 }
 
 
 // Remove particle IDs from a cell
 void Mesh::removeParticlesFromCell(int cellID, int particleID)
 {
-	for (int i = 0; i < cellsVector.cells[cellID - 1].listOfParticles.size(); i++)
+	for (int i = 0; i < cellsVector.cells[cellID - 1].particlesInCell.size(); i++)
 	{
-		if (cellsVector.cells[cellID - 1].listOfParticles[i] == particleID)
+		if (cellsVector.cells[cellID - 1].particlesInCell[i] == particleID)
 		{
-			cellsVector.cells[cellID - 1].listOfParticles.erase(cellsVector.cells[cellID - 1].listOfParticles.begin() + i);
+			cellsVector.cells[cellID - 1].particlesInCell.erase(cellsVector.cells[cellID - 1].particlesInCell.begin() + i);
 		}
 	}
 }

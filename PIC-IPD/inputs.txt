@@ -15,7 +15,8 @@
 timeStep: 0.00004
 maximumNumberOfIterations: 10 
 numberOfPatches: 1
-particlesPerCell: 4
+initialParticlesPerCell: 4
+minimumParticlesPerCell: 4
 numCellsWithParticles: 3
 simulationType: electron
 axisymmetric: 0
@@ -26,6 +27,7 @@ twoStream: 1
 % Particle and collision parameters
 %------------------------------------------------------------------------------
 particleDistribution: uniform
+specificWeight: 1.0
 initialTemperature: 1000.0
 initialPosition: 0.5,0.5
 initialVelocity: 1.0,0.0

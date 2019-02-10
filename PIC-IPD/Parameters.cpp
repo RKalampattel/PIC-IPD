@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Parameters class 
 //! \author Rahul Kalampattel
-//! \date Last updated October 2018
+//! \date Last updated February 2019
 
 #include "Parameters.h"
 
@@ -216,34 +216,71 @@ void Parameters::assignInputs()
 			{
 				throw 0.0;
 			}
-			particlesPerCell = stoi(valuesVector[index]);
-			if (particlesPerCell < 1)
+			initialParticlesPerCell = stoi(valuesVector[index]);
+			if (initialParticlesPerCell < 1)
 			{
 				throw 1;
 			}
 		}
 		catch (double error)
 		{
-			logBrief("No argument detected for particles per cell, default value will be used", 2);
+			logBrief("No argument detected for initial particles per cell, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		catch (std::invalid_argument&)
 		{
-			logBrief("Invalid argument detected for particles per cell, default value will be used", 2);
+			logBrief("Invalid argument detected for initial particles per cell, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		catch (int error)
 		{
-			logBrief("Particles per cell should be positive, default value will be used", 2);
+			logBrief("Initial particles per cell should be positive, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
 		{
 			valuesVector[index] = "1";
-			particlesPerCell = stoi(valuesVector[index]);
+			initialParticlesPerCell = stoi(valuesVector[index]);
 			useDefaultArgument = false;
 		}
-		logBrief("Particles per cell: " + valuesVector[index], 1);
+		logBrief("Initial particles per cell: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			minimumParticlesPerCell = stoi(valuesVector[index]);
+			if (minimumParticlesPerCell < 0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for minimum particles per cell, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid argument detected for minimum particles per cell, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Minimum particles per cell should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "4";
+			minimumParticlesPerCell = stoi(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Minimum particles per cell: " + valuesVector[index], 1);
 		index++;
 
 
@@ -452,6 +489,43 @@ void Parameters::assignInputs()
 			useDefaultArgument = false;
 		}
 		logBrief("Particle distribution: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			specificWeight = stod(valuesVector[index]);
+			if (specificWeight < 1.0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for specific weight, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid type detected for specific weight, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Specific weight should be positive and at least 1.0, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "1.0";
+			specificWeight = stod(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Specific weight: " + valuesVector[index], 1);
 		index++;
 
 

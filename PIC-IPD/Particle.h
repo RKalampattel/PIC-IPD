@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Particle class 
 //! \author Rahul Kalampattel
-//! \date Last updated April 2018
+//! \date Last updated February 2019
 
 #pragma once
 

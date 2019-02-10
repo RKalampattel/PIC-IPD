@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Parameters class 
 //! \author Rahul Kalampattel
-//! \date Last updated October 2018
+//! \date Last updated February 2019
 
 #pragma once
 
@@ -10,6 +10,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <list>
 #include <random>
 #include <sstream>
 #include <string>
@@ -49,7 +50,8 @@ public:
 	double timeStep;						//!< Time step
 	int maximumNumberOfIterations;			//!< Maximum number of iterations
 	int numberOfPatches;					//!< Number of patches
-	int particlesPerCell;					//!< Particles per cell
+	int initialParticlesPerCell;			//!< Initial particles per cell
+	int minimumParticlesPerCell;			//!< Minimum particles per cell throughout simulation
 	int numCellsWithParticles;				//!< Number of cells in which particles are seeded	
 	std::string simulationType;				//!< Simulation type (full, partial or electron)
 	bool axisymmetric;						//!< True if axisymmetric simulation is required
@@ -57,6 +59,7 @@ public:
 
 	// Particle and collision parameters
 	std::string particleDistribution;		//!< Particle distribution (random, uniform, precise)
+	double specificWeight;					//!< Ratio of superparticle to real particle mass 
 	double initialTemperature;				//!< Initial temperature of gas/plasma
 	std::vector<double> initialPosition;	//!< Initial particle position (if precise==true)
 	std::vector<double> initialVelocity;	//!< Initial particle velocity (if precise==true)
