@@ -101,11 +101,10 @@ void Patch::startPIC()
 			// to resolve Debye length? Stability of leapfrog method and field 
 			// solver?? Where necessary, make changes to fix issues
 
-			// TODO: Pseudocode for checking and fixing plasma density
-			// 1. Add function to Mesh class that checks the number of particles 
-			// in each cell, and returns the lowest number 
-			// 2. The difference between this and parametersList.minimumParticlePerCell
-			// is the number of new particles that needs to be created per cell
+			// Check particle density
+			int particlesToAdd = mesh.checkParticleDensity();
+
+			// TODO: Pseudocode for fixing particle density
 			// 3. Use the addParticleToSim function in ParticleList to add this
 			// this many particles to each cell (may need to overload this function)
 			// 4. Need to make sure that we don't add excessive number of particles

@@ -50,6 +50,7 @@ Mesh::Mesh(Parameters *localParametersList, std::string type)
 		localParametersList->logBrief("Invalid type", 3);
 	}
 
+	minimumParticlesPerCell = localParametersList->minimumParticlesPerCell;
 	double hAverage = 0;
 
 	// Scale mesh
@@ -567,5 +568,27 @@ void Mesh::removeParticlesFromCell(int cellID, int particleID)
 		{
 			cellsVector.cells[cellID - 1].particlesInCell.erase(cellsVector.cells[cellID - 1].particlesInCell.begin() + i);
 		}
+	}
+}
+
+
+// Check particle density per cell
+int Mesh::checkParticleDensity()
+{
+	int lowestParticleDensity = minimumParticlesPerCell;
+	for (int i = 0; i < numCells; i++)
+	{
+		if (cellsVector.cells[i].particlesInCell.size() < lowestParticleDensity)
+		{
+			lowestParticleDensity = cellsVector.cells[i].particlesInCell.size();
+		}
+	}
+	if (lowestParticleDensity < minimumParticlesPerCell)
+	{
+		return minimumParticlesPerCell - lowestParticleDensity;
+	}
+	else
+	{
+		return 0;
 	}
 }
