@@ -290,6 +290,43 @@ void Parameters::assignInputs()
 			{
 				throw 0.0;
 			}
+			maximumNumberOfParticles = stoi(valuesVector[index]);
+			if (maximumNumberOfParticles < 0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for maximum number of particles, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid argument detected for maximum number of particles, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Maximum number of particles should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "1000";
+			minimumParticlesPerCell = stoi(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Maximum number of particles: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
 			numCellsWithParticles = stoi(valuesVector[index]);
 			if (numCellsWithParticles < 0)
 			{

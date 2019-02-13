@@ -17,6 +17,7 @@ maximumNumberOfIterations: 10
 numberOfPatches: 1
 initialParticlesPerCell: 4
 minimumParticlesPerCell: 4
+maximumNumberOfParticles: 1000
 numCellsWithParticles: 3
 simulationType: electron
 axisymmetric: 0

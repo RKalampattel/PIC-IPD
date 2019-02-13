@@ -125,7 +125,7 @@ void ParticleList::clearFields()
 }
 
 
-// Add particle to simulation
+// Add single particle to simulation
 void ParticleList::addParticleToSim(Parameters *parametersList, Mesh *mesh, int cellID, std::string type)
 {
 	numParticles++;
@@ -136,6 +136,26 @@ void ParticleList::addParticleToSim(Parameters *parametersList, Mesh *mesh, int 
 	addToPlotVector(&particle);
 
 	mesh->addParticlesToCell(particle.cellID, particle.particleID);
+}
+
+
+// Add multiple particles to simulation
+void ParticleList::addParticlesToSim(Parameters * parametersList, Mesh * mesh, int numParticlesToAdd)
+{
+	for (int i = 0; i < mesh->numCells; i++)
+	{
+		for (int j = 0; j < numParticlesToAdd; j++)
+		{
+			numParticles++;
+			maxParticleID++;
+
+			Particle particle(parametersList, mesh, patchID, i + 1, maxParticleID, "neutral");
+			listOfParticles.push_back(particle);
+			addToPlotVector(&particle);
+
+			mesh->addParticlesToCell(particle.cellID, particle.particleID);
+		}
+	}
 }
 
 

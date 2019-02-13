@@ -39,7 +39,9 @@ public:
 	void updatePlotVector(Particle *particle);		//!< Update state of plotVector
 	void clearFields();								//!< Clear fields and lorentz members of listOfParticles
 	void addParticleToSim(Parameters * parametersList, 
-		Mesh * mesh, int cellID, std::string type); //!< Add particle to simulation
+		Mesh * mesh, int cellID, std::string type); //!< Add single particle to simulation
+	void addParticlesToSim(Parameters * parametersList,
+		Mesh * mesh, int numParticlesToAdd);		//!< Add multiple particles to simulation
 	void removeParticleFromSim(int particleID);		//!< Remove particle from simulation
 	double calculateEK();							//!< Calculate kinetic energy
 };

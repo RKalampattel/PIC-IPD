@@ -101,18 +101,13 @@ void Patch::startPIC()
 			// to resolve Debye length? Stability of leapfrog method and field 
 			// solver?? Where necessary, make changes to fix issues
 
-			// Check particle density
-			int particlesToAdd = mesh.checkParticleDensity();
-
 			// TODO: Pseudocode for fixing particle density
-			// 3. Use the addParticleToSim function in ParticleList to add this
-			// this many particles to each cell (may need to overload this function)
-			// 4. Need to make sure that we don't add excessive number of particles
-			// each loop, otherwise we will cause a memory leak, i.e. need to set
-			// a limit for max number of particle are well
 			// 5. Can alternatively remove particles from cells with too many, 
 			// in which case would need to overload removeParticleFromSim to work 
 			// based on cellID, i.e. removing particles with ID in particlesInCell
+			// NB: Equal number of particles are currently added to each cell,
+			// could alter this. Also, all particles added are currently neutrals,
+			// is this what is required?
 
 			// TODO: Add checks to see if variables exceed an allowable range 
 			// during operation, e.g. speeds greater than the speed of light, etc.
@@ -128,6 +123,13 @@ void Patch::startPIC()
 			// Generate plots at specified intervals
 			if ((static_cast<int>(time / parametersList.timeStep) + 1) % parametersList.plotFrequency == 0)
 			{
+				// Check particle density
+				int numParticlesToAdd = mesh.checkParticleDensity();
+				if (numParticlesToAdd > 0 && listOfParticles.listOfParticles.size() < parametersList.maximumNumberOfParticles)
+				{
+					listOfParticles.addParticlesToSim(&parametersList, &mesh, numParticlesToAdd);
+				}
+				
 				double EK = listOfParticles.calculateEK();
 				double EP = mesh.nodesVector.calculateEP();
 
