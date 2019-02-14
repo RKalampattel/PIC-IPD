@@ -102,12 +102,13 @@ void Patch::startPIC()
 			// solver?? Where necessary, make changes to fix issues
 
 			// TODO: Pseudocode for fixing particle density
-			// 5. Can alternatively remove particles from cells with too many, 
-			// in which case would need to overload removeParticleFromSim to work 
-			// based on cellID, i.e. removing particles with ID in particlesInCell
+			// 5. Can alternatively remove particles from cells with too many 
 			// NB: Equal number of particles are currently added to each cell,
 			// could alter this. Also, all particles added are currently neutrals,
 			// is this what is required?
+
+			// TODO: Check what is happening to Tecplot particle output after
+			// second set of plots are saved (getting NaN results for all values)
 
 			// TODO: Add checks to see if variables exceed an allowable range 
 			// during operation, e.g. speeds greater than the speed of light, etc.

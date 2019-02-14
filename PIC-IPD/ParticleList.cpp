@@ -125,7 +125,7 @@ void ParticleList::clearFields()
 }
 
 
-// Add single particle to simulation
+// Add single particle to cell
 void ParticleList::addParticleToSim(Parameters *parametersList, Mesh *mesh, int cellID, std::string type)
 {
 	numParticles++;
@@ -146,20 +146,13 @@ void ParticleList::addParticlesToSim(Parameters * parametersList, Mesh * mesh, i
 	{
 		for (int j = 0; j < numParticlesToAdd; j++)
 		{
-			numParticles++;
-			maxParticleID++;
-
-			Particle particle(parametersList, mesh, patchID, i + 1, maxParticleID, "neutral");
-			listOfParticles.push_back(particle);
-			addToPlotVector(&particle);
-
-			mesh->addParticlesToCell(particle.cellID, particle.particleID);
+			addParticleToSim(parametersList, mesh, i+1, "neutral");
 		}
 	}
 }
 
 
-// Remove particle from simulation
+// Remove single particle from simulation
 void ParticleList::removeParticleFromSim(int particleID)
 {
 	std::list<Particle>::iterator particle;
@@ -173,6 +166,20 @@ void ParticleList::removeParticleFromSim(int particleID)
 	}
 	removeFromPlotVector(particleID);
 	numParticles--;
+}
+
+
+// Remove multiple particles from a cell
+void ParticleList::removeParticlesFromSim(Mesh * mesh, int cellID, int numParticlesToRemove)
+{
+	// Check that there are actually enough particles to remove
+	if (mesh->cellsVector.cells[cellID - 1].particlesInCell.size() >= numParticlesToRemove)
+	{
+		for (int i = 0; i < numParticlesToRemove; i++)
+		{
+			removeParticleFromSim(mesh->cellsVector.cells[cellID - 1].particlesInCell[i]);
+		}
+	}
 }
 
 
