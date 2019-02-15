@@ -43,8 +43,8 @@ public:
 
 	// Methods
 	void addParticlesToCell(int cellID, 
-		int particleID);					//!< Assign particle IDs to a cell
+		int particleID, int particleType);	//!< Assign particle IDs to a cell
 	void removeParticlesFromCell(int cellID,
-		int particleID);					//!< Remove particle IDs from a cell
+		int particleID, int particleType);  //!< Remove particle IDs from a cell
 	int checkParticleDensity();				//!< Check particle density per cell
 };

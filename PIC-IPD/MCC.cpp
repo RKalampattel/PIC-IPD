@@ -27,7 +27,19 @@ void Patch::MCC()
 		// Check simulation type
 		if (parametersList.simulationType == "full")
 		{
-			// TODO: Collisions for all three types
+			// TODO: Collisions for all three types (if this simulation type is needed)
+			// Neutral
+			if (particle.basic.type == 0)
+			{
+			}
+			// Ion
+			else if (particle.basic.type == 1)
+			{
+			}
+			// Electron
+			else
+			{
+			}
 		}
 		else if (parametersList.simulationType == "partial")
 		{
@@ -37,14 +49,14 @@ void Patch::MCC()
 				// Target (ion) density
 				// TODO: Target density should be for TARGET species only (i.e.
 				// only count particles of a specific kind, rather than all particles
-				// in the cell. Otherwise, use some sort of distribution to calculate
+				// in the cell). Otherwise, use some sort of distribution to calculate
 				// the correct density.
 				targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].particlesInCell.size()) /
 					(mesh.h * mesh.h);
 			}
 			
 			// Ion
-			else if (particle.basic.type == 0)
+			else if (particle.basic.type == 1)
 			{
 				// Target (neutral) density
 			}

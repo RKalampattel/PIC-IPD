@@ -46,8 +46,8 @@ ParticleList::ParticleList(Parameters *parametersList, Mesh *mesh, int patchID)
 			listOfParticles.push_back(particle);
 
 			addToPlotVector(&particle);
-
-			mesh->addParticlesToCell(particle.cellID, particle.particleID);
+			
+			mesh->addParticlesToCell(particle.cellID, particle.particleID, particle.basic.type);
 		}
 	}
 
@@ -135,7 +135,7 @@ void ParticleList::addParticleToSim(Parameters *parametersList, Mesh *mesh, int 
 	listOfParticles.push_back(particle);	
 	addToPlotVector(&particle);
 
-	mesh->addParticlesToCell(particle.cellID, particle.particleID);
+	mesh->addParticlesToCell(particle.cellID, particle.particleID, particle.basic.type);
 }
 
 
@@ -153,13 +153,14 @@ void ParticleList::addParticlesToSim(Parameters * parametersList, Mesh * mesh, i
 
 
 // Remove single particle from simulation
-void ParticleList::removeParticleFromSim(int particleID)
+void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
 {
 	std::list<Particle>::iterator particle;
 	for (particle = listOfParticles.begin(); particle != listOfParticles.end(); particle++)
 	{
 		if (particle->particleID == particleID)
 		{
+			mesh->removeParticlesFromCell(particle->cellID, particle->particleID);
 			listOfParticles.erase(particle);	
 			break;
 		}
@@ -177,7 +178,7 @@ void ParticleList::removeParticlesFromSim(Mesh * mesh, int cellID, int numPartic
 	{
 		for (int i = 0; i < numParticlesToRemove; i++)
 		{
-			removeParticleFromSim(mesh->cellsVector.cells[cellID - 1].particlesInCell[i]);
+			removeParticleFromSim(mesh, mesh->cellsVector.cells[cellID - 1].particlesInCell[i]);
 		}
 	}
 }

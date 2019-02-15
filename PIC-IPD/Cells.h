@@ -23,6 +23,8 @@ public:
 	int bottomCellID = -1;				//!< ID of adjacent bottom (down) cell
 	int periodicX1CellID = -1;			//!< ID of periodic cell, x/z direction (not valid for internal cells)
 	int	periodicX2CellID = -1;			//!< ID of periodic cell, y/r direction (not valid for internal cells and axisymmetric cases)
+	int numNeutrals = 0;				//!< Number of neutral particles in cell
+	int numIons = 0;					//!< Number of ions in cell
 	std::string boundaryType;			//!< Position on boundary (internal if FALSE)
 	std::string firstNodePosition;		//!< Position of first node
 	std::vector<int> particlesInCell;	//!< List of particles in the cell

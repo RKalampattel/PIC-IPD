@@ -553,19 +553,35 @@ Mesh::~Mesh()
 
 
 // Assign particle IDs to a cell
-void Mesh::addParticlesToCell(int cellID, int particleID)
+void Mesh::addParticlesToCell(int cellID, int particleID, int particleType)
 {
 	cellsVector.cells[cellID - 1].particlesInCell.push_back(particleID);
+	if (particleType == 0)
+	{
+		cellsVector.cells[cellID - 1].numNeutrals++;
+	}
+	else if (particleType == 1)
+	{
+		cellsVector.cells[cellID - 1].numIons++;
+	}
 }
 
 
 // Remove particle IDs from a cell
-void Mesh::removeParticlesFromCell(int cellID, int particleID)
+void Mesh::removeParticlesFromCell(int cellID, int particleID, int particleType)
 {
 	for (int i = 0; i < cellsVector.cells[cellID - 1].particlesInCell.size(); i++)
 	{
 		if (cellsVector.cells[cellID - 1].particlesInCell[i] == particleID)
 		{
+			if (particleType == 0)
+			{
+				cellsVector.cells[cellID - 1].numNeutrals--;
+			}
+			else if (particleType == 1)
+			{
+				cellsVector.cells[cellID - 1].numIons--;
+			}
 			cellsVector.cells[cellID - 1].particlesInCell.erase(cellsVector.cells[cellID - 1].particlesInCell.begin() + i);
 		}
 	}

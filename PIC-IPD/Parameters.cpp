@@ -528,7 +528,7 @@ void Parameters::assignInputs()
 		logBrief("Particle distribution: " + valuesVector[index], 1);
 		index++;
 
-
+		// TODO: Test independence of specific weight parameter
 		try
 		{
 			if (valuesVector[index] == "DEFAULT")

@@ -101,8 +101,8 @@ void Patch::startPIC()
 			// to resolve Debye length? Stability of leapfrog method and field 
 			// solver?? Where necessary, make changes to fix issues
 
-			// TODO: Pseudocode for fixing particle density
-			// 5. Can alternatively remove particles from cells with too many 
+			// TODO: Maintain particle density - Can remove particles from cells 
+			// with too many particles.
 			// NB: Equal number of particles are currently added to each cell,
 			// could alter this. Also, all particles added are currently neutrals,
 			// is this what is required?
