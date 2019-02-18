@@ -46,8 +46,8 @@ ParticleList::ParticleList(Parameters *parametersList, Mesh *mesh, int patchID)
 			listOfParticles.push_back(particle);
 
 			addToPlotVector(&particle);
-
-			mesh->addParticlesToCell(particle.cellID, particle.particleID);
+			
+			mesh->addParticlesToCell(particle.cellID, particle.particleID, particle.basic.type);
 		}
 	}
 
@@ -125,7 +125,7 @@ void ParticleList::clearFields()
 }
 
 
-// Add particle to simulation
+// Add single particle to cell
 void ParticleList::addParticleToSim(Parameters *parametersList, Mesh *mesh, int cellID, std::string type)
 {
 	numParticles++;
@@ -135,24 +135,52 @@ void ParticleList::addParticleToSim(Parameters *parametersList, Mesh *mesh, int 
 	listOfParticles.push_back(particle);	
 	addToPlotVector(&particle);
 
-	mesh->addParticlesToCell(particle.cellID, particle.particleID);
+	mesh->addParticlesToCell(particle.cellID, particle.particleID, particle.basic.type);
 }
 
 
-// Remove particle from simulation
-void ParticleList::removeParticleFromSim(int particleID)
+// Add multiple particles to simulation
+void ParticleList::addParticlesToSim(Parameters * parametersList, Mesh * mesh, int numParticlesToAdd)
+{
+	for (int i = 0; i < mesh->numCells; i++)
+	{
+		for (int j = 0; j < numParticlesToAdd; j++)
+		{
+			addParticleToSim(parametersList, mesh, i+1, "neutral");
+		}
+	}
+}
+
+
+// Remove single particle from simulation
+void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
 {
 	std::list<Particle>::iterator particle;
 	for (particle = listOfParticles.begin(); particle != listOfParticles.end(); particle++)
 	{
 		if (particle->particleID == particleID)
 		{
+			mesh->removeParticlesFromCell(particle->cellID, particle->particleID);
 			listOfParticles.erase(particle);	
 			break;
 		}
 	}
 	removeFromPlotVector(particleID);
 	numParticles--;
+}
+
+
+// Remove multiple particles from a cell
+void ParticleList::removeParticlesFromSim(Mesh * mesh, int cellID, int numParticlesToRemove)
+{
+	// Check that there are actually enough particles to remove
+	if (mesh->cellsVector.cells[cellID - 1].particlesInCell.size() >= numParticlesToRemove)
+	{
+		for (int i = 0; i < numParticlesToRemove; i++)
+		{
+			removeParticleFromSim(mesh, mesh->cellsVector.cells[cellID - 1].particlesInCell[i]);
+		}
+	}
 }
 
 

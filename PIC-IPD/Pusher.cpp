@@ -143,7 +143,7 @@ void Patch::Pusher()
 		if (displacementL < 0.0)
 		{
 			mesh.removeParticlesFromCell(particle.cellID,
-				particle.particleID);
+				particle.particleID, particle.basic.type);
 
 			// Particle remains inside domain
 			if (mesh.cellsVector.cells[particle.cellID - 1].leftCellID > 0)
@@ -165,7 +165,7 @@ void Patch::Pusher()
 				}
 				else if (parametersList.leftBCType == "open")
 				{
-					listOfParticles.removeParticleFromSim(particle.particleID);
+					listOfParticles.removeParticleFromSim(&mesh, particle.particleID);
 					//i -= 1;
 					continue;
 				}
@@ -183,14 +183,14 @@ void Patch::Pusher()
 			}
 
 			mesh.addParticlesToCell(particle.cellID,
-				particle.particleID);
+				particle.particleID, particle.basic.type);
 		}
 
 		// Update cell ID in Cartesian x/ cylindrical z direction, exiting right
 		else if (displacementR > 0.0)
 		{
 			mesh.removeParticlesFromCell(particle.cellID,
-				particle.particleID);
+				particle.particleID, particle.basic.type);
 
 			// Particle remains inside domain
 			if (mesh.cellsVector.cells[particle.cellID - 1].rightCellID > 0)
@@ -212,7 +212,7 @@ void Patch::Pusher()
 				}
 				else if (parametersList.rightBCType == "open")
 				{
-					listOfParticles.removeParticleFromSim(particle.particleID);
+					listOfParticles.removeParticleFromSim(&mesh, particle.particleID);
 					//i -= 1;
 					continue;
 				}
@@ -229,7 +229,7 @@ void Patch::Pusher()
 			}
 
 			mesh.addParticlesToCell(particle.cellID,
-				particle.particleID);
+				particle.particleID, particle.basic.type);
 		}
 
 		// Update Cartesian y/ cylindrical r position
@@ -251,7 +251,7 @@ void Patch::Pusher()
 		if (displacementB < 0.0)
 		{
 			mesh.removeParticlesFromCell(particle.cellID,
-				particle.particleID);
+				particle.particleID, particle.basic.type);
 			
 			// Particle remains inside domain
 			if (mesh.cellsVector.cells[particle.cellID - 1].bottomCellID > 0)
@@ -274,7 +274,7 @@ void Patch::Pusher()
 				}
 				else if (parametersList.bottomBCType == "open")
 				{
-					listOfParticles.removeParticleFromSim(particle.particleID);
+					listOfParticles.removeParticleFromSim(&mesh, particle.particleID);
 					//i -= 1;
 					continue;
 				}
@@ -291,14 +291,14 @@ void Patch::Pusher()
 			}
 
 			mesh.addParticlesToCell(particle.cellID,
-				particle.particleID);
+				particle.particleID, particle.basic.type);
 		}
 
 		// Update cell ID in Cartesian y/ cylindrical r direction, exiting top
 		else if (displacementT > 0.0)
 		{
 			mesh.removeParticlesFromCell(particle.cellID,
-				particle.particleID);
+				particle.particleID, particle.basic.type);
 			
 			// Particle remains inside domain
 			if (mesh.cellsVector.cells[particle.cellID - 1].topCellID > 0)
@@ -321,7 +321,7 @@ void Patch::Pusher()
 				}
 				else if (parametersList.topBCType == "open")
 				{
-					listOfParticles.removeParticleFromSim(particle.particleID);
+					listOfParticles.removeParticleFromSim(&mesh, particle.particleID);
 					//i -= 1;
 					continue;
 				}
@@ -338,7 +338,7 @@ void Patch::Pusher()
 			}
 
 			mesh.addParticlesToCell(particle.cellID,
-				particle.particleID);
+				particle.particleID, particle.basic.type);
 		}
 
 		// Update cylindrical theta position (no need to update Cartesian z)
@@ -388,7 +388,7 @@ void Patch::Pusher()
 			if (displacementT > 0.0)
 			{
 				mesh.removeParticlesFromCell(particle.cellID,
-					particle.particleID);
+					particle.particleID, particle.basic.type);
 
 				// Particle remains inside domain
 				if (mesh.cellsVector.cells[particle.cellID - 1].topCellID > 0)
@@ -411,7 +411,7 @@ void Patch::Pusher()
 					}
 					else if (parametersList.topBCType == "open")
 					{
-						listOfParticles.removeParticleFromSim(particle.particleID);
+						listOfParticles.removeParticleFromSim(&mesh, particle.particleID);
 						//i -= 1;
 						continue;
 					}
@@ -428,7 +428,7 @@ void Patch::Pusher()
 				}
 
 				mesh.addParticlesToCell(particle.cellID,
-					particle.particleID);
+					particle.particleID, particle.basic.type);
 			}
 		}
 		listOfParticles.updatePlotVector(&particle);

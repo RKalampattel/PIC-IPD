@@ -50,6 +50,7 @@ Mesh::Mesh(Parameters *localParametersList, std::string type)
 		localParametersList->logBrief("Invalid type", 3);
 	}
 
+	minimumParticlesPerCell = localParametersList->minimumParticlesPerCell;
 	double hAverage = 0;
 
 	// Scale mesh
@@ -552,20 +553,58 @@ Mesh::~Mesh()
 
 
 // Assign particle IDs to a cell
-void Mesh::addParticlesToCell(int cellID, int particleID)
+void Mesh::addParticlesToCell(int cellID, int particleID, int particleType)
 {
 	cellsVector.cells[cellID - 1].particlesInCell.push_back(particleID);
+	if (particleType == 0)
+	{
+		cellsVector.cells[cellID - 1].numNeutrals++;
+	}
+	else if (particleType == 1)
+	{
+		cellsVector.cells[cellID - 1].numIons++;
+	}
 }
 
 
 // Remove particle IDs from a cell
-void Mesh::removeParticlesFromCell(int cellID, int particleID)
+void Mesh::removeParticlesFromCell(int cellID, int particleID, int particleType)
 {
 	for (int i = 0; i < cellsVector.cells[cellID - 1].particlesInCell.size(); i++)
 	{
 		if (cellsVector.cells[cellID - 1].particlesInCell[i] == particleID)
 		{
+			if (particleType == 0)
+			{
+				cellsVector.cells[cellID - 1].numNeutrals--;
+			}
+			else if (particleType == 1)
+			{
+				cellsVector.cells[cellID - 1].numIons--;
+			}
 			cellsVector.cells[cellID - 1].particlesInCell.erase(cellsVector.cells[cellID - 1].particlesInCell.begin() + i);
 		}
+	}
+}
+
+
+// Check particle density per cell
+int Mesh::checkParticleDensity()
+{
+	int lowestParticleDensity = minimumParticlesPerCell;
+	for (int i = 0; i < numCells; i++)
+	{
+		if (cellsVector.cells[i].particlesInCell.size() < lowestParticleDensity)
+		{
+			lowestParticleDensity = cellsVector.cells[i].particlesInCell.size();
+		}
+	}
+	if (lowestParticleDensity < minimumParticlesPerCell)
+	{
+		return minimumParticlesPerCell - lowestParticleDensity;
+	}
+	else
+	{
+		return 0;
 	}
 }

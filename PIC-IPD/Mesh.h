@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Mesh class 
 //! \author Rahul Kalampattel
-//! \date Last updated May 2018
+//! \date Last updated February 2019
 
 #pragma once
 
@@ -27,6 +27,7 @@ public:
 	int dimension;							//!< Dimension of mesh (2D)
 	int numRows;							//!< Number of rows of cells
 	int numColumns;							//!< Number of columns of cells
+	int minimumParticlesPerCell;			//!< Minimum particles per cell (from Parameters)
 	double h;								//!< Cell width/length (assume uniform)
 	VectorCell cellsVector;					//!< Vector of cells
 	VectorFace facesVector;					//!< Vector of faces
@@ -42,7 +43,8 @@ public:
 
 	// Methods
 	void addParticlesToCell(int cellID, 
-		int particleID);					//!< Assign particle IDs to a cell
+		int particleID, int particleType);	//!< Assign particle IDs to a cell
 	void removeParticlesFromCell(int cellID,
-		int particleID);					//!< Remove particle IDs from a cell
+		int particleID, int particleType);  //!< Remove particle IDs from a cell
+	int checkParticleDensity();				//!< Check particle density per cell
 };

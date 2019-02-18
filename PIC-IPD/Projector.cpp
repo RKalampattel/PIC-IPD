@@ -72,7 +72,7 @@ void Patch::Projector()
 	{
 		if (parametersList.simulationType == "electron")
 		{
-			// Assuming a cold plasma with m_ion/m_electron . infinity, only 
+			// Assuming a cold plasma with m_ion/m_electron equals infinity, only 
 			// electrons are modelled. In order to maintain a quasi-neutral plasma,
 			// we assume fixed ions at the nodes, providing a neutralising background 
 			// charge density.

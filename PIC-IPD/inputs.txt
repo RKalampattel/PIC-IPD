@@ -13,11 +13,12 @@
 % Global simulation parameters 
 %------------------------------------------------------------------------------
 timeStep: 0.00004
-maximumNumberOfIterations: 10 
+maximumNumberOfIterations: 20 
 numberOfPatches: 1
 initialParticlesPerCell: 4
-minimumParticlesPerCell: 4
-numCellsWithParticles: 3
+minimumParticlesPerCell: 5
+maximumNumberOfParticles: 1000
+numCellsWithParticles: 0
 simulationType: electron
 axisymmetric: 0
 twoStream: 1
