@@ -22,6 +22,7 @@ public:
 	// Data members
 	int particleID;							//!< Particle ID
 	int cellID;								//!< Current cell ID
+	double particleWeight;					//!< Particle specific weight
 	std::vector<double> position;			//!< Particle position vector
 	std::vector<double> velocity;			//!< Particle velocity vector
 	std::vector<double> oldVelocity

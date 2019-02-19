@@ -160,7 +160,7 @@ void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
 	{
 		if (particle->particleID == particleID)
 		{
-			mesh->removeParticlesFromCell(particle->cellID, particle->particleID);
+			mesh->removeParticlesFromCell(particle->cellID, particle->particleID, particle->basic.type);
 			listOfParticles.erase(particle);	
 			break;
 		}
