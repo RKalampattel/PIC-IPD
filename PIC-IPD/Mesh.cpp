@@ -587,7 +587,8 @@ void Mesh::removeParticlesFromCell(int cellID, int particleID, int particleType)
 	}
 }
 
-
+// TODO: Don't really need to add the same number of particles to each cell,
+// just need to add as necessary to meet the minimum threshold
 // Check particle density per cell
 int Mesh::checkParticleDensity()
 {

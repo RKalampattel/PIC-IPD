@@ -45,6 +45,8 @@ public:
 	GridBasicInfo gridinfoFDTD;				//!< Basic grid properties, FDTD mesh
 	GridGeo gridgeoFDTD;					//!< Detailed grid info, FDTD mesh
 
+	// TODO: Add checks so that max particles per cell cannot be less than min
+	// particles per cell, etc. (things that would contradict each other).
 
 	// Global simulation parameters
 	double timeStep;						//!< Time step
@@ -52,7 +54,8 @@ public:
 	int numberOfPatches;					//!< Number of patches
 	int initialParticlesPerCell;			//!< Initial particles per cell
 	int minimumParticlesPerCell;			//!< Minimum particles per cell throughout simulation
-	int maximumNumberOfParticles;			//!< Maximum number of particles allowed in simulation
+	int maximumParticlesPerCell;			//!< Maximum particles per cell throughout simulation
+	int maximumNumberOfParticles;			//!< Maximum total number of particles allowed in simulation
 	int numCellsWithParticles;				//!< Number of cells in which particles are seeded	
 	std::string simulationType;				//!< Simulation type (full, partial or electron)
 	bool axisymmetric;						//!< True if axisymmetric simulation is required

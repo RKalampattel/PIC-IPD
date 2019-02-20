@@ -129,6 +129,15 @@ void Patch::startPIC()
 				if (numParticlesToAdd > 0 && listOfParticles.listOfParticles.size() < parametersList.maximumNumberOfParticles)
 				{
 					listOfParticles.addParticlesToSim(&parametersList, &mesh, numParticlesToAdd);
+					// TODO: After adding particles to the cell, need to adjust 
+					// the weighting of the particles so that the total properties
+					// within the cell (e.g. mass and charge) remain the same.
+					// To do this, need to first sum the total weighting of the 
+					// particles in the cell, then add particles as required, 
+					// then divide the total weighting by the new total number
+					// of particles to get the new weighting, then set this number.
+					// Also need to do the same in reverse when removing particles
+					// from the cell (increase weighting). 
 				}
 				
 				double EK = listOfParticles.calculateEK();
