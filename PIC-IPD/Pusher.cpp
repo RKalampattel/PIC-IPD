@@ -142,7 +142,7 @@ void Patch::Pusher()
 		// Update cell ID in Cartesian x/cylindrical z direction, exiting left
 		if (displacementL < 0.0)
 		{
-			mesh.removeParticlesFromCell(particle.cellID,
+			mesh.removeParticleFromCell(particle.cellID,
 				particle.particleID, particle.basic.type);
 
 			// Particle remains inside domain
@@ -182,14 +182,14 @@ void Patch::Pusher()
 
 			}
 
-			mesh.addParticlesToCell(particle.cellID,
+			mesh.addParticleToCell(particle.cellID,
 				particle.particleID, particle.basic.type);
 		}
 
 		// Update cell ID in Cartesian x/ cylindrical z direction, exiting right
 		else if (displacementR > 0.0)
 		{
-			mesh.removeParticlesFromCell(particle.cellID,
+			mesh.removeParticleFromCell(particle.cellID,
 				particle.particleID, particle.basic.type);
 
 			// Particle remains inside domain
@@ -228,7 +228,7 @@ void Patch::Pusher()
 				}
 			}
 
-			mesh.addParticlesToCell(particle.cellID,
+			mesh.addParticleToCell(particle.cellID,
 				particle.particleID, particle.basic.type);
 		}
 
@@ -250,7 +250,7 @@ void Patch::Pusher()
 		// Update cell ID in Cartesian y/ cylindrical r direction, exiting bottom
 		if (displacementB < 0.0)
 		{
-			mesh.removeParticlesFromCell(particle.cellID,
+			mesh.removeParticleFromCell(particle.cellID,
 				particle.particleID, particle.basic.type);
 			
 			// Particle remains inside domain
@@ -290,14 +290,14 @@ void Patch::Pusher()
 				}
 			}
 
-			mesh.addParticlesToCell(particle.cellID,
+			mesh.addParticleToCell(particle.cellID,
 				particle.particleID, particle.basic.type);
 		}
 
 		// Update cell ID in Cartesian y/ cylindrical r direction, exiting top
 		else if (displacementT > 0.0)
 		{
-			mesh.removeParticlesFromCell(particle.cellID,
+			mesh.removeParticleFromCell(particle.cellID,
 				particle.particleID, particle.basic.type);
 			
 			// Particle remains inside domain
@@ -337,7 +337,7 @@ void Patch::Pusher()
 				}
 			}
 
-			mesh.addParticlesToCell(particle.cellID,
+			mesh.addParticleToCell(particle.cellID,
 				particle.particleID, particle.basic.type);
 		}
 
@@ -387,7 +387,7 @@ void Patch::Pusher()
 			// Update cell ID in Cartesian y/ cylindrical r direction, exiting top
 			if (displacementT > 0.0)
 			{
-				mesh.removeParticlesFromCell(particle.cellID,
+				mesh.removeParticleFromCell(particle.cellID,
 					particle.particleID, particle.basic.type);
 
 				// Particle remains inside domain
@@ -427,7 +427,7 @@ void Patch::Pusher()
 					}
 				}
 
-				mesh.addParticlesToCell(particle.cellID,
+				mesh.addParticleToCell(particle.cellID,
 					particle.particleID, particle.basic.type);
 			}
 		}

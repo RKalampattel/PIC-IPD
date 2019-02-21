@@ -51,6 +51,7 @@ Mesh::Mesh(Parameters *localParametersList, std::string type)
 	}
 
 	minimumParticlesPerCell = localParametersList->minimumParticlesPerCell;
+	maximumParticlesPerCell = localParametersList->maximumParticlesPerCell;
 	double hAverage = 0;
 
 	// Scale mesh
@@ -553,7 +554,7 @@ Mesh::~Mesh()
 
 
 // Assign particle IDs to a cell
-void Mesh::addParticlesToCell(int cellID, int particleID, int particleType)
+void Mesh::addParticleToCell(int cellID, int particleID, int particleType)
 {
 	cellsVector.cells[cellID - 1].particlesInCell.push_back(particleID);
 	if (particleType == 0)
@@ -568,7 +569,7 @@ void Mesh::addParticlesToCell(int cellID, int particleID, int particleType)
 
 
 // Remove particle IDs from a cell
-void Mesh::removeParticlesFromCell(int cellID, int particleID, int particleType)
+void Mesh::removeParticleFromCell(int cellID, int particleID, int particleType)
 {
 	for (int i = 0; i < cellsVector.cells[cellID - 1].particlesInCell.size(); i++)
 	{
@@ -587,25 +588,27 @@ void Mesh::removeParticlesFromCell(int cellID, int particleID, int particleType)
 	}
 }
 
-// TODO: Don't really need to add the same number of particles to each cell,
-// just need to add as necessary to meet the minimum threshold
+
 // Check particle density per cell
-int Mesh::checkParticleDensity()
+std::vector<int> Mesh::checkParticleDensity()
 {
-	int lowestParticleDensity = minimumParticlesPerCell;
+	std::vector<int> particlesPerCell;
+
 	for (int i = 0; i < numCells; i++)
 	{
-		if (cellsVector.cells[i].particlesInCell.size() < lowestParticleDensity)
+		if (cellsVector.cells[i].particlesInCell.size() < minimumParticlesPerCell)
 		{
-			lowestParticleDensity = cellsVector.cells[i].particlesInCell.size();
+			particlesPerCell.push_back(minimumParticlesPerCell - cellsVector.cells[i].particlesInCell.size());
+		}
+		else if (cellsVector.cells[i].particlesInCell.size() > maximumParticlesPerCell)
+		{
+			particlesPerCell.push_back(cellsVector.cells[i].particlesInCell.size() - maximumParticlesPerCell);
+		}
+		else
+		{
+			particlesPerCell.push_back(0);
 		}
 	}
-	if (lowestParticleDensity < minimumParticlesPerCell)
-	{
-		return minimumParticlesPerCell - lowestParticleDensity;
-	}
-	else
-	{
-		return 0;
-	}
+	
+	return particlesPerCell;
 }

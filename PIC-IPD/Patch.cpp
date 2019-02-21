@@ -101,12 +101,6 @@ void Patch::startPIC()
 			// to resolve Debye length? Stability of leapfrog method and field 
 			// solver?? Where necessary, make changes to fix issues
 
-			// TODO: Maintain particle density - Can remove particles from cells 
-			// with too many particles.
-			// NB: Equal number of particles are currently added to each cell,
-			// could alter this. Also, all particles added are currently neutrals,
-			// is this what is required?
-
 			// TODO: Check what is happening to Tecplot particle output after
 			// second set of plots are saved (getting NaN results for all values)
 
@@ -123,12 +117,35 @@ void Patch::startPIC()
 
 			// Generate plots at specified intervals
 			if ((static_cast<int>(time / parametersList.timeStep) + 1) % parametersList.plotFrequency == 0)
-			{
-				// Check particle density
-				int numParticlesToAdd = mesh.checkParticleDensity();
-				if (numParticlesToAdd > 0 && listOfParticles.listOfParticles.size() < parametersList.maximumNumberOfParticles)
+			{			
+				double EK = listOfParticles.calculateEK();
+				double EP = mesh.nodesVector.calculateEP();
+
+				generateParticleOutput(listOfParticles.plotVector, listOfParticles.numParticles, time);
+				generateNodeOutput(time);
+				generateGlobalOutput(EK, EP, time);
+				parametersList.logBrief("Tecplot output generated", 1);
+
+				// Check particle density before next time step
+				std::vector<int> numParticlesToModify = mesh.checkParticleDensity();
+				// Check that we don't already have too many particles in the simulation
+				if (listOfParticles.listOfParticles.size() < (parametersList.maximumParticlesPerCell * mesh.numCells))
 				{
-					listOfParticles.addParticlesToSim(&parametersList, &mesh, numParticlesToAdd);
+					for (int j = 0; j < mesh.numCells; j++)
+					{
+						// TODO: Check that cells are ordered in the same way as
+						// the elements of numParticlesToModify, i.e. that cells[0]
+						// has ID of 1, cells[1] has ID of 2, etc.
+						if (numParticlesToModify[j] > 0)
+						{
+							listOfParticles.addParticlesToCell(&parametersList, &mesh, j+1, numParticlesToModify[j], "0");
+						}
+						else if (numParticlesToModify[j] < 0)
+						{
+							listOfParticles.removeParticlesFromCell(&mesh, j + 1, numParticlesToModify[j]);
+						}
+					}
+
 					// TODO: After adding particles to the cell, need to adjust 
 					// the weighting of the particles so that the total properties
 					// within the cell (e.g. mass and charge) remain the same.
@@ -137,16 +154,9 @@ void Patch::startPIC()
 					// then divide the total weighting by the new total number
 					// of particles to get the new weighting, then set this number.
 					// Also need to do the same in reverse when removing particles
-					// from the cell (increase weighting). 
+					// from the cell (increase weighting). Once weighting has been
+					// adjusted, need to recalculate relevant properties. 
 				}
-				
-				double EK = listOfParticles.calculateEK();
-				double EP = mesh.nodesVector.calculateEP();
-
-				generateParticleOutput(listOfParticles.plotVector, listOfParticles.numParticles, time);
-				generateNodeOutput(time);
-				generateGlobalOutput(EK, EP, time);
-				parametersList.logBrief("Tecplot output generated", 1);
 			}
 		}
 	}
