@@ -28,6 +28,7 @@ public:
 	int numRows;							//!< Number of rows of cells
 	int numColumns;							//!< Number of columns of cells
 	int minimumParticlesPerCell;			//!< Minimum particles per cell (from Parameters)
+	int maximumParticlesPerCell;			//!< Maximum particles per cell (from Parameters)
 	double h;								//!< Cell width/length (assume uniform)
 	VectorCell cellsVector;					//!< Vector of cells
 	VectorFace facesVector;					//!< Vector of faces
@@ -42,9 +43,9 @@ public:
 
 
 	// Methods
-	void addParticlesToCell(int cellID, 
+	void addParticleToCell(int cellID, 
 		int particleID, int particleType);	//!< Assign particle IDs to a cell
-	void removeParticlesFromCell(int cellID,
+	void removeParticleFromCell(int cellID,
 		int particleID, int particleType);  //!< Remove particle IDs from a cell
-	int checkParticleDensity();				//!< Check particle density per cell
+	std::vector<int> checkParticleDensity();//!< Check particle density per cell
 };

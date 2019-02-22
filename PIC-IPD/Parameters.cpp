@@ -290,34 +290,34 @@ void Parameters::assignInputs()
 			{
 				throw 0.0;
 			}
-			maximumNumberOfParticles = stoi(valuesVector[index]);
-			if (maximumNumberOfParticles < 0)
+			maximumParticlesPerCell = stoi(valuesVector[index]);
+			if (maximumParticlesPerCell < minimumParticlesPerCell)
 			{
 				throw 1;
 			}
 		}
 		catch (double error)
 		{
-			logBrief("No argument detected for maximum number of particles, default value will be used", 2);
+			logBrief("No argument detected for maximum particles per cell, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		catch (std::invalid_argument&)
 		{
-			logBrief("Invalid argument detected for maximum number of particles, default value will be used", 2);
+			logBrief("Invalid argument detected for maximum particles per cell, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		catch (int error)
 		{
-			logBrief("Maximum number of particles should be positive, default value will be used", 2);
+			logBrief("Maximum particles per cell should be greater than minimum, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
 		{
-			valuesVector[index] = "1000";
-			minimumParticlesPerCell = stoi(valuesVector[index]);
+			valuesVector[index] = "10";
+			maximumParticlesPerCell = stoi(valuesVector[index]);
 			useDefaultArgument = false;
 		}
-		logBrief("Maximum number of particles: " + valuesVector[index], 1);
+		logBrief("Maximum particles per cell: " + valuesVector[index], 1);
 		index++;
 
 
@@ -1093,7 +1093,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			FDTDspacing = stod(valuesVector[index]);
-			if (FDTDspacing < 0.0)
+			if ((FDTDspacing < 0.0) || (FDTDspacing > PICspacing))
 			{
 				throw 1;
 			}
@@ -1110,7 +1110,7 @@ void Parameters::assignInputs()
 		}
 		catch (int error)
 		{
-			logBrief("FDTD grid spacing should be positive, default value will be used", 2);
+			logBrief("FDTD grid spacing should be positive and less than PIC spacing, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)

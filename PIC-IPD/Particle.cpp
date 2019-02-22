@@ -16,18 +16,19 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 {
 	this->particleID = particleID;
 	this->cellID = cellID;
+	this->particleWeight = parametersList->specificWeight;
 
 	if (parametersList->simulationType == "electron")
 	{
-		this->basic.q = ELECTRON_CHARGE * parametersList->specificWeight;
-		this->basic.m = ELECTRON_MASS_kg * parametersList->specificWeight;
+		this->basic.q = ELECTRON_CHARGE * particleWeight;
+		this->basic.m = ELECTRON_MASS_kg * particleWeight;
 	}
 	else
 	{
 		if (parametersList->propellant == "xenon")
 		{
 			this->basic.q = 0.0;
-			this->basic.m = XENON_MASS_kg * parametersList->specificWeight;
+			this->basic.m = XENON_MASS_kg * particleWeight;
 		}
 	}
 
@@ -101,19 +102,20 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 {
 	this->particleID = particleID;
 	this->cellID = cellID;
+	this->particleWeight = parametersList->specificWeight;
 
 	if (type == "electron" && (parametersList->simulationType == "full" || parametersList->simulationType == "electron"))
 	{
-		this->basic.q = ELECTRON_CHARGE * parametersList->specificWeight;
-		this->basic.m = ELECTRON_MASS_kg * parametersList->specificWeight;
+		this->basic.q = ELECTRON_CHARGE * particleWeight;
+		this->basic.m = ELECTRON_MASS_kg * particleWeight;
 		this->basic.type = -1;
 	}
 	else if (type == "ion" && (parametersList->simulationType == "full" || parametersList->simulationType == "partial"))
 	{
 		if (parametersList->propellant == "xenon")
 		{
-			this->basic.q = -ELECTRON_CHARGE * parametersList->specificWeight;
-			this->basic.m = (XENON_MASS_kg - ELECTRON_MASS_kg) * parametersList->specificWeight;
+			this->basic.q = -ELECTRON_CHARGE * particleWeight;
+			this->basic.m = (XENON_MASS_kg - ELECTRON_MASS_kg) * particleWeight;
 		}
 		this->basic.type = 1;
 	}
@@ -122,7 +124,7 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 		if (parametersList->propellant == "xenon")
 		{
 			this->basic.q = 0.0;
-			this->basic.m = XENON_MASS_kg * parametersList->specificWeight;
+			this->basic.m = XENON_MASS_kg * particleWeight;
 		}
 		this->basic.type = 0;
 	}
