@@ -148,6 +148,11 @@ void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
 	std::list<Particle>::iterator particle;
 	for (particle = listOfParticles.begin(); particle != listOfParticles.end(); particle++)
 	{
+		// TODO: At the moment the process for removing particles from the simulation
+		// is highly inefficient, as each time we need to iterate through the 
+		// entire list of particles until we find the ones with the right ID. 
+		// A solution is to have a better way to identify the particles, e.g.
+		// rather than using an int, maybe have a pointer. 
 		if (particle->particleID == particleID)
 		{
 			mesh->removeParticleFromCell(particle->cellID, particle->particleID, particle->basic.type);

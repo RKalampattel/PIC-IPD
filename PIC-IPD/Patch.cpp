@@ -133,7 +133,37 @@ void Patch::startPIC()
 				{
 					for (int j = 0; j < mesh.numCells; j++)
 					{
-						// TODO: Check that cells are ordered in the same way as
+						// TODO: After adding particles to the cell, need to adjust 
+						// the weighting of the particles so that the total properties
+						// within the cell (e.g. mass and charge) remain the same.
+						// 1. Need to sum the total weighting of the particles 
+						// in the cell.
+						// 2. Add particles as required.
+						// 3. Divide the total weighting by the new total number
+						// of particles to get the new weighting, then apply this.
+						// 4. Also need to do the same in reverse when removing 
+						// particles from the cell (increase weighting). 
+						// 5. Once weighting has been adjusted, need to recalculate 
+						// relevant properties. 
+						for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
+						{
+							int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
+							for (int l = 0; l < listOfParticles.numParticles; l++)
+							{
+								std::list<Particle>::iterator particle;
+								for (particle = listOfParticles.listOfParticles.begin(); particle != listOfParticles.listOfParticles.end(); particle++)
+								{ 
+									if (particle->particleID == particleID)
+									{
+										mesh.cellsVector.cells[j].totalWeighting += particle->particleWeight;
+									}
+								}
+							}
+							mesh.cellsVector.cells[j].totalWeighting /= 
+								static_cast<double>(mesh.cellsVector.cells[j].particlesInCell.size());
+						}
+
+						// TODO: Confirm that cells are ordered in the same way as
 						// the elements of numParticlesToModify, i.e. that cells[0]
 						// has ID of 1, cells[1] has ID of 2, etc.
 						if (numParticlesToModify[j] > 0)
@@ -145,17 +175,6 @@ void Patch::startPIC()
 							listOfParticles.removeParticlesFromCell(&mesh, j + 1, numParticlesToModify[j]);
 						}
 					}
-
-					// TODO: After adding particles to the cell, need to adjust 
-					// the weighting of the particles so that the total properties
-					// within the cell (e.g. mass and charge) remain the same.
-					// To do this, need to first sum the total weighting of the 
-					// particles in the cell, then add particles as required, 
-					// then divide the total weighting by the new total number
-					// of particles to get the new weighting, then set this number.
-					// Also need to do the same in reverse when removing particles
-					// from the cell (increase weighting). Once weighting has been
-					// adjusted, need to recalculate relevant properties. 
 				}
 			}
 		}

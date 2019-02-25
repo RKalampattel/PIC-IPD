@@ -17,6 +17,7 @@ public:
 	double right = -1.0;				//!< Right cell boundary
 	double top = -1.0;					//!< Top (up) cell boundary
 	double bottom = -1.0;				//!< Bottom (down) cell boundary
+	double totalWeighting = 0.0;		//!< Sum of weights of all resident particles
 	int leftCellID = -1;				//!< ID of adjacent left cell
 	int rightCellID = -1;				//!< ID of adjacent right cell
 	int topCellID = -1;					//!< ID of adjacent top (up) cell
