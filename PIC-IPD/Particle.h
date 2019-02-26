@@ -42,4 +42,6 @@ public:
 
 	// Methods
 	double velocityMagnitude();				//!< Calculate magnitude of velocity vector
+	void reWeightProperties
+		(double updatedWeight);				//!< Update particle properties when weighting changes 
 };

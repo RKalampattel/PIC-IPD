@@ -133,34 +133,23 @@ void Patch::startPIC()
 				{
 					for (int j = 0; j < mesh.numCells; j++)
 					{
-						// TODO: After adding particles to the cell, need to adjust 
-						// the weighting of the particles so that the total properties
-						// within the cell (e.g. mass and charge) remain the same.
-						// 1. Need to sum the total weighting of the particles 
-						// in the cell.
-						// 2. Add particles as required.
-						// 3. Divide the total weighting by the new total number
-						// of particles to get the new weighting, then apply this.
-						// 4. Also need to do the same in reverse when removing 
-						// particles from the cell (increase weighting). 
-						// 5. Once weighting has been adjusted, need to recalculate 
-						// relevant properties. 
+						// Calculate total weight of each cell
 						for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
 						{
 							int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
 							for (int l = 0; l < listOfParticles.numParticles; l++)
 							{
-								std::list<Particle>::iterator particle;
-								for (particle = listOfParticles.listOfParticles.begin(); particle != listOfParticles.listOfParticles.end(); particle++)
+								// TODO: FIX THIS!!! THIS IS NOT CURRENTLY ITERATING THROUGH THE LIST.
+								// ALSO NEED TO CHECK ALL OTHER LIST ITERATORS AND ENSURE THAT THEY DO
+								// NOT HAVE THE SAME PROBLEM!!!
+								for (Particle& particle : listOfParticles.listOfParticles)
 								{ 
-									if (particle->particleID == particleID)
+									if (particle.particleID == particleID)
 									{
-										mesh.cellsVector.cells[j].totalWeighting += particle->particleWeight;
+										mesh.cellsVector.cells[j].totalWeighting += particle.particleWeight;
 									}
 								}
 							}
-							mesh.cellsVector.cells[j].totalWeighting /= 
-								static_cast<double>(mesh.cellsVector.cells[j].particlesInCell.size());
 						}
 
 						// TODO: Confirm that cells are ordered in the same way as
@@ -173,6 +162,26 @@ void Patch::startPIC()
 						else if (numParticlesToModify[j] < 0)
 						{
 							listOfParticles.removeParticlesFromCell(&mesh, j + 1, numParticlesToModify[j]);
+						}
+
+						double updatedWeight = mesh.cellsVector.cells[j].totalWeighting / 
+							static_cast<double>(mesh.cellsVector.cells[j].particlesInCell.size());
+
+						// Adjust particle weights and recalculate properties
+						for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
+						{
+							int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
+							for (int l = 0; l < listOfParticles.numParticles; l++)
+							{
+								std::list<Particle>::iterator particle;
+								for (particle = listOfParticles.listOfParticles.begin(); particle != listOfParticles.listOfParticles.end(); particle++)
+								{
+									if (particle->particleID == particleID)
+									{
+										particle->reWeightProperties(updatedWeight);
+									}
+								}
+							}
 						}
 					}
 				}

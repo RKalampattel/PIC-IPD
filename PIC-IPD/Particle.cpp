@@ -175,3 +175,16 @@ double Particle::velocityMagnitude()
 	return sqrt(this->position[1] * this->position[1] +
 		this->position[2] * this->position[2]);
 }
+
+
+//!< Update particle properties when weighting changes
+void Particle::reWeightProperties(double updatedWeight)
+{
+	basic.q /= particleWeight;
+	basic.m /= particleWeight;
+	
+	particleWeight = updatedWeight;
+
+	basic.q *= particleWeight;
+	basic.m *= particleWeight;
+}
