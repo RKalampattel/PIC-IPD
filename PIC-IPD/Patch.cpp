@@ -132,53 +132,49 @@ void Patch::startPIC()
 				if (listOfParticles.listOfParticles.size() < (parametersList.maximumParticlesPerCell * mesh.numCells))
 				{
 					for (int j = 0; j < mesh.numCells; j++)
-					{
-						// Calculate total weight of each cell
-						for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
+					{	
+						// TODO: Confirm that cells are ordered in the same way as
+						// the elements of numParticlesToModify, i.e. that cells[0]
+						// has ID of 1, cells[1] has ID of 2, etc.
+						if (numParticlesToModify[j] != 0)
 						{
-							int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
-							for (int l = 0; l < listOfParticles.numParticles; l++)
+							// Calculate total weight of each cell
+							for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
 							{
-								// TODO: FIX THIS!!! THIS IS NOT CURRENTLY ITERATING THROUGH THE LIST.
-								// ALSO NEED TO CHECK ALL OTHER LIST ITERATORS AND ENSURE THAT THEY DO
-								// NOT HAVE THE SAME PROBLEM!!!
+								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
+
 								for (Particle& particle : listOfParticles.listOfParticles)
-								{ 
+								{
 									if (particle.particleID == particleID)
 									{
 										mesh.cellsVector.cells[j].totalWeighting += particle.particleWeight;
 									}
 								}
 							}
-						}
 
-						// TODO: Confirm that cells are ordered in the same way as
-						// the elements of numParticlesToModify, i.e. that cells[0]
-						// has ID of 1, cells[1] has ID of 2, etc.
-						if (numParticlesToModify[j] > 0)
-						{
-							listOfParticles.addParticlesToCell(&parametersList, &mesh, j+1, numParticlesToModify[j], "0");
-						}
-						else if (numParticlesToModify[j] < 0)
-						{
-							listOfParticles.removeParticlesFromCell(&mesh, j + 1, numParticlesToModify[j]);
-						}
-
-						double updatedWeight = mesh.cellsVector.cells[j].totalWeighting / 
-							static_cast<double>(mesh.cellsVector.cells[j].particlesInCell.size());
-
-						// Adjust particle weights and recalculate properties
-						for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
-						{
-							int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
-							for (int l = 0; l < listOfParticles.numParticles; l++)
+							if (numParticlesToModify[j] > 0)
 							{
-								std::list<Particle>::iterator particle;
-								for (particle = listOfParticles.listOfParticles.begin(); particle != listOfParticles.listOfParticles.end(); particle++)
+								listOfParticles.addParticlesToCell(&parametersList, &mesh, j + 1, numParticlesToModify[j], "0");
+							}
+							else if (numParticlesToModify[j] < 0)
+							{
+								listOfParticles.removeParticlesFromCell(&mesh, j + 1, numParticlesToModify[j]);
+							}
+
+							double updatedWeight = mesh.cellsVector.cells[j].totalWeighting /
+								static_cast<double>(mesh.cellsVector.cells[j].particlesInCell.size());
+							mesh.cellsVector.cells[j].totalWeighting = 0.0;
+
+							// Adjust particle weights and recalculate properties
+							for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
+							{
+								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
+
+								for (Particle& particle : listOfParticles.listOfParticles)
 								{
-									if (particle->particleID == particleID)
+									if (particle.particleID == particleID)
 									{
-										particle->reWeightProperties(updatedWeight);
+										particle.reWeightProperties(updatedWeight);
 									}
 								}
 							}

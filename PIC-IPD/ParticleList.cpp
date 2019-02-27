@@ -145,7 +145,6 @@ void ParticleList::addParticlesToCell(Parameters *parametersList, Mesh *mesh, in
 // Remove single particle from simulation
 void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
 {
-	// TODO: Check whether particles are actually removed via this iteration process
 	std::list<Particle>::iterator particle;
 	for (particle = listOfParticles.begin(); particle != listOfParticles.end(); particle++)
 	{
