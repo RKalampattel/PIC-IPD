@@ -22,6 +22,7 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 	{
 		this->basic.q = ELECTRON_CHARGE * particleWeight;
 		this->basic.m = ELECTRON_MASS_kg * particleWeight;
+		this->basic.type = -1;
 	}
 	else
 	{
@@ -29,6 +30,7 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 		{
 			this->basic.q = 0.0;
 			this->basic.m = XENON_MASS_kg * particleWeight;
+			this->basic.type = 0;
 		}
 	}
 
@@ -127,6 +129,10 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 			this->basic.m = XENON_MASS_kg * particleWeight;
 		}
 		this->basic.type = 0;
+	}
+	else
+	{
+		parametersList->logBrief("Invalid combination of species and simulation type", 3);
 	}
 
 	// Initialise random number generator, distribution in range [0, 1000000]

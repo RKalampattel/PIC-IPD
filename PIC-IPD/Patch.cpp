@@ -152,9 +152,15 @@ void Patch::startPIC()
 								}
 							}
 
-							if (numParticlesToModify[j] > 0)
+							// TODO: Decide on what type the particles to add will be,
+							// currently electron is selected but this will not always
+							// be the right option.
+
+							// Second condition is included to prevent adding particles
+							// to a cell that was previously empty
+							if (numParticlesToModify[j] > 0 && mesh.cellsVector.cells[j].totalWeighting != 0.0)
 							{
-								listOfParticles.addParticlesToCell(&parametersList, &mesh, j + 1, numParticlesToModify[j], "0");
+								listOfParticles.addParticlesToCell(&parametersList, &mesh, j + 1, numParticlesToModify[j], "electron");
 							}
 							else if (numParticlesToModify[j] < 0)
 							{
@@ -166,6 +172,7 @@ void Patch::startPIC()
 							mesh.cellsVector.cells[j].totalWeighting = 0.0;
 
 							// Adjust particle weights and recalculate properties
+
 							for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
 							{
 								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
