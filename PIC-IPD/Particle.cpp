@@ -22,6 +22,7 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 	{
 		this->basic.q = ELECTRON_CHARGE * particleWeight;
 		this->basic.m = ELECTRON_MASS_kg * particleWeight;
+		this->basic.type = -1;
 	}
 	else
 	{
@@ -29,6 +30,7 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 		{
 			this->basic.q = 0.0;
 			this->basic.m = XENON_MASS_kg * particleWeight;
+			this->basic.type = 0;
 		}
 	}
 
@@ -128,6 +130,10 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 		}
 		this->basic.type = 0;
 	}
+	else
+	{
+		parametersList->logBrief("Invalid combination of species and simulation type", 3);
+	}
 
 	// Initialise random number generator, distribution in range [0, 1000000]
 	std::mt19937 rng;
@@ -174,4 +180,17 @@ double Particle::velocityMagnitude()
 {
 	return sqrt(this->position[1] * this->position[1] +
 		this->position[2] * this->position[2]);
+}
+
+
+//!< Update particle properties when weighting changes
+void Particle::reWeightProperties(double updatedWeight)
+{
+	basic.q /= particleWeight;
+	basic.m /= particleWeight;
+	
+	particleWeight = updatedWeight;
+
+	basic.q *= particleWeight;
+	basic.m *= particleWeight;
 }

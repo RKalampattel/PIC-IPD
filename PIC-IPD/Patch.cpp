@@ -132,30 +132,61 @@ void Patch::startPIC()
 				if (listOfParticles.listOfParticles.size() < (parametersList.maximumParticlesPerCell * mesh.numCells))
 				{
 					for (int j = 0; j < mesh.numCells; j++)
-					{
-						// TODO: Check that cells are ordered in the same way as
+					{	
+						// TODO: Confirm that cells are ordered in the same way as
 						// the elements of numParticlesToModify, i.e. that cells[0]
 						// has ID of 1, cells[1] has ID of 2, etc.
-						if (numParticlesToModify[j] > 0)
+						if (numParticlesToModify[j] != 0)
 						{
-							listOfParticles.addParticlesToCell(&parametersList, &mesh, j+1, numParticlesToModify[j], "0");
-						}
-						else if (numParticlesToModify[j] < 0)
-						{
-							listOfParticles.removeParticlesFromCell(&mesh, j + 1, numParticlesToModify[j]);
+							// Calculate total weight of each cell
+							for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
+							{
+								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
+
+								for (Particle& particle : listOfParticles.listOfParticles)
+								{
+									if (particle.particleID == particleID)
+									{
+										mesh.cellsVector.cells[j].totalWeighting += particle.particleWeight;
+									}
+								}
+							}
+
+							// TODO: Decide on what type the particles to add will be,
+							// currently electron is selected but this will not always
+							// be the right option.
+
+							// Second condition is included to prevent adding particles
+							// to a cell that was previously empty
+							if (numParticlesToModify[j] > 0 && mesh.cellsVector.cells[j].totalWeighting != 0.0)
+							{
+								listOfParticles.addParticlesToCell(&parametersList, &mesh, j + 1, numParticlesToModify[j], "electron");
+							}
+							else if (numParticlesToModify[j] < 0)
+							{
+								listOfParticles.removeParticlesFromCell(&mesh, j + 1, numParticlesToModify[j]);
+							}
+
+							double updatedWeight = mesh.cellsVector.cells[j].totalWeighting /
+								static_cast<double>(mesh.cellsVector.cells[j].particlesInCell.size());
+							mesh.cellsVector.cells[j].totalWeighting = 0.0;
+
+							// Adjust particle weights and recalculate properties
+
+							for (int k = 0; k < mesh.cellsVector.cells[j].particlesInCell.size(); k++)
+							{
+								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
+
+								for (Particle& particle : listOfParticles.listOfParticles)
+								{
+									if (particle.particleID == particleID)
+									{
+										particle.reWeightProperties(updatedWeight);
+									}
+								}
+							}
 						}
 					}
-
-					// TODO: After adding particles to the cell, need to adjust 
-					// the weighting of the particles so that the total properties
-					// within the cell (e.g. mass and charge) remain the same.
-					// To do this, need to first sum the total weighting of the 
-					// particles in the cell, then add particles as required, 
-					// then divide the total weighting by the new total number
-					// of particles to get the new weighting, then set this number.
-					// Also need to do the same in reverse when removing particles
-					// from the cell (increase weighting). Once weighting has been
-					// adjusted, need to recalculate relevant properties. 
 				}
 			}
 		}
