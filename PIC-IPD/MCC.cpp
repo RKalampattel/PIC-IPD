@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of MCC method 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "Patch.h"
 
@@ -20,6 +20,7 @@ void Patch::MCC()
 		{
 			// TODO: Needs to be calculated with relative velocity, can only
 			// use magnitude it velocity difference is sufficiently high
+			// TODO: Move constant values like these to the Constants header file
 			sigma = 15.1262 - 0.8821 * 
 				log(particle.velocityMagnitude());
 		}
@@ -29,11 +30,11 @@ void Patch::MCC()
 		{
 			// TODO: Collisions for all three types (if this simulation type is needed)
 			// Neutral
-			if (particle.basic.type == 0)
+			if (particle.speciesType == 0)
 			{
 			}
 			// Ion
-			else if (particle.basic.type == 1)
+			else if (particle.speciesType == 1)
 			{
 			}
 			// Electron
@@ -44,7 +45,7 @@ void Patch::MCC()
 		else if (parametersList.simulationType == "partial")
 		{
 			// Neutral
-			if (particle.basic.type == 0)
+			if (particle.speciesType == 0)
 			{
 				// Target (ion) density
 				// TODO: Target density should be for TARGET species only (i.e.
@@ -56,7 +57,7 @@ void Patch::MCC()
 			}
 			
 			// Ion
-			else if (particle.basic.type == 1)
+			else if (particle.speciesType == 1)
 			{
 				// Target (neutral) density
 			}

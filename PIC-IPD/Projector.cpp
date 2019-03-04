@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Projector method 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "Patch.h"
 
@@ -34,7 +34,7 @@ void Patch::Projector()
 		double x2 = particle.position[1];
 
 		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
-		double charge = particle.basic.q;
+		double charge = particle.charge;
 
 		if (firstNodePosition == "TL")
 		{
@@ -87,7 +87,7 @@ void Patch::Projector()
 			if (bottomNodeID >= 0)
 			{
 				mesh.nodesVector.nodes[i].rho = mesh.nodesVector.nodes[i].charge /
-					std::_Pi * mesh.h * (mesh.nodesVector.nodes[i].geometry.X.element(1, 0) *
+					PI * mesh.h * (mesh.nodesVector.nodes[i].geometry.X.element(1, 0) *
 						mesh.nodesVector.nodes[i].geometry.X.element(1, 0) -
 						mesh.nodesVector.nodes[bottomNodeID].geometry.X.element(1, 0) *
 						mesh.nodesVector.nodes[bottomNodeID].geometry.X.element(1, 0));
@@ -185,7 +185,7 @@ void Patch::Projector()
 		double v2 = particle.velocity[1];
 
 		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
-		double charge = particle.basic.q;
+		double charge = particle.charge;
 
 		if (firstNodePosition == "BL")
 		{

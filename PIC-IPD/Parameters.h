@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Parameters class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #pragma once
 
@@ -18,6 +18,7 @@
 
 #include "omp.h"
 
+#include "Constants.h"
 #include "GRID/grid.hpp"
 
 #define __FILENAME__ strrchr("\\" __FILE__, '\\') + 1

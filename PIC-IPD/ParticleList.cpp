@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of ParticleList class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "ParticleList.h"
 
@@ -46,7 +46,7 @@ ParticleList::ParticleList(Parameters *parametersList, Mesh *mesh, int patchID)
 			listOfParticles.push_back(particle);
 			addToPlotVector(&particle);
 			
-			mesh->addParticleToCell(particle.cellID, particle.particleID, particle.basic.type);
+			mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
 		}
 	}
 
@@ -73,7 +73,7 @@ void ParticleList::addToPlotVector(Particle *particle)
 	plotVector.back().push_back(particle->velocity[1]);
 	plotVector.back().push_back(particle->cellID);
 	plotVector.back().push_back(particle->particleID);
-	plotVector.back().push_back(particle->basic.type);
+	plotVector.back().push_back(particle->speciesType);
 }
 
 
@@ -93,7 +93,7 @@ void ParticleList::updatePlotVector(Particle *particle)
 			plotVector[i].push_back(particle->velocity[1]);
 			plotVector[i].push_back(particle->cellID);
 			plotVector[i].push_back(particle->particleID);
-			plotVector[i].push_back(particle->basic.type);
+			plotVector[i].push_back(particle->speciesType);
 			plotVector.erase(plotVector.begin() + i + 1);
 		}
 	}
@@ -137,7 +137,7 @@ void ParticleList::addParticlesToCell(Parameters *parametersList, Mesh *mesh, in
 		referenceVector.push_back(&listOfParticles.back());
 		addToPlotVector(&particle);
 
-		mesh->addParticleToCell(particle.cellID, particle.particleID, particle.basic.type);
+		mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
 	}
 }
 
@@ -150,7 +150,7 @@ void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
 	{
 		if (particle->particleID == particleID)
 		{
-			mesh->removeParticleFromCell(particle->cellID, particle->particleID, particle->basic.type);
+			mesh->removeParticleFromCell(particle->cellID, particle->particleID, particle->speciesType);
 			listOfParticles.erase(particle);
 			break;
 			// TODO: Update referenceVector when particles are removed.
@@ -188,7 +188,7 @@ double ParticleList::calculateEK()
 		// and t-1.5*dt (velocity and oldVelocity), in order to get a result time 
 		// centred at t-1*dt (still behind). Need abs to remove noise.
 		// TODO: Does this need to include all three velocity components?
-		EK += 0.5 * particle.basic.m *	(abs(particle.velocity[0] *
+		EK += 0.5 * particle.mass *	(abs(particle.velocity[0] *
 			particle.oldVelocity[0]) + abs(particle.velocity[1] *
 			particle.oldVelocity[1]) + abs(particle.velocity[2] *
 			particle.oldVelocity[2]));

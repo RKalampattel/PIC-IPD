@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Particle class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "Particle.h"
 
@@ -20,17 +20,17 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 
 	if (parametersList->simulationType == "electron")
 	{
-		this->basic.q = ELECTRON_CHARGE * particleWeight;
-		this->basic.m = ELECTRON_MASS_kg * particleWeight;
-		this->basic.type = -1;
+		this->charge = ELECTRON_CHARGE * particleWeight;
+		this->mass = ELECTRON_MASS_kg * particleWeight;
+		this->speciesType = -1;
 	}
 	else
 	{
 		if (parametersList->propellant == "xenon")
 		{
-			this->basic.q = 0.0;
-			this->basic.m = XENON_MASS_kg * particleWeight;
-			this->basic.type = 0;
+			this->charge = 0.0;
+			this->mass = XENON_MASS_kg * particleWeight;
+			this->speciesType = 0;
 		}
 	}
 
@@ -88,10 +88,10 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 	// Extra setup for the two-stream instability problem
 	if (parametersList->twoStream)
 	{
-		this->basic.type = 1;
+		this->speciesType = 1;
 		if ((dist(rng) / (double)1000000 - 0.5) >= 0.0)
 		{
-			this->basic.type = -1;
+			this->speciesType = -1;
 			this->velocity[0] *= -1.0;
 			this->velocity[1] *= -1.0;
 		}
@@ -108,27 +108,27 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 
 	if (type == "electron" && (parametersList->simulationType == "full" || parametersList->simulationType == "electron"))
 	{
-		this->basic.q = ELECTRON_CHARGE * particleWeight;
-		this->basic.m = ELECTRON_MASS_kg * particleWeight;
-		this->basic.type = -1;
+		this->charge = ELECTRON_CHARGE * particleWeight;
+		this->mass = ELECTRON_MASS_kg * particleWeight;
+		this->speciesType = -1;
 	}
 	else if (type == "ion" && (parametersList->simulationType == "full" || parametersList->simulationType == "partial"))
 	{
 		if (parametersList->propellant == "xenon")
 		{
-			this->basic.q = -ELECTRON_CHARGE * particleWeight;
-			this->basic.m = (XENON_MASS_kg - ELECTRON_MASS_kg) * particleWeight;
+			this->charge = -ELECTRON_CHARGE * particleWeight;
+			this->mass = (XENON_MASS_kg - ELECTRON_MASS_kg) * particleWeight;
 		}
-		this->basic.type = 1;
+		this->speciesType = 1;
 	}
 	else if (type == "neutral" && (parametersList->simulationType == "full" || parametersList->simulationType == "partial"))
 	{
 		if (parametersList->propellant == "xenon")
 		{
-			this->basic.q = 0.0;
-			this->basic.m = XENON_MASS_kg * particleWeight;
+			this->charge = 0.0;
+			this->mass = XENON_MASS_kg * particleWeight;
 		}
-		this->basic.type = 0;
+		this->speciesType = 0;
 	}
 	else
 	{
@@ -158,10 +158,10 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 	// Extra setup for the two-stream instability problem
 	if (parametersList->twoStream)
 	{
-		this->basic.type = 1;
+		this->speciesType = 1;
 		if ((dist(rng) / (double)1000000 - 0.5) >= 0.0)
 		{
-			this->basic.type = -1;
+			this->speciesType = -1;
 			this->velocity[0] *= -1.0;
 			this->velocity[1] *= -1.0;
 		}
@@ -186,11 +186,11 @@ double Particle::velocityMagnitude()
 //!< Update particle properties when weighting changes
 void Particle::reWeightProperties(double updatedWeight)
 {
-	basic.q /= particleWeight;
-	basic.m /= particleWeight;
+	charge /= particleWeight;
+	mass /= particleWeight;
 	
 	particleWeight = updatedWeight;
 
-	basic.q *= particleWeight;
-	basic.m *= particleWeight;
+	charge *= particleWeight;
+	mass *= particleWeight;
 }
