@@ -44,7 +44,6 @@ ParticleList::ParticleList(Parameters *parametersList, Mesh *mesh, int patchID)
 
 			Particle particle(parametersList, mesh, patchID, i + 1, numParticles, j);
 			listOfParticles.push_back(particle);
-
 			addToPlotVector(&particle);
 			
 			mesh->addParticleToCell(particle.cellID, particle.particleID, particle.basic.type);
@@ -135,6 +134,7 @@ void ParticleList::addParticlesToCell(Parameters *parametersList, Mesh *mesh, in
 
 		Particle particle(parametersList, mesh, patchID, cellID, maxParticleID, type);
 		listOfParticles.push_back(particle);
+		referenceVector.push_back(&listOfParticles.back());
 		addToPlotVector(&particle);
 
 		mesh->addParticleToCell(particle.cellID, particle.particleID, particle.basic.type);
@@ -148,18 +148,15 @@ void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
 	std::list<Particle>::iterator particle;
 	for (particle = listOfParticles.begin(); particle != listOfParticles.end(); particle++)
 	{
-		// TODO: At the moment the process for removing particles from the simulation
-		// is highly inefficient, as each time we need to iterate through the 
-		// entire list of particles until we find the ones with the right ID. 
-		// A solution is to have a better way to identify the particles, e.g.
-		// rather than using an int, maybe have a pointer. 
 		if (particle->particleID == particleID)
 		{
 			mesh->removeParticleFromCell(particle->cellID, particle->particleID, particle->basic.type);
-			listOfParticles.erase(particle);	
+			listOfParticles.erase(particle);
 			break;
+			// TODO: Update referenceVector when particles are removed.
 		}
 	}
+
 	removeFromPlotVector(particleID);
 	numParticles--;
 }

@@ -22,6 +22,7 @@ private:
 
 public:
 	// Data members
+	std::vector<Particle *> referenceVector;		//!< Vector to quickly index particles
 	std::list<Particle> listOfParticles;			//!< List of Particle objects
 	int numParticles = 0;							//!< Size of listOfParticles								
 	int patchID;									//!< Patch ID

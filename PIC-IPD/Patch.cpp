@@ -65,6 +65,11 @@ void Patch::startPIC()
 	{
 		parametersList.logMessages("Starting PIC loop in patch " + std::to_string(patchID), __FILENAME__, __LINE__, 1);
 
+		for (Particle& particle : listOfParticles.listOfParticles)
+		{
+			listOfParticles.referenceVector.push_back(&particle);
+		}
+
 		for (int i = 0; i < parametersList.maximumNumberOfIterations; i++)
 		{
 			parametersList.logMessages("Starting iteration " + std::to_string(i + 1),
@@ -129,7 +134,7 @@ void Patch::startPIC()
 				// Check particle density before next time step
 				std::vector<int> numParticlesToModify = mesh.checkParticleDensity();
 				// Check that we don't already have too many particles in the simulation
-				if (listOfParticles.listOfParticles.size() < (parametersList.maximumParticlesPerCell * mesh.numCells))
+				if (listOfParticles.numParticles < (parametersList.maximumParticlesPerCell * mesh.numCells))
 				{
 					for (int j = 0; j < mesh.numCells; j++)
 					{	
@@ -143,6 +148,16 @@ void Patch::startPIC()
 							{
 								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
 
+								// At the moment the process for removing particles 
+								// from the simulation is inefficient, as each 
+								// time we need to iterate through the entire
+								// list of particles until we find the ones with 
+								// the right ID. A solution is to have a better 
+								// way to identify the particles, e.g. rather than 
+								// using an int, maybe have a pointer. This is 
+								// implemented through listOfParticles.referenceVector
+
+								// Method 1
 								for (Particle& particle : listOfParticles.listOfParticles)
 								{
 									if (particle.particleID == particleID)
@@ -150,6 +165,10 @@ void Patch::startPIC()
 										mesh.cellsVector.cells[j].totalWeighting += particle.particleWeight;
 									}
 								}
+
+								// Method 2
+								// mesh.cellsVector.cells[j].totalWeighting += 
+								//	listOfParticles.referenceVector[particleID - 1]->particleWeight;
 							}
 
 							// TODO: Decide on what type the particles to add will be,
@@ -177,6 +196,7 @@ void Patch::startPIC()
 							{
 								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
 
+								// Method 1
 								for (Particle& particle : listOfParticles.listOfParticles)
 								{
 									if (particle.particleID == particleID)
@@ -184,6 +204,9 @@ void Patch::startPIC()
 										particle.reWeightProperties(updatedWeight);
 									}
 								}
+
+								// Method 2
+								// listOfParticles.referenceVector[particleID - 1]->reWeightProperties(updatedWeight);
 							}
 						}
 					}
