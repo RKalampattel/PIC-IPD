@@ -15,8 +15,8 @@
 timeStep: 0.00004
 maximumNumberOfIterations: 20 
 numberOfPatches: 1
-initialParticlesPerCell: 9
-minimumParticlesPerCell: 9
+initialParticlesPerCell: 4
+minimumParticlesPerCell: 2
 maximumParticlesPerCell: 50
 numCellsWithParticles: 0
 simulationType: electron

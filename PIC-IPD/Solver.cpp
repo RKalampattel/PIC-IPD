@@ -200,10 +200,11 @@ void Patch::Solver()
 		{
 			if (parametersList.solverType == "FFT")
 			{
-				// TODO: Implement FFT based solver for mixed BC cases, and until
-				// then check that the same BC is applied across the domain
+				// TODO: Implement FFT based solver for mixed BC cases
 				int nx = mesh.numColumns + 1, ny = mesh.numRows + 1;
 
+				// TODO: First case doesn't make physical sense and will never be
+				// triggered due to checks in Parameters, delete when done
 				// Periodic BC case
 				if (parametersList.bottomBCType == "periodic" && parametersList.rightBCType == "periodic")
 				{
@@ -272,7 +273,8 @@ void Patch::Solver()
 					fftw_free(transform);
 				}
 				// Dirichlet BC case
-				else if (parametersList.bottomBCType == "dirichlet" && parametersList.rightBCType == "dirichlet")
+				else if (parametersList.bottomBCType == "dirichlet" && parametersList.rightBCType == "dirichlet" &&
+					parametersList.topBCType == "dirichlet" && parametersList.leftBCType == "dirichlet")
 				{
 					// Allocate memory for signal (real) and transformed signal (real)
 					double *signal, *transform;
@@ -334,7 +336,8 @@ void Patch::Solver()
 					fftw_free(transform);
 				}
 				// Neumann BC case
-				else if (parametersList.bottomBCType == "neumann" && parametersList.rightBCType == "neumann")
+				else if (parametersList.bottomBCType == "neumann" && parametersList.rightBCType == "neumann" &&
+					parametersList.topBCType == "neumann" && parametersList.leftBCType == "neumann")
 				{
 					// Allocate memory for signal (real) and transformed signal (real)
 					double *signal, *transform;
@@ -394,6 +397,11 @@ void Patch::Solver()
 					fftw_destroy_plan(backwardsPlan);
 					fftw_free(signal);
 					fftw_free(transform);
+				}
+				else
+				{
+					parametersList.logBrief("Chosen BCs do not match FFT solver type", 3);
+					break;
 				}
 			}
 			// Gauss-Seidel solver with successive over-relaxation (SOR)

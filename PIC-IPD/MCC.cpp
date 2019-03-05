@@ -24,6 +24,7 @@ void Patch::MCC()
 			sigma = 15.1262 - 0.8821 * 
 				log(particle.velocityMagnitude());
 		}
+		// TODO: Cases for other propellants
 		
 		// Check simulation type
 		if (parametersList.simulationType == "full")

@@ -9,7 +9,7 @@
 #include "Mesh.h"
 
 //! \class Particle
-//! \brief Contains all particle data, derived from species class
+//! \brief Contains all particle data
 class Particle
 {
 public:
