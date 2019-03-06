@@ -30,9 +30,9 @@ public:
 
 	// Constructor/destructor
 	Particle();								//!< Default constructor
-	Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cellID, 
+	Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID, 
 		int particleID, int index);			//!< Initial constructor
-	Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cellID,
+	Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID,
 		int particleID, std::string type);	// Single particle constructor
 	~Particle();							//!< Destructor
 

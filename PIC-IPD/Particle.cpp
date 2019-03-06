@@ -12,7 +12,7 @@ Particle::Particle()
 
 
 // Initial constructor
-Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cellID, int particleID, int index)
+Particle::Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID, int particleID, int index)
 {
 	this->particleID = particleID;
 	this->cellID = cellID;
@@ -100,7 +100,7 @@ Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cell
 
 
 // Single particle constructor
-Particle::Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cellID, int particleID, std::string type)
+Particle::Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID, int particleID, std::string type)
 {
 	this->particleID = particleID;
 	this->cellID = cellID;

@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of VectorPatch class 
 //! \author Rahul Kalampattel
-//! \date Last updated March 2018
+//! \date Last updated March 2019
 
 #pragma once
 
@@ -25,27 +25,17 @@ public:
 
 	// Methods
 	void startPIC();							//!< Start the PIC loop within a VectorPatch object
+	
+	// TODO: Initial mesh has already been created by Parameters in main.cpp.
+	// Need to divide this mesh in sections (numberOfPatches) connected through 
+	// a space filling/Hilbert curve, and assign each to a different MPI process
+
+	// TODO: Additional methods to allow data to be shared between patches at
+	// given intervals (e.g. particles that have exited one patch and should be
+	// generated in an adjacent patch, smoothing out boundaries, etc.)
+
+	// TODO: Routines for load balancing between patches, easiest way is probably 
+	// to look at the particle density per patch (sum of all cells), and equalise
+	// by re-dividing the mesh along the Hilbert curve. Also need to consider
+	// trade-off between computational expense of the exercise and potential benefits
 };
-
-/*//! \class Simulation
-//! \brief TODO: Assign mesh to patches and perform load balancing
-class Simulation
-{
-public:
-// Data members
-
-
-// Constructor/destructor
-Simulation();							//!< Default constructor
-Simulation(Parameters *parametersList);	//!< Constructor
-~Simulation();							//!< Destructor
-
-
-// Methods
-// TODO: Divide mesh in sections (numberOfPatches) connected through a space
-// filling/Hilbert curve, and assign each to a different MPI process
-
-// TODO: Additional methods to allow data to be shared between patches at
-// given intervals (e.g. particles that have exited one patch and should be
-// generated in an adjacent patch, smoothing out boundaries, etc.)
-};*/

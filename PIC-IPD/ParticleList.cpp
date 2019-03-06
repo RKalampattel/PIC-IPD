@@ -12,7 +12,7 @@ ParticleList::ParticleList()
 
 
 // Constructor
-ParticleList::ParticleList(Parameters *parametersList, Mesh *mesh, int patchID)
+ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchID)
 {
 	this->patchID = patchID;
 	parametersList->logMessages("Creating particles vector in patch " + std::to_string(patchID), __FILENAME__, __LINE__, 1);
@@ -125,7 +125,7 @@ void ParticleList::clearFields()
 
 
 // Add particles to a cell
-void ParticleList::addParticlesToCell(Parameters *parametersList, Mesh *mesh, int cellID, int numParticlesToAdd, std::string type)
+void ParticleList::addParticlesToCell(Parameters *parametersList, PICmesh *mesh, int cellID, int numParticlesToAdd, std::string type)
 {
 	for (int i = 0; i < numParticlesToAdd; i++)
 	{
@@ -143,7 +143,7 @@ void ParticleList::addParticlesToCell(Parameters *parametersList, Mesh *mesh, in
 
 
 // Remove single particle from simulation
-void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
+void ParticleList::removeParticleFromSim(PICmesh * mesh, int particleID)
 {
 	std::list<Particle>::iterator particle;
 	for (particle = listOfParticles.begin(); particle != listOfParticles.end(); particle++)
@@ -163,7 +163,7 @@ void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
 
 
 // Remove particles from a cell
-void ParticleList::removeParticlesFromCell(Mesh * mesh, int cellID, int numParticlesToRemove)
+void ParticleList::removeParticlesFromCell(PICmesh * mesh, int cellID, int numParticlesToRemove)
 {
 	// Check that there are actually enough particles to remove
 	if (mesh->cellsVector.cells[cellID - 1].particlesInCell.size() >= numParticlesToRemove)
