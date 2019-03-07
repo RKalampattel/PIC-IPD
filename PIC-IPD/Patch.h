@@ -24,6 +24,23 @@ private:
 	ParticleList listOfParticles;						//!< List of resident particles
 	bool FDTDgenerated = false;							//!< Set to true once FDTD mesh is generated
 
+	// Intermediate values used in Projector and Interpolator
+	int cellID;
+	int nodeID_0;
+	int nodeID_1;
+	int nodeID_2;
+	int nodeID_3;
+	double left;
+	double right;
+	double top;
+	double bottom;
+	double x1;
+	double x2;
+	double v1;
+	double v2;
+	double charge;
+	std::string firstNodePosition;
+
 
 	// Methods
 	void generateParticleOutput(vector2D data, 
@@ -31,6 +48,8 @@ private:
 	void generateNodeOutput(double time);				//!< Generate Tecplot output for nodes
 	void generateGlobalOutput(double EK, double EP, 
 		double time);									//!< Generate Tecplot output for global parameters
+
+	void getIntermediateValues(Particle& particle);		//!< Update intermediate values used in Projector and Interpolator
 
 	void Projector();									//!< Projects quantities from particle to mesh locations
 	void Solver();										//!< Solves the Poisson equation

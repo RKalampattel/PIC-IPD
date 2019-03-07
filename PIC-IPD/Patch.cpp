@@ -38,7 +38,7 @@ Patch::~Patch()
 }
 
 
-// Generate Tecplot output
+// Generate Tecplot output for particles
 void Patch::generateParticleOutput(vector2D data, int numParticles, double time)
 {
 	// Plot style can be T (plot all particles at each time step), TA (animated),
@@ -46,16 +46,46 @@ void Patch::generateParticleOutput(vector2D data, int numParticles, double time)
 	writeSolutionXY_NTA_Tecplot(parametersList.tecplotParticleSolution, data, numParticles, time);
 }
 
+
+// Generate Tecplot output for nodes
 void Patch::generateNodeOutput(double time)
 {
 	writeSolutionNodeTecplot(parametersList.tecplotNodeSolution, mesh, time);
 }
 
+
+// Generate Tecplot output for global parameters
 void Patch::generateGlobalOutput(double EK, double EP, double time)
 {
 	writeSolution_T_Tecplot(parametersList.tecplotGlobalSolution, EK, EP, 
 		parametersList.maximumNumberOfIterations / parametersList.plotFrequency, time);
 }
+
+
+// Update intermediate values used in Projector and Interpolator
+void Patch::getIntermediateValues(Particle& particle)
+{
+	cellID = particle.cellID - 1;
+	nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
+	nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
+	nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
+	nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
+
+	left = mesh.cellsVector.cells[cellID].left;
+	right = mesh.cellsVector.cells[cellID].right;
+	top = mesh.cellsVector.cells[cellID].top;
+	bottom = mesh.cellsVector.cells[cellID].bottom;
+
+	x1 = particle.position[0];
+	x2 = particle.position[1];
+
+	v1 = particle.velocity[0];
+	v2 = particle.velocity[1];
+
+	firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
+	charge = particle.charge;
+}
+
 
 // Start the PIC loop within a Patch object
 void Patch::startPIC()

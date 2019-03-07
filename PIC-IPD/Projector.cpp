@@ -16,25 +16,7 @@ void Patch::Projector()
 	// Project charge to nodes
 	for (Particle& particle : listOfParticles.listOfParticles)
 	{
-		// TODO: Can change all of the below to references to avoid copying large 
-		// amounts of data for each calculation
-
-		int cellID = particle.cellID - 1;
-		int nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
-		int nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
-		int nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
-		int nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
-
-		double left = mesh.cellsVector.cells[cellID].left;
-		double right = mesh.cellsVector.cells[cellID].right;
-		double top = mesh.cellsVector.cells[cellID].top;
-		double bottom = mesh.cellsVector.cells[cellID].bottom;
-		
-		double x1 = particle.position[0];
-		double x2 = particle.position[1];
-
-		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
-		double charge = particle.charge;
+		getIntermediateValues(particle);
 
 		if (firstNodePosition == "TL")
 		{
@@ -163,29 +145,7 @@ void Patch::Projector()
 	// Project current to nodes
 	for (Particle& particle : listOfParticles.listOfParticles)
 	{
-		// TODO: Can change all of the below to references to avoid copying large 
-		// amounts of data for each calculation, or make a template to use same
-		// variables as in charge projection?
-
-		int cellID = particle.cellID - 1;
-		int nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
-		int nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
-		int nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
-		int nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
-
-		double left = mesh.cellsVector.cells[cellID].left;
-		double right = mesh.cellsVector.cells[cellID].right;
-		double top = mesh.cellsVector.cells[cellID].top;
-		double bottom = mesh.cellsVector.cells[cellID].bottom;
-
-		double x1 = particle.position[0];
-		double x2 = particle.position[1];
-
-		double v1 = particle.velocity[0];
-		double v2 = particle.velocity[1];
-
-		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
-		double charge = particle.charge;
+		getIntermediateValues(particle);
 
 		if (firstNodePosition == "BL")
 		{
