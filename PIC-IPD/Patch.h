@@ -24,7 +24,7 @@ private:
 	ParticleList listOfParticles;						//!< List of resident particles
 	bool FDTDgenerated = false;							//!< Set to true once FDTD mesh is generated
 
-	// Intermediate values used in Projector and Interpolator
+	// Intermediate values used in Projector, Interpolator and FDTD
 	int cellID;
 	int nodeID_0;
 	int nodeID_1;
@@ -49,7 +49,8 @@ private:
 	void generateGlobalOutput(double EK, double EP, 
 		double time);									//!< Generate Tecplot output for global parameters
 
-	void getIntermediateValues(Particle& particle);		//!< Update intermediate values used in Projector and Interpolator
+	void getIntermediateValues(Particle& particle);		//!< Update intermediate values used in Projector and Interpolator 
+	void getIntermediateValues(int i);					//!< Update intermediate values used in FDTD
 
 	void Projector();									//!< Projects quantities from particle to mesh locations
 	void Solver();										//!< Solves the Poisson equation

@@ -60,24 +60,7 @@ void Patch::FDTD()
 
 	for (int i = 0; i < FDTDmesh.numNodes; i++)
 	{
-		// TODO: Can change all of the below to references to avoid copying large 
-		// amounts of data for each calculation
-
-		int cellID = FDTDmesh.nodesVector.nodes[i].PICcellID - 1;
-		int nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
-		int nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
-		int nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
-		int nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
-
-		double left = mesh.cellsVector.cells[cellID].left;
-		double right = mesh.cellsVector.cells[cellID].right;
-		double top = mesh.cellsVector.cells[cellID].top;
-		double bottom = mesh.cellsVector.cells[cellID].bottom;
-
-		double x1 = FDTDmesh.nodesVector.nodes[i].geometry.X.element(0, 0);
-		double x2 = FDTDmesh.nodesVector.nodes[i].geometry.X.element(1, 0);
-
-		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
+		getIntermediateValues(i);
 
 		if (firstNodePosition == "TL")
 		{
@@ -234,24 +217,7 @@ void Patch::FDTD()
 
 	for (int i = 0; i < FDTDmesh.numNodes; i++)
 	{
-		// TODO: Can change all of the below to references to avoid copying large 
-		// amounts of data for each calculation
-
-		int cellID = FDTDmesh.nodesVector.nodes[i].PICcellID - 1;
-		int nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
-		int nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
-		int nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
-		int nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
-
-		double left = mesh.cellsVector.cells[cellID].left;
-		double right = mesh.cellsVector.cells[cellID].right;
-		double top = mesh.cellsVector.cells[cellID].top;
-		double bottom = mesh.cellsVector.cells[cellID].bottom;
-
-		double x1 = FDTDmesh.nodesVector.nodes[i].geometry.X.element(0, 0);
-		double x2 = FDTDmesh.nodesVector.nodes[i].geometry.X.element(1, 0);
-
-		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
+		getIntermediateValues(i);
 
 		if (firstNodePosition == "TL")
 		{

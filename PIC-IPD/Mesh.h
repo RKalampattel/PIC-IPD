@@ -64,5 +64,4 @@ public:
 	void removeParticleFromCell(int cellID,
 		int particleID, int particleType);  //!< Remove particle IDs from a cell
 	std::vector<int> checkParticleDensity();//!< Check particle density per cell
-
 };

@@ -87,6 +87,27 @@ void Patch::getIntermediateValues(Particle& particle)
 }
 
 
+// Update intermediate values used in FDTD
+void Patch::getIntermediateValues(int i)
+{
+	cellID = FDTDmesh.nodesVector.nodes[i].PICcellID - 1;
+	nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
+	nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
+	nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
+	nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
+
+	left = mesh.cellsVector.cells[cellID].left;
+	right = mesh.cellsVector.cells[cellID].right;
+	top = mesh.cellsVector.cells[cellID].top;
+	bottom = mesh.cellsVector.cells[cellID].bottom;
+
+	x1 = FDTDmesh.nodesVector.nodes[i].geometry.X.element(0, 0);
+	x2 = FDTDmesh.nodesVector.nodes[i].geometry.X.element(1, 0);
+
+	firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
+}
+
+
 // Start the PIC loop within a Patch object
 void Patch::startPIC()
 {
