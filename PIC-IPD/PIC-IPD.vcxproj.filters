@@ -371,7 +371,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Constants.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

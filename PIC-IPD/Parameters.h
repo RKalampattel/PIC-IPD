@@ -46,10 +46,6 @@ public:
 	GridBasicInfo gridinfoFDTD;				//!< Basic grid properties, FDTD mesh
 	GridGeo gridgeoFDTD;					//!< Detailed grid info, FDTD mesh
 
-	// TODO: Add checks so that max particles per cell cannot be less than min
-	// particles per cell, etc. (things that would contradict each other) as a
-	// result of using default parameters for some
-
 	// Global simulation parameters
 	double timeStep;						//!< Time step
 	int maximumNumberOfIterations;			//!< Maximum number of iterations

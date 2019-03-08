@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Parameters class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "Parameters.h"
 
@@ -106,7 +106,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			timeStep = stod(valuesVector[index]);
-			if (timeStep < 0.0)
+			if (timeStep <= 0.0)
 			{
 				throw 1;
 			}
@@ -143,7 +143,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			maximumNumberOfIterations = stoi(valuesVector[index]);
-			if (maximumNumberOfIterations < 0)
+			if (maximumNumberOfIterations < 1)
 			{
 				throw 1;
 			}
@@ -180,7 +180,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			numberOfPatches = stoi(valuesVector[index]);
-			if (numberOfPatches < 0)
+			if (numberOfPatches < 1)
 			{
 				throw 1;
 			}
@@ -254,7 +254,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			minimumParticlesPerCell = stoi(valuesVector[index]);
-			if (minimumParticlesPerCell < 0)
+			if (minimumParticlesPerCell < 1)
 			{
 				throw 1;
 			}
@@ -313,6 +313,7 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
+			// TODO: Modify default value to always be larger than minimumParticlesPerCell 
 			valuesVector[index] = "10";
 			maximumParticlesPerCell = stoi(valuesVector[index]);
 			useDefaultArgument = false;
@@ -521,12 +522,13 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
-			valuesVector[index] = "uniform";
+			valuesVector[index] = "random";
 			particleDistribution = valuesVector[index];
 			useDefaultArgument = false;
 		}
 		logBrief("Particle distribution: " + valuesVector[index], 1);
 		index++;
+
 
 		// TODO: Test independence of specific weight parameter
 		try
@@ -553,7 +555,7 @@ void Parameters::assignInputs()
 		}
 		catch (int error)
 		{
-			logBrief("Specific weight should be positive and at least 1.0, default value will be used", 2);
+			logBrief("Specific weight should be greater than 1.0, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
@@ -695,7 +697,8 @@ void Parameters::assignInputs()
 		logBrief("Initial velocity: " + valuesVector[index], 1);
 		index++;
 
-
+		
+		// TODO: Add more propellants
 		try
 		{
 			if (valuesVector[index] == "DEFAULT")
@@ -740,7 +743,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			MCCfrequency = stoi(valuesVector[index]);
-			if (MCCfrequency < 0)
+			if (MCCfrequency < 1)
 			{
 				throw 1;
 			}
@@ -862,7 +865,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			FDTDiterations = stoi(valuesVector[index]);
-			if (FDTDiterations < 0)
+			if (FDTDiterations < 1)
 			{
 				throw 1;
 			}
@@ -899,7 +902,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			FDTDfrequency = stoi(valuesVector[index]);
-			if (FDTDfrequency < 0)
+			if (FDTDfrequency < 1)
 			{
 				throw 1;
 			}
@@ -982,7 +985,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			domainLength = stod(valuesVector[index]);
-			if (domainLength < 0.0)
+			if (domainLength <= 0.0)
 			{
 				throw 1;
 			}
@@ -1019,7 +1022,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			domainHeight = stod(valuesVector[index]);
-			if (domainHeight < 0.0)
+			if (domainHeight <= 0.0)
 			{
 				throw 1;
 			}
@@ -1056,7 +1059,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			PICspacing = stod(valuesVector[index]);
-			if (PICspacing < 0.0)
+			if (PICspacing <= 0.0 || PICspacing >= domainLength || PICspacing >= domainHeight)
 			{
 				throw 1;
 			}
@@ -1073,11 +1076,12 @@ void Parameters::assignInputs()
 		}
 		catch (int error)
 		{
-			logBrief("PIC grid spacing should be positive, default value will be used", 2);
+			logBrief("PIC grid spacing should be positive and less than domain size, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
 		{
+			// TODO: Check that default is at least larger than domain length/height
 			valuesVector[index] = "0.02";
 			PICspacing = stod(valuesVector[index]);
 			useDefaultArgument = false;
@@ -1093,7 +1097,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			FDTDspacing = stod(valuesVector[index]);
-			if ((FDTDspacing < 0.0) || (FDTDspacing > PICspacing))
+			if (FDTDspacing <= 0.0 || FDTDspacing > PICspacing)
 			{
 				throw 1;
 			}
@@ -1115,6 +1119,7 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
+			// TODO: Check that default is at least smaller than PIC spacing
 			valuesVector[index] = "0.01";
 			FDTDspacing = stod(valuesVector[index]);
 			useDefaultArgument = false;
@@ -1158,6 +1163,10 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			meshScalingParameter = stod(valuesVector[index]);
+			if (meshScalingParameter <= 0.0)
+			{
+				throw 1;
+			}
 		}
 		catch (double error)
 		{
@@ -1167,6 +1176,11 @@ void Parameters::assignInputs()
 		catch (const std::exception&)
 		{
 			logBrief("Invalid argument detected for mesh scaling parameter, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Mesh scaling parameter should be positive, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
@@ -1227,7 +1241,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			maxSolverIterations = stoi(valuesVector[index]);
-			if (maxSolverIterations < 0)
+			if (maxSolverIterations < 1)
 			{
 				throw 1;
 			}
@@ -1264,7 +1278,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			residualTolerance = stod(valuesVector[index]);
-			if (residualTolerance < 0.0)
+			if (residualTolerance <= 0.0)
 			{
 				throw 1;
 			}
@@ -1665,7 +1679,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			plotFrequency = stoi(valuesVector[index]);
-			if (plotFrequency < 0)
+			if (plotFrequency < 1)
 			{
 				throw 1;
 			}
