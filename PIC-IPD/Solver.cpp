@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Solver method 
 //! \author Rahul Kalampattel
-//! \date Last updated June 2018
+//! \date Last updated March 2019
 
 #include "Patch.h"
 
@@ -200,10 +200,11 @@ void Patch::Solver()
 		{
 			if (parametersList.solverType == "FFT")
 			{
-				// TODO: Implement FFT based solver for mixed BC cases, and until
-				// then check that the same BC is applied across the domain
+				// TODO: Implement FFT based solver for mixed BC cases
 				int nx = mesh.numColumns + 1, ny = mesh.numRows + 1;
 
+				// TODO: First case doesn't make physical sense and will never be
+				// triggered due to checks in Parameters, delete when done
 				// Periodic BC case
 				if (parametersList.bottomBCType == "periodic" && parametersList.rightBCType == "periodic")
 				{
@@ -231,7 +232,7 @@ void Patch::Solver()
 
 					// Calculate (transformed) potential phi based on (transformed)
 					// charge density				
-					double W = exp(2.0 * std::_Pi * sqrt(-1.0) / static_cast<double>(nx));
+					double W = exp(2.0 * PI * sqrt(-1.0) / static_cast<double>(nx));
 					double Wm = 1, Wn = 1;
 
 					// TODO: Current formulation assumes uniform length boundaries
@@ -272,7 +273,8 @@ void Patch::Solver()
 					fftw_free(transform);
 				}
 				// Dirichlet BC case
-				else if (parametersList.bottomBCType == "dirichlet" && parametersList.rightBCType == "dirichlet")
+				else if (parametersList.bottomBCType == "dirichlet" && parametersList.rightBCType == "dirichlet" &&
+					parametersList.topBCType == "dirichlet" && parametersList.leftBCType == "dirichlet")
 				{
 					// Allocate memory for signal (real) and transformed signal (real)
 					double *signal, *transform;
@@ -303,8 +305,8 @@ void Patch::Solver()
 						for (int j = 0; j < ny; j++)
 						{
 							double denominator = 4.0 - 2.0 * 
-								(cos(std::_Pi * static_cast<double>(i + 1) / static_cast<double>(nx + 1)) +
-								cos(std::_Pi * static_cast<double>(j + 1) / static_cast<double>(ny + 1)));
+								(cos(PI * static_cast<double>(i + 1) / static_cast<double>(nx + 1)) +
+								cos(PI * static_cast<double>(j + 1) / static_cast<double>(ny + 1)));
 							if (denominator != 0.0)
 							{
 								transform[i*ny + j] *= mesh.h * mesh.h / denominator;
@@ -334,7 +336,8 @@ void Patch::Solver()
 					fftw_free(transform);
 				}
 				// Neumann BC case
-				else if (parametersList.bottomBCType == "neumann" && parametersList.rightBCType == "neumann")
+				else if (parametersList.bottomBCType == "neumann" && parametersList.rightBCType == "neumann" &&
+					parametersList.topBCType == "neumann" && parametersList.leftBCType == "neumann")
 				{
 					// Allocate memory for signal (real) and transformed signal (real)
 					double *signal, *transform;
@@ -365,8 +368,8 @@ void Patch::Solver()
 						for (int j = 0; j < ny; j++)
 						{
 							double denominator = 4.0 - 2.0 *
-								(cos(std::_Pi * static_cast<double>(i + 0.5) / static_cast<double>(nx)) +
-									cos(std::_Pi * static_cast<double>(j + 0.5) / static_cast<double>(ny)));
+								(cos(PI * static_cast<double>(i + 0.5) / static_cast<double>(nx)) +
+									cos(PI * static_cast<double>(j + 0.5) / static_cast<double>(ny)));
 							if (denominator != 0.0)
 							{
 								transform[i*ny + j] *= mesh.h * mesh.h / denominator;
@@ -394,6 +397,11 @@ void Patch::Solver()
 					fftw_destroy_plan(backwardsPlan);
 					fftw_free(signal);
 					fftw_free(transform);
+				}
+				else
+				{
+					parametersList.logBrief("Chosen BCs do not match FFT solver type", 3);
+					break;
 				}
 			}
 			// Gauss-Seidel solver with successive over-relaxation (SOR)

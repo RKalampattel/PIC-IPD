@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Mesh class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "Parameters.h"
 #include "Mesh.h"
@@ -50,8 +50,6 @@ Mesh::Mesh(Parameters *localParametersList, std::string type)
 		localParametersList->logBrief("Invalid type", 3);
 	}
 
-	minimumParticlesPerCell = localParametersList->minimumParticlesPerCell;
-	maximumParticlesPerCell = localParametersList->maximumParticlesPerCell;
 	double hAverage = 0;
 
 	// Scale mesh
@@ -553,8 +551,27 @@ Mesh::~Mesh()
 }
 
 
+// Default constructor
+PICmesh::PICmesh()
+{
+}
+
+
+// Constructor
+PICmesh::PICmesh(Parameters *localParametersList, std::string type) : Mesh(localParametersList, type)
+{
+	minimumParticlesPerCell = localParametersList->minimumParticlesPerCell;
+	maximumParticlesPerCell = localParametersList->maximumParticlesPerCell;
+}
+
+// Destructor
+PICmesh::~PICmesh()
+{
+}
+
+
 // Assign particle IDs to a cell
-void Mesh::addParticleToCell(int cellID, int particleID, int particleType)
+void PICmesh::addParticleToCell(int cellID, int particleID, int particleType)
 {
 	cellsVector.cells[cellID - 1].particlesInCell.push_back(particleID);
 	if (particleType == 0)
@@ -569,7 +586,7 @@ void Mesh::addParticleToCell(int cellID, int particleID, int particleType)
 
 
 // Remove particle IDs from a cell
-void Mesh::removeParticleFromCell(int cellID, int particleID, int particleType)
+void PICmesh::removeParticleFromCell(int cellID, int particleID, int particleType)
 {
 	for (int i = 0; i < cellsVector.cells[cellID - 1].particlesInCell.size(); i++)
 	{
@@ -590,7 +607,7 @@ void Mesh::removeParticleFromCell(int cellID, int particleID, int particleType)
 
 
 // Check particle density per cell
-std::vector<int> Mesh::checkParticleDensity()
+std::vector<int> PICmesh::checkParticleDensity()
 {
 	std::vector<int> particlesPerCell;
 

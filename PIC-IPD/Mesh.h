@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Mesh class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #pragma once
 
@@ -10,10 +10,6 @@
 #include "VectorNode.h"
 
 class Parameters;	// Forward declaration to resolve circular dependency 
-
-// TODO: Make Mesh a base class, and have different derived classes for the PIC 
-// and FDTD meshes (e.g. don't need to add particles to the FDTD mesh, and the 
-// PIC mesh doesn't need to support interpolation like the FDTD mesh).
 
 //! \class Mesh
 //! \brief Compiled mesh properties extracted from gridinfo and gridgeo
@@ -27,8 +23,6 @@ public:
 	int dimension;							//!< Dimension of mesh (2D)
 	int numRows;							//!< Number of rows of cells
 	int numColumns;							//!< Number of columns of cells
-	int minimumParticlesPerCell;			//!< Minimum particles per cell (from Parameters)
-	int maximumParticlesPerCell;			//!< Maximum particles per cell (from Parameters)
 	double h;								//!< Cell width/length (assume uniform)
 	VectorCell cellsVector;					//!< Vector of cells
 	VectorFace facesVector;					//!< Vector of faces
@@ -43,7 +37,29 @@ public:
 
 
 	// Methods
-	void addParticleToCell(int cellID, 
+
+};
+
+
+//! \class PICmesh
+//! \brief Derived version of mesh class for PIC mesh
+class PICmesh : public Mesh
+{
+public:
+	// Data members
+	int minimumParticlesPerCell;			//!< Minimum particles per cell (from Parameters)
+	int maximumParticlesPerCell;			//!< Maximum particles per cell (from Parameters)
+
+
+	// Constructor/destructor
+	PICmesh();								//!< Default constructor
+	PICmesh(Parameters *localParametersList,
+		std::string type);					//!< Constructor
+	~PICmesh();								//!< Destructor
+
+
+	// Methods
+	void addParticleToCell(int cellID,
 		int particleID, int particleType);	//!< Assign particle IDs to a cell
 	void removeParticleFromCell(int cellID,
 		int particleID, int particleType);  //!< Remove particle IDs from a cell

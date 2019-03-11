@@ -3,7 +3,7 @@
 //  OP2A
 //
 //  Created by Kim M.K. on 10/11/2016.
-//  Last edited by Rahul Kalampattel, April 2018
+//  Last edited by Rahul Kalampattel, March 2019
 //  
 //  Copyright © 2016 Kim M.K. All rights reserved.
 //
@@ -1245,7 +1245,7 @@ void writeGridGeoTecplot(const  std::string& title, GridBasicInfo& gridinfo, Gri
 }
 
 
-void writeMeshTecplot(const std::string& title, Mesh& mesh)
+void writeMeshTecplot(const std::string& title, PICmesh& mesh)
 {
 	int maxNodeID = mesh.numNodes;
 	int maxCellID = mesh.numCells;
@@ -1381,7 +1381,7 @@ void writeSolutionCellTecplot(const std::string& title, GridBasicInfo& gridinfo,
 
 
 // Node based data
-void writeSolutionNodeTecplot(const std::string& title, Mesh& mesh, double t)
+void writeSolutionNodeTecplot(const std::string& title, PICmesh& mesh, double t)
 {
 	if (t == 0.0)
 	{

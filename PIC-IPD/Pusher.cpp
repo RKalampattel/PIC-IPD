@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Pusher method 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "Patch.h"
 
@@ -20,31 +20,31 @@ void Patch::Pusher()
 			particle.oldVelocity = particle.velocity;
 
 			particle.velocity[0] -=
-				particle.basic.q * 
+				particle.charge * 
 				(particle.EMfield[0] +
 					particle.EMfield[5] * 
 					particle.velocity[1] - 
 					particle.EMfield[4] *
 					particle.velocity[2]) * 0.5 *
-				parametersList.timeStep / particle.basic.m;
+				parametersList.timeStep / particle.mass;
 		
 			particle.velocity[1] -=
-				particle.basic.q *
+				particle.charge *
 				(particle.EMfield[1] +
 					particle.EMfield[3] *
 					particle.velocity[2] -
 					particle.EMfield[5] * 
 					particle.oldVelocity[0]) * 0.5 *
-				parametersList.timeStep / particle.basic.m;
+				parametersList.timeStep / particle.mass;
 
 			particle.velocity[2] -=
-				particle.basic.q *
+				particle.charge *
 				(particle.EMfield[2] +
 					particle.EMfield[4] * 
 					particle.oldVelocity[0] -
 					particle.EMfield[3] * 
 					particle.oldVelocity[1]) * 0.5 *
-				parametersList.timeStep / particle.basic.m;
+				parametersList.timeStep / particle.mass;
 		}
 	}
 
@@ -66,13 +66,13 @@ void Patch::Pusher()
 		{
 			// 1. Half acceleration
 			vMinus[j] = particle.velocity[j] + 0.5 *
-				particle.basic.q * parametersList.timeStep *
-				particle.EMfield[j] / particle.basic.m;
+				particle.charge * parametersList.timeStep *
+				particle.EMfield[j] / particle.mass;
 
 			// 2. Rotation
 			double theta = 2.0 * abs(atan(0.5 * particle.EMfield[j+3] *
-				parametersList.timeStep * particle.basic.q /
-				particle.basic.m)) * 180.0 / std::_Pi;
+				parametersList.timeStep * particle.charge /
+				particle.mass)) * 180.0 / PI;
 
 			if (theta > 45.0)
 			{
@@ -80,9 +80,9 @@ void Patch::Pusher()
 				break;
 			}
 
-			tVector[j] = particle.basic.q * 0.5 *
+			tVector[j] = particle.charge * 0.5 *
 				parametersList.timeStep * particle.EMfield[j+3] /
-				particle.basic.m;
+				particle.mass;
 			sVector[j] = 2 * tVector[j] / (1 + tVector[j] * tVector[j]);
 		}
 
@@ -96,16 +96,16 @@ void Patch::Pusher()
 
 		// 3. Half acceleration
 		particle.velocity[0] = v1Plus + 0.5 *
-			particle.basic.q * parametersList.timeStep *
-			particle.EMfield[0] / particle.basic.m;
+			particle.charge * parametersList.timeStep *
+			particle.EMfield[0] / particle.mass;
 
 		particle.velocity[1] = v2Plus + 0.5 *
-			particle.basic.q * parametersList.timeStep *
-			particle.EMfield[1] / particle.basic.m;
+			particle.charge * parametersList.timeStep *
+			particle.EMfield[1] / particle.mass;
 
 		particle.velocity[2] = v3Plus + 0.5 *
-			particle.basic.q * parametersList.timeStep *
-			particle.EMfield[2] / particle.basic.m;
+			particle.charge * parametersList.timeStep *
+			particle.EMfield[2] / particle.mass;
 
 		// TODO: Does third velocity component need to be included in Courant 
 		// number calculation since only 2 spatial dimensions are being modelled?
@@ -143,7 +143,7 @@ void Patch::Pusher()
 		if (displacementL < 0.0)
 		{
 			mesh.removeParticleFromCell(particle.cellID,
-				particle.particleID, particle.basic.type);
+				particle.particleID, particle.speciesType);
 
 			// Particle remains inside domain
 			if (mesh.cellsVector.cells[particle.cellID - 1].leftCellID > 0)
@@ -183,14 +183,14 @@ void Patch::Pusher()
 			}
 
 			mesh.addParticleToCell(particle.cellID,
-				particle.particleID, particle.basic.type);
+				particle.particleID, particle.speciesType);
 		}
 
 		// Update cell ID in Cartesian x/ cylindrical z direction, exiting right
 		else if (displacementR > 0.0)
 		{
 			mesh.removeParticleFromCell(particle.cellID,
-				particle.particleID, particle.basic.type);
+				particle.particleID, particle.speciesType);
 
 			// Particle remains inside domain
 			if (mesh.cellsVector.cells[particle.cellID - 1].rightCellID > 0)
@@ -229,7 +229,7 @@ void Patch::Pusher()
 			}
 
 			mesh.addParticleToCell(particle.cellID,
-				particle.particleID, particle.basic.type);
+				particle.particleID, particle.speciesType);
 		}
 
 		// Update Cartesian y/ cylindrical r position
@@ -251,7 +251,7 @@ void Patch::Pusher()
 		if (displacementB < 0.0)
 		{
 			mesh.removeParticleFromCell(particle.cellID,
-				particle.particleID, particle.basic.type);
+				particle.particleID, particle.speciesType);
 			
 			// Particle remains inside domain
 			if (mesh.cellsVector.cells[particle.cellID - 1].bottomCellID > 0)
@@ -291,14 +291,14 @@ void Patch::Pusher()
 			}
 
 			mesh.addParticleToCell(particle.cellID,
-				particle.particleID, particle.basic.type);
+				particle.particleID, particle.speciesType);
 		}
 
 		// Update cell ID in Cartesian y/ cylindrical r direction, exiting top
 		else if (displacementT > 0.0)
 		{
 			mesh.removeParticleFromCell(particle.cellID,
-				particle.particleID, particle.basic.type);
+				particle.particleID, particle.speciesType);
 			
 			// Particle remains inside domain
 			if (mesh.cellsVector.cells[particle.cellID - 1].topCellID > 0)
@@ -338,7 +338,7 @@ void Patch::Pusher()
 			}
 
 			mesh.addParticleToCell(particle.cellID,
-				particle.particleID, particle.basic.type);
+				particle.particleID, particle.speciesType);
 		}
 
 		// Update cylindrical theta position (no need to update Cartesian z)
@@ -360,7 +360,7 @@ void Patch::Pusher()
 			double rotation = atan(abs(particle.position[2]) /
 				particle.position[1]);
 
-			if ((rotation * 180.0 / std::_Pi) > 15.0)
+			if ((rotation * 180.0 / PI) > 15.0)
 			{
 				parametersList.logBrief("Out of plane rotation has exceeded 15 degrees", 2);
 			}
@@ -388,7 +388,7 @@ void Patch::Pusher()
 			if (displacementT > 0.0)
 			{
 				mesh.removeParticleFromCell(particle.cellID,
-					particle.particleID, particle.basic.type);
+					particle.particleID, particle.speciesType);
 
 				// Particle remains inside domain
 				if (mesh.cellsVector.cells[particle.cellID - 1].topCellID > 0)
@@ -428,7 +428,7 @@ void Patch::Pusher()
 				}
 
 				mesh.addParticleToCell(particle.cellID,
-					particle.particleID, particle.basic.type);
+					particle.particleID, particle.speciesType);
 			}
 		}
 		listOfParticles.updatePlotVector(&particle);

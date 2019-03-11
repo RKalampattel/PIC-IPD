@@ -3,7 +3,7 @@
 //  OP2A
 //
 //  Created by Kim M.K. on 09/11/2016.
-//  Last edited by Rahul Kalampattel, April 2018
+//  Last edited by Rahul Kalampattel, March 2019
 //  
 //  Copyright © 2016 Kim M.K. All rights reserved.
 //
@@ -249,11 +249,11 @@ void processingGrid(GridBasicInfo& gridinfo, GridGeo& gridgeo);
 // 3. Post-processing
 // 3.1 Mesh data
 void writeGridGeoTecplot(const  std::string& title, GridBasicInfo& gridinfo, GridGeo& griddata);
-void writeMeshTecplot(const std::string& title, Mesh& mesh);
+void writeMeshTecplot(const std::string& title, PICmesh& mesh);
 // 3.2 Solution data
 void writeSolutionCellTecplot(const std::string& title, GridBasicInfo& gridinfo, 
 	GridGeo& griddata, vector2D& data, std::vector<std::string>& variableNames, int N);		// Cell based data
-void writeSolutionNodeTecplot(const std::string& title, Mesh& mesh, double t);				// Node based data
+void writeSolutionNodeTecplot(const std::string& title, PICmesh& mesh, double t);			// Node based data
 void writeSolutionXY_T_Tecplot(const std::string& title, vector2D& data, int N, double t);	// Point based data (plot all N points at each time step t)
 void writeSolutionXY_TA_Tecplot(const std::string& title, vector2D& data, int N, double t);	// Point based data (plot all N points at each time step t, animated)
 void writeSolutionXY_NT_Tecplot(const std::string& title, vector2D& data, int N, double t); // Point based data (follow N individual points for each time step t)

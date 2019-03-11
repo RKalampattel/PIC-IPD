@@ -1,27 +1,24 @@
 //! \file
 //! \brief Definition of Particle class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #pragma once
 
 #include "Parameters.h"
 #include "Mesh.h"
-#include "CHEM\species.hpp"
-
-// TODO: Does the Particle class need to be derived from the species class, or 
-// should it just contain an attribute speciesType? Doing so means each instance 
-// of the Particle class is a lot 'lighter' computationally, and doesn't contain
-// unneeded information...
 
 //! \class Particle
-//! \brief Contains all particle data, derived from species class
-class Particle : public species
+//! \brief Contains all particle data
+class Particle
 {
 public:
 	// Data members
 	int particleID;							//!< Particle ID
 	int cellID;								//!< Current cell ID
+	int speciesType;						//!< Species type
+	double mass;							//!< Species mass
+	double charge;							//!< Species charge
 	double particleWeight;					//!< Particle specific weight
 	std::vector<double> position;			//!< Particle position vector
 	std::vector<double> velocity;			//!< Particle velocity vector
@@ -33,9 +30,9 @@ public:
 
 	// Constructor/destructor
 	Particle();								//!< Default constructor
-	Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cellID, 
+	Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID, 
 		int particleID, int index);			//!< Initial constructor
-	Particle(Parameters *parametersList, Mesh *mesh, int patchID, int cellID,
+	Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID,
 		int particleID, std::string type);	// Single particle constructor
 	~Particle();							//!< Destructor
 

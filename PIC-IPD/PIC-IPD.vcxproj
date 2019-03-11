@@ -241,6 +241,7 @@
     <ClCompile Include="COMM\utilities.cpp" />
     <ClCompile Include="COMM\VectorCompare.cpp" />
     <ClCompile Include="COMM\version.cpp" />
+    <ClCompile Include="Constants.h" />
     <ClCompile Include="Faces.cpp" />
     <ClCompile Include="FDTD.cpp" />
     <ClCompile Include="GRID\cell.cpp" />

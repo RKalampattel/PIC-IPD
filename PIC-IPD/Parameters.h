@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Parameters class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #pragma once
 
@@ -18,6 +18,7 @@
 
 #include "omp.h"
 
+#include "Constants.h"
 #include "GRID/grid.hpp"
 
 #define __FILENAME__ strrchr("\\" __FILE__, '\\') + 1
@@ -44,10 +45,6 @@ public:
 	GridGeo gridgeoPIC;						//!< Detailed grid info, PIC mesh
 	GridBasicInfo gridinfoFDTD;				//!< Basic grid properties, FDTD mesh
 	GridGeo gridgeoFDTD;					//!< Detailed grid info, FDTD mesh
-
-	// TODO: Add checks so that max particles per cell cannot be less than min
-	// particles per cell, etc. (things that would contradict each other) as a
-	// result of using default parameters for some
 
 	// Global simulation parameters
 	double timeStep;						//!< Time step

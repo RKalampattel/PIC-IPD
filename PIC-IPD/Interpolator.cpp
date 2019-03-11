@@ -1,12 +1,9 @@
 //! \file
 //! \brief Implementation of Interpolator method 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "Patch.h"
-
-// TODO: Large parts of the code below are similar to what is in ChargeProjector.
-// potentially look at making both functions of Patch, enabling code re-use?
 
 // Interpolate quantities from mesh to particle locations
 void Patch::Interpolator()
@@ -18,24 +15,7 @@ void Patch::Interpolator()
 	// # pragma omp parallel for num_threads(parametersList.numThreads)
 	for (Particle& particle : listOfParticles.listOfParticles)
 	{
-		// TODO: Can change all of the below to references to avoid copying large 
-		// amounts of data for each calculation
-
-		int cellID = particle.cellID - 1;
-		int nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
-		int nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
-		int nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
-		int nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
-
-		double left = mesh.cellsVector.cells[cellID].left;
-		double right = mesh.cellsVector.cells[cellID].right;
-		double top = mesh.cellsVector.cells[cellID].top;
-		double bottom = mesh.cellsVector.cells[cellID].bottom;
-
-		double x1 = particle.position[0];
-		double x2 = particle.position[1];
-
-		std::string firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
+		getIntermediateValues(particle);
 
 		if (firstNodePosition == "TL")
 		{

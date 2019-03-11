@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of Patch class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "Patch.h"
 
@@ -20,7 +20,7 @@ Patch::Patch(Parameters *parametersList, int patchID)
 	this->patchID = patchID;
 	this->parametersList = *parametersList;
 
-	mesh = Mesh(parametersList, "PIC");
+	mesh = PICmesh(parametersList, "PIC");
 	listOfParticles = ParticleList(parametersList, &mesh, patchID);
 
 	parametersList->logBrief("Initialising Tecplot output files", 1);
@@ -38,7 +38,7 @@ Patch::~Patch()
 }
 
 
-// Generate Tecplot output
+// Generate Tecplot output for particles
 void Patch::generateParticleOutput(vector2D data, int numParticles, double time)
 {
 	// Plot style can be T (plot all particles at each time step), TA (animated),
@@ -46,16 +46,67 @@ void Patch::generateParticleOutput(vector2D data, int numParticles, double time)
 	writeSolutionXY_NTA_Tecplot(parametersList.tecplotParticleSolution, data, numParticles, time);
 }
 
+
+// Generate Tecplot output for nodes
 void Patch::generateNodeOutput(double time)
 {
 	writeSolutionNodeTecplot(parametersList.tecplotNodeSolution, mesh, time);
 }
 
+
+// Generate Tecplot output for global parameters
 void Patch::generateGlobalOutput(double EK, double EP, double time)
 {
 	writeSolution_T_Tecplot(parametersList.tecplotGlobalSolution, EK, EP, 
 		parametersList.maximumNumberOfIterations / parametersList.plotFrequency, time);
 }
+
+
+// Update intermediate values used in Projector and Interpolator
+void Patch::getIntermediateValues(Particle& particle)
+{
+	cellID = particle.cellID - 1;
+	nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
+	nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
+	nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
+	nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
+
+	left = mesh.cellsVector.cells[cellID].left;
+	right = mesh.cellsVector.cells[cellID].right;
+	top = mesh.cellsVector.cells[cellID].top;
+	bottom = mesh.cellsVector.cells[cellID].bottom;
+
+	x1 = particle.position[0];
+	x2 = particle.position[1];
+
+	v1 = particle.velocity[0];
+	v2 = particle.velocity[1];
+
+	firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
+	charge = particle.charge;
+}
+
+
+// Update intermediate values used in FDTD
+void Patch::getIntermediateValues(int i)
+{
+	cellID = FDTDmesh.nodesVector.nodes[i].PICcellID - 1;
+	nodeID_0 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[0] - 1;
+	nodeID_1 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[1] - 1;
+	nodeID_2 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[2] - 1;
+	nodeID_3 = mesh.cellsVector.cells[cellID].connectivity.nodeIDs[3] - 1;
+
+	left = mesh.cellsVector.cells[cellID].left;
+	right = mesh.cellsVector.cells[cellID].right;
+	top = mesh.cellsVector.cells[cellID].top;
+	bottom = mesh.cellsVector.cells[cellID].bottom;
+
+	x1 = FDTDmesh.nodesVector.nodes[i].geometry.X.element(0, 0);
+	x2 = FDTDmesh.nodesVector.nodes[i].geometry.X.element(1, 0);
+
+	firstNodePosition = mesh.cellsVector.cells[cellID].firstNodePosition;
+}
+
 
 // Start the PIC loop within a Patch object
 void Patch::startPIC()
@@ -64,6 +115,11 @@ void Patch::startPIC()
 	if (numErrors == 0)
 	{
 		parametersList.logMessages("Starting PIC loop in patch " + std::to_string(patchID), __FILENAME__, __LINE__, 1);
+
+		for (Particle& particle : listOfParticles.listOfParticles)
+		{
+			listOfParticles.referenceVector.push_back(&particle);
+		}
 
 		for (int i = 0; i < parametersList.maximumNumberOfIterations; i++)
 		{
@@ -129,7 +185,7 @@ void Patch::startPIC()
 				// Check particle density before next time step
 				std::vector<int> numParticlesToModify = mesh.checkParticleDensity();
 				// Check that we don't already have too many particles in the simulation
-				if (listOfParticles.listOfParticles.size() < (parametersList.maximumParticlesPerCell * mesh.numCells))
+				if (listOfParticles.numParticles < (parametersList.maximumParticlesPerCell * mesh.numCells))
 				{
 					for (int j = 0; j < mesh.numCells; j++)
 					{	
@@ -143,6 +199,16 @@ void Patch::startPIC()
 							{
 								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
 
+								// At the moment the process for removing particles 
+								// from the simulation is inefficient, as each 
+								// time we need to iterate through the entire
+								// list of particles until we find the ones with 
+								// the right ID. A solution is to have a better 
+								// way to identify the particles, e.g. rather than 
+								// using an int, maybe have a pointer. This is 
+								// implemented through listOfParticles.referenceVector
+
+								// Method 1
 								for (Particle& particle : listOfParticles.listOfParticles)
 								{
 									if (particle.particleID == particleID)
@@ -150,6 +216,10 @@ void Patch::startPIC()
 										mesh.cellsVector.cells[j].totalWeighting += particle.particleWeight;
 									}
 								}
+
+								// Method 2
+								// mesh.cellsVector.cells[j].totalWeighting += 
+								//	listOfParticles.referenceVector[particleID - 1]->particleWeight;
 							}
 
 							// TODO: Decide on what type the particles to add will be,
@@ -177,6 +247,7 @@ void Patch::startPIC()
 							{
 								int particleID = mesh.cellsVector.cells[j].particlesInCell[k];
 
+								// Method 1
 								for (Particle& particle : listOfParticles.listOfParticles)
 								{
 									if (particle.particleID == particleID)
@@ -184,6 +255,9 @@ void Patch::startPIC()
 										particle.reWeightProperties(updatedWeight);
 									}
 								}
+
+								// Method 2
+								// listOfParticles.referenceVector[particleID - 1]->reWeightProperties(updatedWeight);
 							}
 						}
 					}

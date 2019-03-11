@@ -1,7 +1,7 @@
 //! \file
 //! \brief Implementation of ParticleList class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #include "ParticleList.h"
 
@@ -12,7 +12,7 @@ ParticleList::ParticleList()
 
 
 // Constructor
-ParticleList::ParticleList(Parameters *parametersList, Mesh *mesh, int patchID)
+ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchID)
 {
 	this->patchID = patchID;
 	parametersList->logMessages("Creating particles vector in patch " + std::to_string(patchID), __FILENAME__, __LINE__, 1);
@@ -44,10 +44,9 @@ ParticleList::ParticleList(Parameters *parametersList, Mesh *mesh, int patchID)
 
 			Particle particle(parametersList, mesh, patchID, i + 1, numParticles, j);
 			listOfParticles.push_back(particle);
-
 			addToPlotVector(&particle);
 			
-			mesh->addParticleToCell(particle.cellID, particle.particleID, particle.basic.type);
+			mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
 		}
 	}
 
@@ -74,7 +73,7 @@ void ParticleList::addToPlotVector(Particle *particle)
 	plotVector.back().push_back(particle->velocity[1]);
 	plotVector.back().push_back(particle->cellID);
 	plotVector.back().push_back(particle->particleID);
-	plotVector.back().push_back(particle->basic.type);
+	plotVector.back().push_back(particle->speciesType);
 }
 
 
@@ -94,7 +93,7 @@ void ParticleList::updatePlotVector(Particle *particle)
 			plotVector[i].push_back(particle->velocity[1]);
 			plotVector[i].push_back(particle->cellID);
 			plotVector[i].push_back(particle->particleID);
-			plotVector[i].push_back(particle->basic.type);
+			plotVector[i].push_back(particle->speciesType);
 			plotVector.erase(plotVector.begin() + i + 1);
 		}
 	}
@@ -126,7 +125,7 @@ void ParticleList::clearFields()
 
 
 // Add particles to a cell
-void ParticleList::addParticlesToCell(Parameters *parametersList, Mesh *mesh, int cellID, int numParticlesToAdd, std::string type)
+void ParticleList::addParticlesToCell(Parameters *parametersList, PICmesh *mesh, int cellID, int numParticlesToAdd, std::string type)
 {
 	for (int i = 0; i < numParticlesToAdd; i++)
 	{
@@ -135,38 +134,36 @@ void ParticleList::addParticlesToCell(Parameters *parametersList, Mesh *mesh, in
 
 		Particle particle(parametersList, mesh, patchID, cellID, maxParticleID, type);
 		listOfParticles.push_back(particle);
+		referenceVector.push_back(&listOfParticles.back());
 		addToPlotVector(&particle);
 
-		mesh->addParticleToCell(particle.cellID, particle.particleID, particle.basic.type);
+		mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
 	}
 }
 
 
 // Remove single particle from simulation
-void ParticleList::removeParticleFromSim(Mesh * mesh, int particleID)
+void ParticleList::removeParticleFromSim(PICmesh * mesh, int particleID)
 {
 	std::list<Particle>::iterator particle;
 	for (particle = listOfParticles.begin(); particle != listOfParticles.end(); particle++)
 	{
-		// TODO: At the moment the process for removing particles from the simulation
-		// is highly inefficient, as each time we need to iterate through the 
-		// entire list of particles until we find the ones with the right ID. 
-		// A solution is to have a better way to identify the particles, e.g.
-		// rather than using an int, maybe have a pointer. 
 		if (particle->particleID == particleID)
 		{
-			mesh->removeParticleFromCell(particle->cellID, particle->particleID, particle->basic.type);
-			listOfParticles.erase(particle);	
+			mesh->removeParticleFromCell(particle->cellID, particle->particleID, particle->speciesType);
+			listOfParticles.erase(particle);
 			break;
+			// TODO: Update referenceVector when particles are removed.
 		}
 	}
+
 	removeFromPlotVector(particleID);
 	numParticles--;
 }
 
 
 // Remove particles from a cell
-void ParticleList::removeParticlesFromCell(Mesh * mesh, int cellID, int numParticlesToRemove)
+void ParticleList::removeParticlesFromCell(PICmesh * mesh, int cellID, int numParticlesToRemove)
 {
 	// Check that there are actually enough particles to remove
 	if (mesh->cellsVector.cells[cellID - 1].particlesInCell.size() >= numParticlesToRemove)
@@ -191,7 +188,7 @@ double ParticleList::calculateEK()
 		// and t-1.5*dt (velocity and oldVelocity), in order to get a result time 
 		// centred at t-1*dt (still behind). Need abs to remove noise.
 		// TODO: Does this need to include all three velocity components?
-		EK += 0.5 * particle.basic.m *	(abs(particle.velocity[0] *
+		EK += 0.5 * particle.mass *	(abs(particle.velocity[0] *
 			particle.oldVelocity[0]) + abs(particle.velocity[1] *
 			particle.oldVelocity[1]) + abs(particle.velocity[2] *
 			particle.oldVelocity[2]));

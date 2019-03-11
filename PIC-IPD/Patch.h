@@ -1,7 +1,7 @@
 //! \file
 //! \brief Definition of Patch class 
 //! \author Rahul Kalampattel
-//! \date Last updated February 2019
+//! \date Last updated March 2019
 
 #pragma once
 
@@ -19,18 +19,38 @@ private:
 	// Data members
 	double time;										//!< Local simulation time
 	Parameters parametersList;							//!< Copy of parameters list
-	Mesh mesh;											//!< Details of mesh
+	PICmesh mesh;										//!< Details of mesh
 	Mesh FDTDmesh;										//!< Details of FDTD mesh
 	ParticleList listOfParticles;						//!< List of resident particles
 	bool FDTDgenerated = false;							//!< Set to true once FDTD mesh is generated
+
+	// Intermediate values used in Projector, Interpolator and FDTD
+	int cellID;
+	int nodeID_0;
+	int nodeID_1;
+	int nodeID_2;
+	int nodeID_3;
+	double left;
+	double right;
+	double top;
+	double bottom;
+	double x1;
+	double x2;
+	double v1;
+	double v2;
+	double charge;
+	std::string firstNodePosition;
 
 
 	// Methods
 	void generateParticleOutput(vector2D data, 
 		int numParticles, double time);					//!< Generate Tecplot output for particles
-	void generateNodeOutput(double time);	//!< Generate Tecplot output for nodes
+	void generateNodeOutput(double time);				//!< Generate Tecplot output for nodes
 	void generateGlobalOutput(double EK, double EP, 
 		double time);									//!< Generate Tecplot output for global parameters
+
+	void getIntermediateValues(Particle& particle);		//!< Update intermediate values used in Projector and Interpolator 
+	void getIntermediateValues(int i);					//!< Update intermediate values used in FDTD
 
 	void Projector();									//!< Projects quantities from particle to mesh locations
 	void Solver();										//!< Solves the Poisson equation
