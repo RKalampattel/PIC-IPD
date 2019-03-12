@@ -291,7 +291,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			maximumParticlesPerCell = stoi(valuesVector[index]);
-			if (maximumParticlesPerCell < minimumParticlesPerCell)
+			if (maximumParticlesPerCell <= minimumParticlesPerCell)
 			{
 				throw 1;
 			}
@@ -313,9 +313,8 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
-			// TODO: Modify default value to always be larger than minimumParticlesPerCell 
-			valuesVector[index] = "10";
-			maximumParticlesPerCell = stoi(valuesVector[index]);
+			maximumParticlesPerCell = 6 + minimumParticlesPerCell;
+			valuesVector[index] = std::to_string(maximumParticlesPerCell);
 			useDefaultArgument = false;
 		}
 		logBrief("Maximum particles per cell: " + valuesVector[index], 1);
@@ -366,7 +365,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			simulationType = valuesVector[index];
-			if (simulationType == "full" || simulationType == "partial" || simulationType == "electron")
+			if (simulationType == "partial" || simulationType == "electron")
 			{
 			}
 			else
@@ -386,7 +385,7 @@ void Parameters::assignInputs()
 		}
 		catch (int error)
 		{
-			logBrief("Simulation type should be full, partial, or electron, default value will be used", 2);
+			logBrief("Simulation type should be partial or electron, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
@@ -1081,9 +1080,15 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
-			// TODO: Check that default is at least larger than domain length/height
-			valuesVector[index] = "0.02";
-			PICspacing = stod(valuesVector[index]);
+			if (domainLength > domainHeight)
+			{
+				PICspacing = domainLength / 5.0;
+			}
+			else
+			{
+				PICspacing = domainHeight/ 5.0;
+			}
+			valuesVector[index] = std::to_string(PICspacing);
 			useDefaultArgument = false;
 		}
 		logBrief("PIC grid spacing: " + valuesVector[index], 1);
@@ -1119,9 +1124,8 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
-			// TODO: Check that default is at least smaller than PIC spacing
-			valuesVector[index] = "0.01";
-			FDTDspacing = stod(valuesVector[index]);
+			FDTDspacing = PICspacing / 10.0;
+			valuesVector[index] = std::to_string(FDTDspacing);
 			useDefaultArgument = false;
 		}
 		logBrief("FDTD grid spacing: " + valuesVector[index], 1);

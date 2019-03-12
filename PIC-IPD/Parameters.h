@@ -54,7 +54,7 @@ public:
 	int minimumParticlesPerCell;			//!< Minimum particles per cell allowed in simulation
 	int maximumParticlesPerCell;			//!< Maximum particles per cell allowed in simulation
 	int numCellsWithParticles;				//!< Number of cells in which particles are seeded	
-	std::string simulationType;				//!< Simulation type (full, partial or electron)
+	std::string simulationType;				//!< Simulation type (partial or electron)
 	bool axisymmetric;						//!< True if axisymmetric simulation is required
 	bool twoStream;							//!< True is two-stream problem is bring modelled
 

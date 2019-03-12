@@ -27,33 +27,13 @@ void Patch::MCC()
 		// TODO: Cases for other propellants
 		
 		// Check simulation type
-		if (parametersList.simulationType == "full")
-		{
-			// TODO: Collisions for all three types (if this simulation type is needed)
-			// Neutral
-			if (particle.speciesType == 0)
-			{
-			}
-			// Ion
-			else if (particle.speciesType == 1)
-			{
-			}
-			// Electron
-			else
-			{
-			}
-		}
-		else if (parametersList.simulationType == "partial")
+		if (parametersList.simulationType == "partial")
 		{
 			// Neutral
 			if (particle.speciesType == 0)
 			{
 				// Target (ion) density
-				// TODO: Target density should be for TARGET species only (i.e.
-				// only count particles of a specific kind, rather than all particles
-				// in the cell). Otherwise, use some sort of distribution to calculate
-				// the correct density.
-				targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].particlesInCell.size()) /
+				targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].numIons) /
 					(mesh.h * mesh.h);
 			}
 			
@@ -61,6 +41,8 @@ void Patch::MCC()
 			else if (particle.speciesType == 1)
 			{
 				// Target (neutral) density
+				targetDensity = static_cast<double>(mesh.cellsVector.cells[particle.cellID - 1].numNeutrals) /
+					(mesh.h * mesh.h);
 			}
 		}
 		else if (parametersList.simulationType == "electron")
@@ -97,14 +79,9 @@ void Patch::MCC()
 			// Collisions modelled depends on simulation type:
 			// electron: ionisation (+1 electron), recombination (-1 electron)
 			// partial: ionisation (-1 neutral, +1 ion), recombination (+1 neutral, -1 ion), charge exchange
-			// full: ionisation (-1 neutral, +1 ion/electron), recombination (+1 neutral, -1 ion/electron), charge exchange
 			//
 			// Additionally, particle production occurs as a result of inductive or
 			// electron heating (RF thruster)
-
-			// particleList.addParticleToSim(parametersList, mesh, 1, "electron");
-			// particleList.removeParticleFromSim(particle.particleID);
-
 		}
 
 	}

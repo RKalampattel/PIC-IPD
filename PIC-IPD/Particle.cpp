@@ -106,13 +106,13 @@ Particle::Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int c
 	this->cellID = cellID;
 	this->particleWeight = parametersList->specificWeight;
 
-	if (type == "electron" && (parametersList->simulationType == "full" || parametersList->simulationType == "electron"))
+	if (type == "electron" && parametersList->simulationType == "electron")
 	{
 		this->charge = ELECTRON_CHARGE * particleWeight;
 		this->mass = ELECTRON_MASS_kg * particleWeight;
 		this->speciesType = -1;
 	}
-	else if (type == "ion" && (parametersList->simulationType == "full" || parametersList->simulationType == "partial"))
+	else if (type == "ion" && parametersList->simulationType == "partial")
 	{
 		if (parametersList->propellant == "xenon")
 		{
@@ -121,7 +121,7 @@ Particle::Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int c
 		}
 		this->speciesType = 1;
 	}
-	else if (type == "neutral" && (parametersList->simulationType == "full" || parametersList->simulationType == "partial"))
+	else if (type == "neutral" && parametersList->simulationType == "partial")
 	{
 		if (parametersList->propellant == "xenon")
 		{
