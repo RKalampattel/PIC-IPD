@@ -35,6 +35,10 @@ public:
 		PICmesh *mesh, int patchID);				//!< Constructor
 	~ParticleList();								//!< Destructor
 
+	// TODO: Add methods for adding particles to the simulation along a boundary,
+	// e.g. if particles are created in the leftmost cells, randomly switch between
+	// first n cell IDs (assuming domain is n x m), keep X coordinate as 0 in 
+	// each cell (i.e. on the left wall) but randomly assign the Y coordinate.
 
 	// Methods
 	void updatePlotVector(Particle *particle);		//!< Update state of plotVector

@@ -17,6 +17,10 @@ ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchI
 	this->patchID = patchID;
 	parametersList->logMessages("Creating particles vector in patch " + std::to_string(patchID), __FILENAME__, __LINE__, 1);
 	
+	// TODO: In some case, e.g. if there is an input source along a boundary, it
+	// may make sense to start with zero particles in each cell - add an extra
+	// parameter to see if this is the case or not, e.g. sourceTerm->[true,false]
+
 	// If 0 < numCellsWithParticles <= numCells, seed particles in a few cells, 
 	// else seed particles in every cell
 	if (parametersList->numCellsWithParticles < 1 || 

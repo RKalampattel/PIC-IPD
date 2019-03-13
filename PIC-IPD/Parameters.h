@@ -58,6 +58,14 @@ public:
 	bool axisymmetric;						//!< True if axisymmetric simulation is required
 	bool twoStream;							//!< True is two-stream problem is bring modelled
 
+	// TODO: Move parameters to the right category, e.g. some of the particle 
+	// terms above may be better suited below.
+
+	// TODO: Add parameters for particles sources, need to specify if true or false,
+	// what the location is (or can restrict it to the left boundary), what the
+	// flow rate is (determines how many new particles need to be created each
+	// time step), and what the velocity of the particles will be.
+
 	// Particle and collision parameters
 	std::string particleDistribution;		//!< Particle distribution (random, uniform, precise)
 	double specificWeight;					//!< Ratio of superparticle to real particle mass 
@@ -72,6 +80,17 @@ public:
 	std::vector<double> Bfield;				//!< External magnetic field
 	int FDTDiterations;						//!< Number of iterations in FDTD loop, determines FDTD time step
 	int FDTDfrequency;						//!< Iterations between calls to FDTD
+
+	// TODO: Since we have a Cartesian mesh, the spacing in both directions needs
+	// be uniform. Due to this, it would be a bad idea to initialise the simulation
+	// based on dimensions and number of cells in each direction. But the other
+	// two options are valid - dimensions and spacing (currently implemented, 
+	// number of cells is calculated later) or number of cells and spacing (the
+	// simulation dimensions would be calculated by multiplying number of cells
+	// in each direction by the spacing). Would need to make sure that only one 
+	// option could be selected, maybe have a flag to switch between the two. The
+	// effect on the rest of the simulation would be minimal, since the domain
+	// dimension calculation is trivial.
 
 	// Mesh and domain parameters
 	bool userMesh;							//!< If true, use user defined mesh rather than mesh from file

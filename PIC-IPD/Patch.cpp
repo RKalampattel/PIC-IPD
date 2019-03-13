@@ -151,6 +151,10 @@ void Patch::startPIC()
 				MCC();
 			}
 
+			// TODO: If a particle source is present, each time stp (or at a 
+			// chosen interval), need to add particles to the simulation. 
+			// Probably best to do this at the end.
+
 			// TODO: At certain intervals, calculate the Debye length, plasma  
 			// frequency, etc. in order to check that initial assumptions and 
 			// methods used are still valid, e.g. is spatial grid still fine enough 

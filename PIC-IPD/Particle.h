@@ -27,6 +27,8 @@ public:
 	std::vector<double> EMfield
 	{ -1.0, -1.0, -1.0, -1.0, -1.0, -1.0 };	//!< Electromagnetic field
 
+	// TODO: If particles are generated from a source, initial positions and velocities
+	// will need to be specified - add constructor to deal with this case
 
 	// Constructor/destructor
 	Particle();								//!< Default constructor
