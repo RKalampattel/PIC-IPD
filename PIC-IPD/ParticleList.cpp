@@ -16,10 +16,6 @@ ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchI
 {
 	this->patchID = patchID;
 	parametersList->logMessages("Creating particles vector in patch " + std::to_string(patchID), __FILENAME__, __LINE__, 1);
-	
-	// TODO: In some case, e.g. if there is an input source along a boundary, it
-	// may make sense to start with zero particles in each cell - add an extra
-	// parameter to see if this is the case or not, e.g. sourceTerm->[true,false]
 
 	// If 0 < numCellsWithParticles <= numCells, seed particles in a few cells, 
 	// else seed particles in every cell
@@ -30,28 +26,42 @@ ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchI
 		parametersList->numCellsWithParticles = mesh->numCells;
 	}
 
-	for (int i = 0; i < parametersList->numCellsWithParticles; i++)
+	if (parametersList->initialParticlesPerCell != 0)
 	{
-		if (parametersList->particleDistribution == "uniform")
+		for (int i = 0; i < parametersList->numCellsWithParticles; i++)
 		{
-			// Check if initialParticlesPerCell is a square number
-			if (sqrt(parametersList->initialParticlesPerCell) != round(sqrt(parametersList->initialParticlesPerCell)))
+			if (parametersList->particleDistribution == "uniform")
 			{
-				parametersList->logBrief("Value of initialParticlesPerCell has been changed to 1", 2);
-				parametersList->initialParticlesPerCell = 1;
+				// Check if initialParticlesPerCell is a square number
+				if (sqrt(parametersList->initialParticlesPerCell) != round(sqrt(parametersList->initialParticlesPerCell)))
+				{
+					parametersList->logBrief("Value of initialParticlesPerCell has been changed to 1", 2);
+					parametersList->initialParticlesPerCell = 1;
+				}
+			}
+		
+			for (int j = 0; j < parametersList->initialParticlesPerCell; j++)
+			{
+				numParticles++;
+
+				Particle particle(parametersList, mesh, patchID, i + 1, numParticles, j);
+				listOfParticles.push_back(particle);
+				addToPlotVector(&particle);
+			
+				mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
 			}
 		}
-		
-		for (int j = 0; j < parametersList->initialParticlesPerCell; j++)
-		{
-			numParticles++;
+	}
 
-			Particle particle(parametersList, mesh, patchID, i + 1, numParticles, j);
-			listOfParticles.push_back(particle);
-			addToPlotVector(&particle);
-			
-			mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
-		}
+	if (parametersList->inletSource)
+	{
+		// TODO: If inlet is present, need to first calculate how many particles
+		// will be added. Can calculate this number by dividing flow rate by particle 
+		// mass, velocity and inlet size, giving the number density. Then, generate
+		// this many random number, normalise and multiply by inlet size, transform
+		// coordinates to map to the left boundary (remember origin is at centre
+		// normally, but on the axis in the axisymmetric case), then find the cell 
+		// in which the particle resides. 
 	}
 
 	maxParticleID = numParticles;

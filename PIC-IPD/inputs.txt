@@ -23,6 +23,10 @@ simulationType: electron
 axisymmetric: 0
 twoStream: 0
 
+inletSource:0
+inletSizePercent: 10.0
+inletFlowRate 1.0
+inletVelocity: 1.0
 
 %------------------------------------------------------------------------------
 % Particle and collision parameters

@@ -488,6 +488,162 @@ void Parameters::assignInputs()
 		index++;
 
 
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			int value = stoi(valuesVector[index]);
+			if (value == 1)
+			{
+				inletSource = true;
+			}
+			else if (value == 0)
+			{
+				inletSource = false;
+			}
+			else
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for inlet source flag, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid argument detected for inlet source flag, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Inlet source flag should be true (1) or false (0), default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "0";
+			inletSource = false;
+			useDefaultArgument = false;
+		}
+		logBrief("Inlet source: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			inletSizePercent = stod(valuesVector[index]);
+			if (inletSizePercent < 0.0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for inlet size, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid type detected for inlet size, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Inlet size should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "10.0";
+			inletSizePercent = stod(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Inlet size: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			inletFlowRate = stod(valuesVector[index]);
+			if (inletFlowRate < 0.0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for inlet flow rate, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid type detected for inlet flow rate, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Inlet flow rate should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "1.0";
+			inletFlowRate = stod(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Inlet flow rate: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			inletVelocity = stod(valuesVector[index]);
+			if (inletVelocity < 0.0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for inlet velocity, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid type detected for inlet velocity, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Inlet velocity should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "1.0";
+			inletVelocity = stod(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Inlet velocity: " + valuesVector[index], 1);
+		index++;
+
+
 		// Particle and collision parameters
 		try
 		{

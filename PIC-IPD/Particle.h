@@ -27,8 +27,6 @@ public:
 	std::vector<double> EMfield
 	{ -1.0, -1.0, -1.0, -1.0, -1.0, -1.0 };	//!< Electromagnetic field
 
-	// TODO: If particles are generated from a source, initial positions and velocities
-	// will need to be specified - add constructor to deal with this case
 
 	// Constructor/destructor
 	Particle();								//!< Default constructor
@@ -36,6 +34,8 @@ public:
 		int particleID, int index);			//!< Initial constructor
 	Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID,
 		int particleID, std::string type);	// Single particle constructor
+	Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID,
+		int particleID, double position);	// Inlet particle constructor
 	~Particle();							//!< Destructor
 
 

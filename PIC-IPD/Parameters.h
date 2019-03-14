@@ -46,6 +46,10 @@ public:
 	GridBasicInfo gridinfoFDTD;				//!< Basic grid properties, FDTD mesh
 	GridGeo gridgeoFDTD;					//!< Detailed grid info, FDTD mesh
 
+	// TODO: Important to distinguish between terms which affect real particles,
+	// e.g. initialPPC, and those which only impact the number of simulation
+	// particles, e.g. minPPC and maxPPC (since the weighting is readjusted)
+
 	// Global simulation parameters
 	double timeStep;						//!< Time step
 	int maximumNumberOfIterations;			//!< Maximum number of iterations
@@ -61,10 +65,10 @@ public:
 	// TODO: Move parameters to the right category, e.g. some of the particle 
 	// terms above may be better suited below.
 
-	// TODO: Add parameters for particles sources, need to specify if true or false,
-	// what the location is (or can restrict it to the left boundary), what the
-	// flow rate is (determines how many new particles need to be created each
-	// time step), and what the velocity of the particles will be.
+	bool inletSource;						//!< True if left boundary contains an inlet (particle source)
+	double inletSizePercent;				//!< Specify size of inlet as a percentage of the boundary size
+	double inletFlowRate;					//!< Flow rate of particles from inlet
+	double inletVelocity;					//!< Drift velocity of particles from inlet 
 
 	// Particle and collision parameters
 	std::string particleDistribution;		//!< Particle distribution (random, uniform, precise)

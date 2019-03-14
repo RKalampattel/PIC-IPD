@@ -169,6 +169,58 @@ Particle::Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int c
 }
 
 
+// Inlet particle constructor
+Particle::Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID, int particleID, double position)
+{
+	this->particleID = particleID;
+	this->cellID = cellID;
+	this->particleWeight = parametersList->specificWeight;
+
+	if (parametersList->simulationType == "electron")
+	{
+		this->charge = ELECTRON_CHARGE * particleWeight;
+		this->mass = ELECTRON_MASS_kg * particleWeight;
+		this->speciesType = -1;
+	}
+	else
+	{
+		if (parametersList->propellant == "xenon")
+		{
+			this->charge = 0.0;
+			this->mass = XENON_MASS_kg * particleWeight;
+			this->speciesType = 0;
+		}
+	}
+
+	// Initialise random number generator, distribution in range [0, 1000000]
+	std::mt19937 rng;
+	rng.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1000000);
+	
+	// Place particle at assigned location
+	this->position.push_back(1e-5);			// Cartesian x/cylindrical z
+	this->position.push_back(position);		// Cartesian y/cylindrical r
+	this->position.push_back(0.0);			// Cartesian z/cylindrical theta
+
+	// Initial particle velocity
+	velocity.push_back(parametersList->inletVelocity);	// u
+	velocity.push_back(0.0);							// v
+	velocity.push_back(0.0);							// w
+
+	// Extra setup for the two-stream instability problem
+	if (parametersList->twoStream)
+	{
+		this->speciesType = 1;
+		if ((dist(rng) / (double)1000000 - 0.5) >= 0.0)
+		{
+			this->speciesType = -1;
+			this->velocity[0] *= -1.0;
+			this->velocity[1] *= -1.0;
+		}
+	}
+}
+
+
 // Destructor
 Particle::~Particle()
 {

@@ -151,7 +151,7 @@ void Patch::startPIC()
 				MCC();
 			}
 
-			// TODO: If a particle source is present, each time stp (or at a 
+			// TODO: If a particle source is present, each time step (or at a 
 			// chosen interval), need to add particles to the simulation. 
 			// Probably best to do this at the end.
 
