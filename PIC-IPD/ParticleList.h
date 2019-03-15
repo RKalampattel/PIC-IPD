@@ -26,6 +26,7 @@ public:
 	std::list<Particle> listOfParticles;			//!< List of Particle objects
 	int numParticles = 0;							//!< Size of listOfParticles								
 	int patchID;									//!< Patch ID
+	int inletParticlesPerStep;						//!< Number of particles exiting inlet per time step
 	vector2D plotVector;							//!< Store particle position, velocity, cell ID and particle ID for plotting
 
 
@@ -35,10 +36,6 @@ public:
 		PICmesh *mesh, int patchID);				//!< Constructor
 	~ParticleList();								//!< Destructor
 
-	// TODO: Add methods for adding particles to the simulation along a boundary,
-	// e.g. if particles are created in the leftmost cells, randomly switch between
-	// first n cell IDs (assuming domain is n x m), keep X coordinate as 0 in 
-	// each cell (i.e. on the left wall) but randomly assign the Y coordinate.
 
 	// Methods
 	void updatePlotVector(Particle *particle);		//!< Update state of plotVector
@@ -46,6 +43,8 @@ public:
 	void addParticlesToCell(Parameters * parametersList, 
 		PICmesh * mesh, int cellID, int numParticlesToAdd, 
 		std::string type);							//!< Add particles to a cell
+	void addParticlesToSim(Parameters * parametersList,
+		PICmesh * mesh);							//!< Add particles to simulation through inlet
 	void removeParticleFromSim(PICmesh * mesh,
 		int particleID);							//!< Remove single particle from simulation
 	void removeParticlesFromCell(PICmesh * mesh, int cellID,

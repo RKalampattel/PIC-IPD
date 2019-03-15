@@ -24,7 +24,7 @@ axisymmetric: 0
 twoStream: 0
 
 inletSource:0
-inletSizePercent: 10.0
+inletSizePercent: 0.1
 inletFlowRate 1.0
 inletVelocity: 1.0
 

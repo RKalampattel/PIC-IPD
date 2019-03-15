@@ -66,7 +66,7 @@ public:
 	// terms above may be better suited below.
 
 	bool inletSource;						//!< True if left boundary contains an inlet (particle source)
-	double inletSizePercent;				//!< Specify size of inlet as a percentage of the boundary size
+	double inletSizePercent;				//!< Specify size of inlet as a percentage of the boundary (0.0 to 1.0)
 	double inletFlowRate;					//!< Flow rate of particles from inlet
 	double inletVelocity;					//!< Drift velocity of particles from inlet 
 

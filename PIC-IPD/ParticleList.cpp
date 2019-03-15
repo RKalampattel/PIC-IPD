@@ -56,12 +56,15 @@ ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchI
 	if (parametersList->inletSource)
 	{
 		// TODO: If inlet is present, need to first calculate how many particles
-		// will be added. Can calculate this number by dividing flow rate by particle 
-		// mass, velocity and inlet size, giving the number density. Then, generate
-		// this many random number, normalise and multiply by inlet size, transform
-		// coordinates to map to the left boundary (remember origin is at centre
-		// normally, but on the axis in the axisymmetric case), then find the cell 
-		// in which the particle resides. 
+		// will be added per time step. Set this to be the value of the variable 
+		// inletParticlesPerStep. Can calculate this number by dividing flow rate 
+		// by particle mass, velocity and inlet size, giving the number density. 
+		// Then, generate this many random numbers, normalise and multiply by 
+		// inlet size, transform coordinates to map to the left boundary (remember 
+		// origin is at the centre normally, but on the axis in the axisymmetric 
+		// case), then find the cell in which the particle resides. This information
+		// can then be used to instantiate Particle objects using the "inlet 
+		// particle" constructor. 
 	}
 
 	maxParticleID = numParticles;
@@ -147,6 +150,30 @@ void ParticleList::addParticlesToCell(Parameters *parametersList, PICmesh *mesh,
 		maxParticleID++;
 
 		Particle particle(parametersList, mesh, patchID, cellID, maxParticleID, type);
+		listOfParticles.push_back(particle);
+		referenceVector.push_back(&listOfParticles.back());
+		addToPlotVector(&particle);
+
+		mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
+	}
+}
+
+
+// Add particles to simulation through inlet
+void ParticleList::addParticlesToSim(Parameters *parametersList, PICmesh *mesh)
+{
+	for (int i = 0; i < inletParticlesPerStep; i++)
+	{
+		numParticles++;
+		maxParticleID++;
+
+		// TODO: Copy the algorithm from the constructor (line 58 onwards) to 
+		// generate particle positions and hence cell IDs. 
+
+		int cellID;
+		double position;
+
+		Particle particle(parametersList, mesh, patchID, cellID, maxParticleID, position);
 		listOfParticles.push_back(particle);
 		referenceVector.push_back(&listOfParticles.back());
 		addToPlotVector(&particle);

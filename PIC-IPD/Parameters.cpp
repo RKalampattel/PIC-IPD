@@ -540,7 +540,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			inletSizePercent = stod(valuesVector[index]);
-			if (inletSizePercent < 0.0)
+			if (inletSizePercent < 0.0 || inletSizePercent > 1.0)
 			{
 				throw 1;
 			}
@@ -557,12 +557,12 @@ void Parameters::assignInputs()
 		}
 		catch (int error)
 		{
-			logBrief("Inlet size should be positive, default value will be used", 2);
+			logBrief("Inlet size should be between 0.0 and 1.0, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
 		{
-			valuesVector[index] = "10.0";
+			valuesVector[index] = "0.1";
 			inletSizePercent = stod(valuesVector[index]);
 			useDefaultArgument = false;
 		}
