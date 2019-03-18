@@ -51,27 +51,73 @@ ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchI
 				mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
 			}
 		}
+
+		parametersList->logMessages("Generated " + std::to_string(numParticles) +
+			" particles in " + std::to_string(parametersList->numCellsWithParticles) +
+			" cells", __FILENAME__, __LINE__, 1);
 	}
 
 	if (parametersList->inletSource)
 	{
-		// TODO: If inlet is present, need to first calculate how many particles
-		// will be added per time step. Set this to be the value of the variable 
-		// inletParticlesPerStep. Can calculate this number by dividing flow rate 
-		// by particle mass, velocity and inlet size, giving the number density. 
-		// Then, generate this many random numbers, normalise and multiply by 
-		// inlet size, transform coordinates to map to the left boundary (remember 
-		// origin is at the centre normally, but on the axis in the axisymmetric 
-		// case), then find the cell in which the particle resides. This information
-		// can then be used to instantiate Particle objects using the "inlet 
-		// particle" constructor. 
+		double mass;
+		if (parametersList->simulationType == "electron")
+		{
+			mass = ELECTRON_MASS_kg;
+		}
+		else
+		{
+			if (parametersList->propellant == "xenon")
+			{
+				mass = XENON_MASS_kg;
+			}
+		}
+		
+		// Total number of particles from inlet per time step
+		this->inletParticlesPerStep = static_cast<int>((parametersList->inletFlowRate / mass) *
+			(parametersList->timeStep / parametersList->specificWeight));
+
+		
+		for (int i = 0; i < inletParticlesPerStep; i++)
+		{
+			if (inletParticlesPerStep > 1000)
+			{
+				parametersList->logBrief("More than 1000 particles generated", 3);
+				break;
+			}
+			else
+			{
+				// Initialise random number generator, distribution in range [0, 1000000]
+				std::mt19937 rng;
+				rng.seed(std::random_device()());
+				std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1000000);
+
+				double normalisedPosition = dist(rng) / (double)1000000;
+
+				double position = normalisedPosition * parametersList->inletSizePercent * parametersList->domainHeight;
+
+				if (!parametersList->axisymmetric)
+				{
+					// Re-centre origin of inlet to be at midpoint of left boundary for non-axisymmetric cases
+					position += parametersList->domainHeight * ((1.0 - parametersList->inletSizePercent) / 2.0);
+				}
+
+				int cellID = ceil((parametersList->domainHeight - position) / parametersList->PICspacing);
+
+				numParticles++;
+
+				Particle particle(parametersList, mesh, patchID, cellID, numParticles, position);
+				listOfParticles.push_back(particle);
+				addToPlotVector(&particle);
+
+				mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
+			}
+		}
+
+		parametersList->logMessages("Generated " + std::to_string(inletParticlesPerStep) +
+			" particles from inlet", __FILENAME__, __LINE__, 1);
 	}
 
 	maxParticleID = numParticles;
-
-	parametersList->logMessages("Generated " + std::to_string(numParticles) +
-		" particles in " + std::to_string(parametersList->numCellsWithParticles) + 
-		" cells", __FILENAME__, __LINE__, 1);
 }
 
 
@@ -167,11 +213,22 @@ void ParticleList::addParticlesToSim(Parameters *parametersList, PICmesh *mesh)
 		numParticles++;
 		maxParticleID++;
 
-		// TODO: Copy the algorithm from the constructor (line 58 onwards) to 
-		// generate particle positions and hence cell IDs. 
+		// Initialise random number generator, distribution in range [0, 1000000]
+		std::mt19937 rng;
+		rng.seed(std::random_device()());
+		std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1000000);
 
-		int cellID;
-		double position;
+		double normalisedPosition = dist(rng) / (double)1000000;
+
+		double position = normalisedPosition * parametersList->inletSizePercent * parametersList->domainHeight;
+
+		if (!parametersList->axisymmetric)
+		{
+			// Re-centre origin of inlet to be at midpoint of left boundary for non-axisymmetric cases
+			position += parametersList->domainHeight * ((1.0 - parametersList->inletSizePercent) / 2.0);
+		}
+
+		int cellID = ceil((parametersList->domainHeight - position) / parametersList->PICspacing);
 
 		Particle particle(parametersList, mesh, patchID, cellID, maxParticleID, position);
 		listOfParticles.push_back(particle);

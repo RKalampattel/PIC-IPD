@@ -15,27 +15,27 @@
 timeStep: 0.00004
 maximumNumberOfIterations: 20 
 numberOfPatches: 1
-initialParticlesPerCell: 4
-minimumParticlesPerCell: 2
+minimumParticlesPerCell: 1
 maximumParticlesPerCell: 50
-numCellsWithParticles: 0
+specificWeight: 1.0
 simulationType: electron
 axisymmetric: 0
 twoStream: 0
 
-inletSource:0
-inletSizePercent: 0.1
-inletFlowRate 1.0
-inletVelocity: 1.0
 
 %------------------------------------------------------------------------------
 % Particle and collision parameters
 %------------------------------------------------------------------------------
+initialParticlesPerCell: 0
+numCellsWithParticles: 0
 particleDistribution: uniform
-specificWeight: 1.0
 initialTemperature: 1000.0
 initialPosition: 0.5,0.5
 initialVelocity: 1.0,0.0
+inletSource: 1
+inletSizePercent: 0.5
+inletFlowRate 6e-26
+inletVelocity: 1.0
 propellant: xenon
 MCCFrequency: 101
 

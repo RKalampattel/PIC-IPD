@@ -16,7 +16,7 @@ void Patch::Solver()
 
 	double h = mesh.h;
 
-	// TODO: How to solve for phi when open BCs are present?
+	// TODO: How to solve for phi when open BCs are present????????????????????
 	
 	// TODO: Develop a function to solve for different combinations of BCs,
 	// rather than explicitly going through each case - otherwise, will need 4 

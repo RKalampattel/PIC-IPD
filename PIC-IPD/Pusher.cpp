@@ -166,6 +166,13 @@ void Patch::Pusher()
 				else if (parametersList.leftBCType == "open")
 				{
 					listOfParticles.removeParticleFromSim(&mesh, particle.particleID);
+					// TODO: Need to check that after a particle is removed from 
+					// the simulation, the iterator does not skip over the next 
+					// particle. In the previous vector implementation of the Particle
+					// container (vectorParticle), after particle 1 was deleted, 
+					// the index was reduced by 1 as below so that the previous 
+					// particle 2, but current particle 1, would be pushed next.
+					// Check that this behaviour is maintained. 
 					//i -= 1;
 					continue;
 				}
