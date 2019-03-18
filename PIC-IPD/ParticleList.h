@@ -26,6 +26,7 @@ public:
 	std::list<Particle> listOfParticles;			//!< List of Particle objects
 	int numParticles = 0;							//!< Size of listOfParticles								
 	int patchID;									//!< Patch ID
+	int inletParticlesPerStep;						//!< Number of particles exiting inlet per time step
 	vector2D plotVector;							//!< Store particle position, velocity, cell ID and particle ID for plotting
 
 
@@ -42,6 +43,8 @@ public:
 	void addParticlesToCell(Parameters * parametersList, 
 		PICmesh * mesh, int cellID, int numParticlesToAdd, 
 		std::string type);							//!< Add particles to a cell
+	void addParticlesToSim(Parameters * parametersList,
+		PICmesh * mesh);							//!< Add particles to simulation through inlet
 	void removeParticleFromSim(PICmesh * mesh,
 		int particleID);							//!< Remove single particle from simulation
 	void removeParticlesFromCell(PICmesh * mesh, int cellID,

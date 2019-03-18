@@ -16,7 +16,7 @@ ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchI
 {
 	this->patchID = patchID;
 	parametersList->logMessages("Creating particles vector in patch " + std::to_string(patchID), __FILENAME__, __LINE__, 1);
-	
+
 	// If 0 < numCellsWithParticles <= numCells, seed particles in a few cells, 
 	// else seed particles in every cell
 	if (parametersList->numCellsWithParticles < 1 || 
@@ -26,35 +26,98 @@ ParticleList::ParticleList(Parameters *parametersList, PICmesh *mesh, int patchI
 		parametersList->numCellsWithParticles = mesh->numCells;
 	}
 
-	for (int i = 0; i < parametersList->numCellsWithParticles; i++)
+	if (parametersList->initialParticlesPerCell != 0)
 	{
-		if (parametersList->particleDistribution == "uniform")
+		for (int i = 0; i < parametersList->numCellsWithParticles; i++)
 		{
-			// Check if initialParticlesPerCell is a square number
-			if (sqrt(parametersList->initialParticlesPerCell) != round(sqrt(parametersList->initialParticlesPerCell)))
+			if (parametersList->particleDistribution == "uniform")
 			{
-				parametersList->logBrief("Value of initialParticlesPerCell has been changed to 1", 2);
-				parametersList->initialParticlesPerCell = 1;
+				// Check if initialParticlesPerCell is a square number
+				if (sqrt(parametersList->initialParticlesPerCell) != round(sqrt(parametersList->initialParticlesPerCell)))
+				{
+					parametersList->logBrief("Value of initialParticlesPerCell has been changed to 1", 2);
+					parametersList->initialParticlesPerCell = 1;
+				}
+			}
+		
+			for (int j = 0; j < parametersList->initialParticlesPerCell; j++)
+			{
+				numParticles++;
+
+				Particle particle(parametersList, mesh, patchID, i + 1, numParticles, j);
+				listOfParticles.push_back(particle);
+				addToPlotVector(&particle);
+			
+				mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
+			}
+		}
+
+		parametersList->logMessages("Generated " + std::to_string(numParticles) +
+			" particles in " + std::to_string(parametersList->numCellsWithParticles) +
+			" cells", __FILENAME__, __LINE__, 1);
+	}
+
+	if (parametersList->inletSource)
+	{
+		double mass;
+		if (parametersList->simulationType == "electron")
+		{
+			mass = ELECTRON_MASS_kg;
+		}
+		else
+		{
+			if (parametersList->propellant == "xenon")
+			{
+				mass = XENON_MASS_kg;
 			}
 		}
 		
-		for (int j = 0; j < parametersList->initialParticlesPerCell; j++)
-		{
-			numParticles++;
+		// Total number of particles from inlet per time step
+		this->inletParticlesPerStep = static_cast<int>((parametersList->inletFlowRate / mass) *
+			(parametersList->timeStep / parametersList->specificWeight));
 
-			Particle particle(parametersList, mesh, patchID, i + 1, numParticles, j);
-			listOfParticles.push_back(particle);
-			addToPlotVector(&particle);
-			
-			mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
+		
+		for (int i = 0; i < inletParticlesPerStep; i++)
+		{
+			if (inletParticlesPerStep > 1000)
+			{
+				parametersList->logBrief("More than 1000 particles generated", 3);
+				break;
+			}
+			else
+			{
+				// Initialise random number generator, distribution in range [0, 1000000]
+				std::mt19937 rng;
+				rng.seed(std::random_device()());
+				std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1000000);
+
+				double normalisedPosition = dist(rng) / (double)1000000;
+
+				double position = normalisedPosition * parametersList->inletSizePercent * parametersList->domainHeight;
+
+				if (!parametersList->axisymmetric)
+				{
+					// Re-centre origin of inlet to be at midpoint of left boundary for non-axisymmetric cases
+					position += parametersList->domainHeight * ((1.0 - parametersList->inletSizePercent) / 2.0);
+				}
+
+				int cellID = ceil((parametersList->domainHeight - position) / parametersList->PICspacing);
+
+				numParticles++;
+
+				Particle particle(parametersList, mesh, patchID, cellID, numParticles, position);
+				listOfParticles.push_back(particle);
+				addToPlotVector(&particle);
+
+				mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
+			}
 		}
+
+		parametersList->logMessages("Generated " + std::to_string(inletParticlesPerStep) +
+			" particles from inlet", __FILENAME__, __LINE__, 1);
 	}
 
 	maxParticleID = numParticles;
-
-	parametersList->logMessages("Generated " + std::to_string(numParticles) +
-		" particles in " + std::to_string(parametersList->numCellsWithParticles) + 
-		" cells", __FILENAME__, __LINE__, 1);
 }
 
 
@@ -133,6 +196,41 @@ void ParticleList::addParticlesToCell(Parameters *parametersList, PICmesh *mesh,
 		maxParticleID++;
 
 		Particle particle(parametersList, mesh, patchID, cellID, maxParticleID, type);
+		listOfParticles.push_back(particle);
+		referenceVector.push_back(&listOfParticles.back());
+		addToPlotVector(&particle);
+
+		mesh->addParticleToCell(particle.cellID, particle.particleID, particle.speciesType);
+	}
+}
+
+
+// Add particles to simulation through inlet
+void ParticleList::addParticlesToSim(Parameters *parametersList, PICmesh *mesh)
+{
+	for (int i = 0; i < inletParticlesPerStep; i++)
+	{
+		numParticles++;
+		maxParticleID++;
+
+		// Initialise random number generator, distribution in range [0, 1000000]
+		std::mt19937 rng;
+		rng.seed(std::random_device()());
+		std::uniform_int_distribution<std::mt19937::result_type> dist(0, 1000000);
+
+		double normalisedPosition = dist(rng) / (double)1000000;
+
+		double position = normalisedPosition * parametersList->inletSizePercent * parametersList->domainHeight;
+
+		if (!parametersList->axisymmetric)
+		{
+			// Re-centre origin of inlet to be at midpoint of left boundary for non-axisymmetric cases
+			position += parametersList->domainHeight * ((1.0 - parametersList->inletSizePercent) / 2.0);
+		}
+
+		int cellID = ceil((parametersList->domainHeight - position) / parametersList->PICspacing);
+
+		Particle particle(parametersList, mesh, patchID, cellID, maxParticleID, position);
 		listOfParticles.push_back(particle);
 		referenceVector.push_back(&listOfParticles.back());
 		addToPlotVector(&particle);

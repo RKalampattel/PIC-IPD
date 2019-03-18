@@ -34,6 +34,8 @@ public:
 		int particleID, int index);			//!< Initial constructor
 	Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID,
 		int particleID, std::string type);	// Single particle constructor
+	Particle(Parameters *parametersList, PICmesh *mesh, int patchID, int cellID,
+		int particleID, double position);	// Inlet particle constructor
 	~Particle();							//!< Destructor
 
 

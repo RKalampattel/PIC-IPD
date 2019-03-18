@@ -50,20 +50,24 @@ public:
 	double timeStep;						//!< Time step
 	int maximumNumberOfIterations;			//!< Maximum number of iterations
 	int numberOfPatches;					//!< Number of patches
-	int initialParticlesPerCell;			//!< Initial particles per cell
-	int minimumParticlesPerCell;			//!< Minimum particles per cell allowed in simulation
-	int maximumParticlesPerCell;			//!< Maximum particles per cell allowed in simulation
-	int numCellsWithParticles;				//!< Number of cells in which particles are seeded	
-	std::string simulationType;				//!< Simulation type (full, partial or electron)
+	int minimumParticlesPerCell;			//!< Minimum simulation particles allowed per cell
+	int maximumParticlesPerCell;			//!< Maximum simulation particles allowed per cell 
+	double specificWeight;					//!< Ratio of superparticle to real particle mass 
+	std::string simulationType;				//!< Simulation type (partial or electron)
 	bool axisymmetric;						//!< True if axisymmetric simulation is required
-	bool twoStream;							//!< True is two-stream problem is bring modelled
+	bool twoStream;							//!< True is two-stream problem is being modelled
 
 	// Particle and collision parameters
+	int initialParticlesPerCell;			//!< Initial particles seeded per cell
+	int numCellsWithParticles;				//!< Number of cells in which to seed particles 
 	std::string particleDistribution;		//!< Particle distribution (random, uniform, precise)
-	double specificWeight;					//!< Ratio of superparticle to real particle mass 
 	double initialTemperature;				//!< Initial temperature of gas/plasma
-	std::vector<double> initialPosition;	//!< Initial particle position (if precise==true)
+	std::vector<double> initialPosition;	//!< Initial particle position in cell (if precise==true)
 	std::vector<double> initialVelocity;	//!< Initial particle velocity (if precise==true)
+	bool inletSource;						//!< True if left boundary contains an inlet (particle source)
+	double inletSizePercent;				//!< Specify size of inlet as a percentage of domain height (0.0 to 1.0)
+	double inletFlowRate;					//!< Flow rate of particles from inlet
+	double inletVelocity;					//!< Drift velocity of particles from inlet 
 	std::string propellant;					//!< Propellant used in simulation (xenon)
 	int MCCfrequency;						//!< Iterations between calls to MCC
 
@@ -73,14 +77,27 @@ public:
 	int FDTDiterations;						//!< Number of iterations in FDTD loop, determines FDTD time step
 	int FDTDfrequency;						//!< Iterations between calls to FDTD
 
+	// TODO: Since we have a Cartesian mesh, the spacing in both directions needs
+	// be uniform. Due to this, it would be a bad idea to initialise the simulation
+	// based on dimensions and number of cells in each direction. But the other
+	// two options are valid - dimensions and spacing (currently implemented, 
+	// number of cells is calculated later) or number of cells and spacing (the
+	// simulation dimensions would be calculated by multiplying number of cells
+	// in each direction by the spacing). Would need to make sure that only one 
+	// option could be selected, maybe have a flag to switch between the two. The
+	// effect on the rest of the simulation would be minimal, since the domain
+	// dimension calculation is trivial.
+
 	// Mesh and domain parameters
 	bool userMesh;							//!< If true, use user defined mesh rather than mesh from file
-	double domainLength;					//!< Length of simulation domain
-	double domainHeight;					//!< Height of simulation domain;
+	double domainLength;					//!< Length of simulation domain (top and bottom)
+	double domainHeight;					//!< Height of simulation domain (left and right) 
 	double PICspacing;						//!< Grid spacing for PIC mesh
 	double FDTDspacing;						//!< Grid spacing for FDTD mesh
 	std::string meshFilePath;				//!< Path of mesh file
 	double meshScalingParameter;			//!< Mesh scaling parameter
+
+	// TODO: Impose stricter restrictions on BCs to reduce total number of cases
 
 	// Solver and boundary condition parameters
 	std::string solverType;					//!< Solver type (GS, FFT)

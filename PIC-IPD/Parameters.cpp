@@ -216,43 +216,6 @@ void Parameters::assignInputs()
 			{
 				throw 0.0;
 			}
-			initialParticlesPerCell = stoi(valuesVector[index]);
-			if (initialParticlesPerCell < 1)
-			{
-				throw 1;
-			}
-		}
-		catch (double error)
-		{
-			logBrief("No argument detected for initial particles per cell, default value will be used", 2);
-			useDefaultArgument = true;
-		}
-		catch (std::invalid_argument&)
-		{
-			logBrief("Invalid argument detected for initial particles per cell, default value will be used", 2);
-			useDefaultArgument = true;
-		}
-		catch (int error)
-		{
-			logBrief("Initial particles per cell should be positive, default value will be used", 2);
-			useDefaultArgument = true;
-		}
-		if (useDefaultArgument == true)
-		{
-			valuesVector[index] = "1";
-			initialParticlesPerCell = stoi(valuesVector[index]);
-			useDefaultArgument = false;
-		}
-		logBrief("Initial particles per cell: " + valuesVector[index], 1);
-		index++;
-
-
-		try
-		{
-			if (valuesVector[index] == "DEFAULT")
-			{
-				throw 0.0;
-			}
 			minimumParticlesPerCell = stoi(valuesVector[index]);
 			if (minimumParticlesPerCell < 1)
 			{
@@ -291,7 +254,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			maximumParticlesPerCell = stoi(valuesVector[index]);
-			if (maximumParticlesPerCell < minimumParticlesPerCell)
+			if (maximumParticlesPerCell <= minimumParticlesPerCell)
 			{
 				throw 1;
 			}
@@ -313,49 +276,49 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
-			// TODO: Modify default value to always be larger than minimumParticlesPerCell 
-			valuesVector[index] = "10";
-			maximumParticlesPerCell = stoi(valuesVector[index]);
+			maximumParticlesPerCell = 6 + minimumParticlesPerCell;
+			valuesVector[index] = std::to_string(maximumParticlesPerCell);
 			useDefaultArgument = false;
 		}
 		logBrief("Maximum particles per cell: " + valuesVector[index], 1);
 		index++;
 
 
+		// TODO: Test independence of specific weight parameter
 		try
 		{
 			if (valuesVector[index] == "DEFAULT")
 			{
 				throw 0.0;
 			}
-			numCellsWithParticles = stoi(valuesVector[index]);
-			if (numCellsWithParticles < 0)
+			specificWeight = stod(valuesVector[index]);
+			if (specificWeight < 1.0)
 			{
 				throw 1;
 			}
 		}
 		catch (double error)
 		{
-			logBrief("No argument detected for number of cells with particles, default value will be used", 2);
+			logBrief("No argument detected for specific weight, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		catch (std::invalid_argument&)
 		{
-			logBrief("Invalid argument detected for number of cells with particles, default value will be used", 2);
+			logBrief("Invalid type detected for specific weight, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		catch (int error)
 		{
-			logBrief("Number of cells with particles should be positive or zero, default value will be used", 2);
+			logBrief("Specific weight should be greater than 1.0, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
 		{
-			valuesVector[index] = "0";
-			numCellsWithParticles = stoi(valuesVector[index]);
+			valuesVector[index] = "1.0";
+			specificWeight = stod(valuesVector[index]);
 			useDefaultArgument = false;
 		}
-		logBrief("Number of cells with particles: " + valuesVector[index], 1);
+		logBrief("Specific weight: " + valuesVector[index], 1);
 		index++;
 
 
@@ -366,7 +329,7 @@ void Parameters::assignInputs()
 				throw 0.0;
 			}
 			simulationType = valuesVector[index];
-			if (simulationType == "full" || simulationType == "partial" || simulationType == "electron")
+			if (simulationType == "partial" || simulationType == "electron")
 			{
 			}
 			else
@@ -386,7 +349,7 @@ void Parameters::assignInputs()
 		}
 		catch (int error)
 		{
-			logBrief("Simulation type should be full, partial, or electron, default value will be used", 2);
+			logBrief("Simulation type should be partial or electron, default value will be used", 2);
 			useDefaultArgument = true;
 		}
 		if (useDefaultArgument == true)
@@ -496,6 +459,80 @@ void Parameters::assignInputs()
 			{
 				throw 0.0;
 			}
+			initialParticlesPerCell = stoi(valuesVector[index]);
+			if (initialParticlesPerCell < 0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for initial particles per cell, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid argument detected for initial particles per cell, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Initial particles per cell should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "1";
+			initialParticlesPerCell = stoi(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Initial particles per cell: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			numCellsWithParticles = stoi(valuesVector[index]);
+			if (numCellsWithParticles < 0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for number of cells with particles, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid argument detected for number of cells with particles, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Number of cells with particles should be positive or zero, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "0";
+			numCellsWithParticles = stoi(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Number of cells with particles: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
 			particleDistribution = valuesVector[index];
 			if (particleDistribution == "uniform" || particleDistribution == "random" || particleDistribution == "precise")
 			{
@@ -527,44 +564,6 @@ void Parameters::assignInputs()
 			useDefaultArgument = false;
 		}
 		logBrief("Particle distribution: " + valuesVector[index], 1);
-		index++;
-
-
-		// TODO: Test independence of specific weight parameter
-		try
-		{
-			if (valuesVector[index] == "DEFAULT")
-			{
-				throw 0.0;
-			}
-			specificWeight = stod(valuesVector[index]);
-			if (specificWeight < 1.0)
-			{
-				throw 1;
-			}
-		}
-		catch (double error)
-		{
-			logBrief("No argument detected for specific weight, default value will be used", 2);
-			useDefaultArgument = true;
-		}
-		catch (std::invalid_argument&)
-		{
-			logBrief("Invalid type detected for specific weight, default value will be used", 2);
-			useDefaultArgument = true;
-		}
-		catch (int error)
-		{
-			logBrief("Specific weight should be greater than 1.0, default value will be used", 2);
-			useDefaultArgument = true;
-		}
-		if (useDefaultArgument == true)
-		{
-			valuesVector[index] = "1.0";
-			specificWeight = stod(valuesVector[index]);
-			useDefaultArgument = false;
-		}
-		logBrief("Specific weight: " + valuesVector[index], 1);
 		index++;
 
 
@@ -695,6 +694,162 @@ void Parameters::assignInputs()
 			useDefaultArgument = false;
 		}
 		logBrief("Initial velocity: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			int value = stoi(valuesVector[index]);
+			if (value == 1)
+			{
+				inletSource = true;
+			}
+			else if (value == 0)
+			{
+				inletSource = false;
+			}
+			else
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for inlet source flag, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid argument detected for inlet source flag, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Inlet source flag should be true (1) or false (0), default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "0";
+			inletSource = false;
+			useDefaultArgument = false;
+		}
+		logBrief("Inlet source: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			inletSizePercent = stod(valuesVector[index]);
+			if (inletSizePercent < 0.0 || inletSizePercent > 1.0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for inlet size, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid type detected for inlet size, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Inlet size should be between 0.0 and 1.0, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "0.1";
+			inletSizePercent = stod(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Inlet size: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			inletFlowRate = stod(valuesVector[index]);
+			if (inletFlowRate < 0.0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for inlet flow rate, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid type detected for inlet flow rate, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Inlet flow rate should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "1.0";
+			inletFlowRate = stod(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Inlet flow rate: " + valuesVector[index], 1);
+		index++;
+
+
+		try
+		{
+			if (valuesVector[index] == "DEFAULT")
+			{
+				throw 0.0;
+			}
+			inletVelocity = stod(valuesVector[index]);
+			if (inletVelocity < 0.0)
+			{
+				throw 1;
+			}
+		}
+		catch (double error)
+		{
+			logBrief("No argument detected for inlet velocity, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (std::invalid_argument&)
+		{
+			logBrief("Invalid type detected for inlet velocity, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		catch (int error)
+		{
+			logBrief("Inlet velocity should be positive, default value will be used", 2);
+			useDefaultArgument = true;
+		}
+		if (useDefaultArgument == true)
+		{
+			valuesVector[index] = "1.0";
+			inletVelocity = stod(valuesVector[index]);
+			useDefaultArgument = false;
+		}
+		logBrief("Inlet velocity: " + valuesVector[index], 1);
 		index++;
 
 		
@@ -1081,9 +1236,15 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
-			// TODO: Check that default is at least larger than domain length/height
-			valuesVector[index] = "0.02";
-			PICspacing = stod(valuesVector[index]);
+			if (domainLength > domainHeight)
+			{
+				PICspacing = domainLength / 5.0;
+			}
+			else
+			{
+				PICspacing = domainHeight/ 5.0;
+			}
+			valuesVector[index] = std::to_string(PICspacing);
 			useDefaultArgument = false;
 		}
 		logBrief("PIC grid spacing: " + valuesVector[index], 1);
@@ -1119,9 +1280,8 @@ void Parameters::assignInputs()
 		}
 		if (useDefaultArgument == true)
 		{
-			// TODO: Check that default is at least smaller than PIC spacing
-			valuesVector[index] = "0.01";
-			FDTDspacing = stod(valuesVector[index]);
+			FDTDspacing = PICspacing / 10.0;
+			valuesVector[index] = std::to_string(FDTDspacing);
 			useDefaultArgument = false;
 		}
 		logBrief("FDTD grid spacing: " + valuesVector[index], 1);

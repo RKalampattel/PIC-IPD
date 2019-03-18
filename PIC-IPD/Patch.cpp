@@ -157,9 +157,6 @@ void Patch::startPIC()
 			// to resolve Debye length? Stability of leapfrog method and field 
 			// solver?? Where necessary, make changes to fix issues
 
-			// TODO: Check what is happening to Tecplot particle output after
-			// second set of plots are saved (getting NaN results for all values)
-
 			// TODO: Add checks to see if variables exceed an allowable range 
 			// during operation, e.g. speeds greater than the speed of light, etc.
 
@@ -262,6 +259,12 @@ void Patch::startPIC()
 						}
 					}
 				}
+			}
+		
+			// Add new particles if inlet is present
+			if (parametersList.inletSource)
+			{
+				listOfParticles.addParticlesToSim(&parametersList, &mesh);
 			}
 		}
 	}
